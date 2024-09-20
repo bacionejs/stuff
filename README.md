@@ -21,7 +21,7 @@ awk "{
 
 awk -F'[/ ]' '{print $2, $NF}' | \
 
-awk '$2 !~ /^[0-9]/ && length($2) > 2 && length($2) < 20' | \
+awk '$2 !~ /^[0-9]/ && length($2) > 2' | \
 
 sort | \
 
