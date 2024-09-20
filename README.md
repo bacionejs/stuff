@@ -7,7 +7,7 @@ remove quoted parts
 split by /[^[:alnum:]_]/  
 get tokens !/^[0-9]/ && length 3-19  
 get tokens used by > 1 game  
-get tokens where at least the first 3 characters are a dictionary word  
+get tokens where at least the first 3 characters are a dictionary word (but keep making the word longer until a hit or end of token)
 ...reduced 178704 records to 2245  
 
 ```bash
