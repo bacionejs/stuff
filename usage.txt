@@ -57,6 +57,7 @@
 70 fillRect
 70 padding
 69 center
+69 requestAnimationFrame
 69 setTimeout
 67 add
 67 filter
@@ -201,6 +202,7 @@
 29 transition
 28 The
 28 currentTime
+28 imageSmoothingEnabled
 28 loop
 28 reduce
 28 sort
@@ -222,6 +224,7 @@
 26 webkit
 25 action
 25 animation
+25 getBoundingClientRect
 25 gradient
 25 performance
 25 rect
@@ -304,6 +307,7 @@
 17 count
 17 createProgram
 17 createShader
+17 enableVertexAttribArray
 17 grid
 17 keyframes
 17 linkProgram
@@ -333,6 +337,7 @@
 15 assign
 15 bindTexture
 15 camera
+15 cancelAnimationFrame
 15 crossorigin
 15 defineProperty
 15 disabled
@@ -352,8 +357,10 @@
 14 apple
 14 are
 14 clearTimeout
+14 createLinearGradient
 14 createTexture
 14 fontSize
+14 globalCompositeOperation
 14 last
 14 monospace
 14 normalize
@@ -386,6 +393,7 @@
 13 getAttribute
 13 infinite
 13 label
+13 linearRampToValueAtTime
 13 parseFloat
 13 sign
 13 timer
@@ -399,6 +407,7 @@
 12 delay
 12 entries
 12 enumerable
+12 exponentialRampToValueAtTime
 12 face
 12 findIndex
 12 getAttribLocation
@@ -428,6 +437,7 @@
 11 between
 11 className
 11 clearColor
+11 createRadialGradient
 11 devicePixelRatio
 11 disable
 11 exports
@@ -679,6 +689,7 @@
 6 explode
 6 firstChild
 6 flatMap
+6 framebufferTexture2D
 6 gameCanvas
 6 getData
 6 getGamepads
@@ -790,6 +801,7 @@
 5 friction
 5 gamepad
 5 getComputedStyle
+5 getElementsByTagName
 5 getProgramInfoLog
 5 give
 5 grow
@@ -873,6 +885,7 @@
 4 START
 4 Scene
 4 Select
+4 SpeechSynthesisUtterance
 4 Speed
 4 State
 4 Symbol
@@ -1055,6 +1068,7 @@
 3 DEBUG
 3 DoubleSide
 3 Down
+3 ELEMENT_ARRAY_BUFFER
 3 END
 3 Easy
 3 End
@@ -1077,6 +1091,7 @@
 3 Loading
 3 Lose
 3 Main
+3 MeshStandardMaterial
 3 Not
 3 ONE
 3 OscillatorNode
@@ -1114,6 +1129,8 @@
 3 __r
 3 _wry
 3 actions
+3 actualBoundingBoxAscent
+3 actualBoundingBoxDescent
 3 addState
 3 alt
 3 alternate
@@ -1186,6 +1203,7 @@
 3 door
 3 dragging
 3 drawCircle
+3 drawElementsInstanced
 3 drawingBufferHeight
 3 drawingBufferWidth
 3 drop
@@ -1204,6 +1222,7 @@
 3 forward
 3 forwards
 3 fragmentShader
+3 framebufferRenderbuffer
 3 fromArray
 3 fullscreen
 3 fun
@@ -1410,6 +1429,7 @@
 2 Animation
 2 Arrow
 2 AudioBuffer
+2 AudioBufferSourceNode
 2 Avoid
 2 Axis
 2 BABYLON
@@ -1743,6 +1763,8 @@
 2 createAudioBuffer
 2 createBlock
 2 createCustomWave
+2 createDefaultXRExperienceAsync
+2 createDynamicsCompressor
 2 createElementNS
 2 createExplosion
 2 createFxNodes
@@ -1860,6 +1882,7 @@
 2 getController
 2 getDeltaTime
 2 getDuration
+2 getElementsByClassName
 2 getExtension
 2 getFrequency
 2 getHand
@@ -1867,6 +1890,7 @@
 2 getName
 2 getNextNote
 2 getObject3D
+2 getOwnPropertyDescriptor
 2 getPoint
 2 getPoints
 2 getPosition
@@ -1972,6 +1996,7 @@
 2 maxSize
 2 maxSpeed
 2 maxWidth
+2 maximumFractionDigits
 2 may
 2 medium
 2 meet
@@ -2212,6 +2237,7 @@
 2 uniformLocations
 2 until
 2 updateButtons
+2 updateProjectionMatrix
 2 uppercase
 2 useful
 2 userData
