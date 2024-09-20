@@ -1,22 +1,20 @@
 # stuff
 
-get mobile/desktop games
-remove games with special characters in the name
-get contents of js/html
-remove quoted parts
-split by /[^[:alnum:]_]/
-get tokens !/^[0-9]/ && length 3-19
-get tokens used by > 1 game
-get tokens where at least the first 3 characters are a dictionary word
-...reduced 178704 records to 2245
+get mobile/desktop games  
+remove games with special characters in the name  
+get contents of js/html  
+remove quoted parts  
+split by /[^[:alnum:]_]/  
+get tokens !/^[0-9]/ && length 3-19  
+get tokens used by > 1 game  
+get tokens where at least the first 3 characters are a dictionary word  
+...reduced 178704 records to 2245  
 
 ```bash
 find games -type f \( -name "*.js" -o -name "*.html" \) -exec \
 awk "{
-    # Remove content inside single and double quotes
     gsub(/\"[^\"]*\"/, \"\"); 
     gsub(/\'[^\']*\'/, \"\");
-    # Split the remaining content into tokens based on non-alphanumeric except _
     n = split(\$0, tokens, /[^[:alnum:]_]/);
     for (i=1; i<=n; i++) if (tokens[i] != \"\") print FILENAME, tokens[i];
 }" {} + | \
