@@ -10,7 +10,7 @@ get tokens used by > 1 game
 get tokens where at least the first 3 characters are a dictionary word
 ...reduced 178704 records to 2245
 
-bash ```
+```bash
 find games -type f \( -name "*.js" -o -name "*.html" \) -exec \
 awk "{
     # Remove content inside single and double quotes
