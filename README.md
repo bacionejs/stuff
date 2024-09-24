@@ -1,6 +1,9 @@
 # Thinky
 Thinky, a js13 code query tool  
 
+### Query Examples
+
+
 ### Todo
 - [x] Unroll roadrollers which have signature: Function
 - [ ] Unroll roadrollers which have signature: eval(r)
