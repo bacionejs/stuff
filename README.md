@@ -37,7 +37,7 @@ After pasting the content of https://js13kgames.com/2024/games into page.txt, th
 - Gets games from github  
 - Unzips games  
 - Unrolls roadroller  
-- Extracts data used by thinky.js
+- Extracts data to be used by thinky.js
 
 ### `git.sh`
 ```bash
