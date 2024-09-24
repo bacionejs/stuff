@@ -3,6 +3,9 @@
 Paste content of https://js13kgames.com/2024/games into page.txt  
 Get games from github  
 Unzip games  
+Unroll roadroller  
+Extract data  
+
 ### `git.sh`
 ```bash
 mkdir games
@@ -57,7 +60,7 @@ main(path.resolve(process.argv[2]));
 ```
 
 
-Extract data
+
 ### `extract.sh`
 ```bash
 #!/bin/bash
