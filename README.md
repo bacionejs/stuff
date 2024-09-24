@@ -24,7 +24,7 @@ Brought to you by Stuff
 - [ ] Include games which have special characters in their name
 
 ### Limitations
-- **Data only contains words used by more than one game**. This is a **hack**, a way of ignoring...stuff, a cheap way to get what is significant, by consensus, versus using a real code analysis tool library which *understands* code.
+- **The data only contains words used by more than one game**. This is a **hack**, a way of ignoring...stuff, a cheap way to get what is significant, by consensus, versus using a real code analysis tool library which *understands* code.
 - If you use zzfx and there are no word tokens which perfectly match at **least one other game**, then it is excluded, for example one game with token ZzFXM vs two games with token zzfxM.
 
 ## Developer Notes
