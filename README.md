@@ -32,6 +32,7 @@ Brought to you by Stuff
 **THESE ARE NOT INSTRUCTIONS**  
   
 These are developer notes about how I created Thinky.  
+  
 After pasting the content of https://js13kgames.com/2024/games into page.txt, the scripts below perform some tasks:
 - Gets games from github (only some, see todo)
 - Unzips games  
