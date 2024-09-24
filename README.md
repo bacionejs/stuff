@@ -45,6 +45,8 @@ sed '1,4d' | head -n -20 | \
 awk 'NR % 3 == 1' | \
 while read folder
 do curl -L -o $folder.zip https://github.com/js13kGames/games/raw/main/games/$folder/.src/g.zip
+mkdir $folder
+mv $folder.zip $folder/g.zip
 done
 
 find . -mindepth 1 -maxdepth 1 -type d -exec sh -c 'cd "{}" && [ -f g.zip ] && unzip g.zip' \;
