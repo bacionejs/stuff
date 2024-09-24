@@ -8,7 +8,7 @@ https://bacionejs.github.io/stuff/thinky.html?word=speechSynthesis
 or who doesn't use a while/for loop?  
 https://bacionejs.github.io/stuff/thinky.html?word=-while,-for  
 
-xxfx?  
+zzfx?  
 https://bacionejs.github.io/stuff/thinky.html?word=zzfx  
 
 audio but not zzfx?  
