@@ -17,10 +17,8 @@ https://bacionejs.github.io/stuff/thinky.html?word=AudioContext,-zzfx
 find your buddies and other strange oddities at Thinky  
 Brought to you by Stuff  
 
-
-
-### Query Examples
-
+### Sorry
+<span style="color: red;">If something is missing, see todo and limitation below</span>
 
 ### Todo
 - [x] Unroll roadrollers which have signature: Function
@@ -29,7 +27,8 @@ Brought to you by Stuff
 - [ ] Include games which have special characters in their name
 
 ### Limitations
-- Data only contains words used by more than one game
+- **Data only contains words used by more than one game**
+- If you use zzfx and there are no word tokens which perfectly match at least one other game, then it is excluded.
 
 ## Developer Notes
 
