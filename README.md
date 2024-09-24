@@ -15,7 +15,7 @@ find your buddies and other strange oddities at Thinky
 Brought to you by Stuff  
 
 ### Sorry
-<span style="color: red;">If something is missing, see todo and limitation below</span>
+If something is missing, see todo and limitations below.  
 
 ### Todo
 - [x] Unroll roadrollers which have signature: Function
