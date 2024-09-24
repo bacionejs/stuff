@@ -7,6 +7,9 @@ Thinky, a js13 code query tool
 - [ ] Unroll roadrollers which have signature: document.write
 - [ ] Include games which have special characters in their name
 
+### Limitations
+- Data only contains words used by more than one game
+
 ## Developer Notes
 
 
