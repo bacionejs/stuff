@@ -1,4 +1,7 @@
+# Thinky
+Thinky, a js13 code query tool  
 
+## Developer Notes
 
 Paste content of https://js13kgames.com/2024/games into page.txt  
 Get games from github  
