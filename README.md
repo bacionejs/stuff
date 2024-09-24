@@ -1,7 +1,14 @@
 # Thinky
 Thinky, a js13 code query tool  
 
+### Todo
+- [x] Unroll roadrollers which have signature: Function
+- [ ] Unroll roadrollers which have signature: eval(r)
+- [ ] Unroll roadrollers which have signature: document.write
+- [ ] Include games wchich have special characters in their name
+
 ## Developer Notes
+
 
 Paste content of https://js13kgames.com/2024/games into page.txt  
 Get games from github  
