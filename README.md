@@ -44,7 +44,7 @@ Extract data
 mkdir games
 cd games
 cat page.txt | \
-sed '1,4d' filename | head -n -20 | \
+sed '1,4d' | head -n -20 | \
 awk 'NR % 3 == 1' | \
 while read folder
 do curl -L -o $folder.zip https://github.com/js13kGames/games/raw/main/games/$folder/.src/g.zip
