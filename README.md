@@ -33,11 +33,11 @@ Brought to you by Stuff
 ## Developer Notes
 
 
-Paste content of https://js13kgames.com/2024/games into page.txt  
-Get games from github  
-Unzip games  
-Unroll roadroller  
-Extract data  
+After pasting the content of https://js13kgames.com/2024/games into page.txt, the scripts below perform some tasks:
+- Gets games from github  
+- Unzips games  
+- Unrolls roadroller  
+- Extracts data used by thinky.js
 
 ### `git.sh`
 ```bash
