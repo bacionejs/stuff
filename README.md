@@ -53,7 +53,7 @@ done
 find . -mindepth 1 -maxdepth 1 -type d -exec sh -c 'cd "{}" && [ -f g.zip ] && unzip g.zip' \;
 ```
 
-### `unroll.js`
+### `unroll.sh`
 ```bash
 find games -type f \( -name "*.js" -o -name "*.html" \) -exec grep -Plz 'Function\s*\(\s*"\[M' {} \; -exec sh -c 'node unroll.js "$1" > "$1.tmp" && mv "$1.tmp" "$1"' _ {} \;
 ```
