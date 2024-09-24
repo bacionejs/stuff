@@ -3,19 +3,19 @@
 Thinky, a js13 code query tool  
 
 ever wonder who uses speechsynth?  
-https://bacionejs.github.io/stuff/thinky.html?word=speechSynthesis
+https://bacionejs.github.io/stuff/thinky.html?word=speechSynthesis  
 
-or who doesn't use a while/for loop?
-https://bacionejs.github.io/stuff/thinky.html?word=-while,-for
+or who doesn't use a while/for loop?  
+https://bacionejs.github.io/stuff/thinky.html?word=-while,-for  
 
-xxfx?
-https://bacionejs.github.io/stuff/thinky.html?word=zzfx
+xxfx?  
+https://bacionejs.github.io/stuff/thinky.html?word=zzfx  
 
-audio but not zzfx?
-https://bacionejs.github.io/stuff/thinky.html?word=AudioContext,-zzfx
+audio but not zzfx?  
+https://bacionejs.github.io/stuff/thinky.html?word=AudioContext,-zzfx  
 
-find your buddies and other strange oddities at Thinky
-Brought to you by Stuff
+find your buddies and other strange oddities at Thinky  
+Brought to you by Stuff  
 
 
 
