@@ -1,5 +1,6 @@
 # Thinky
 Thinky, a js13 code query tool  
+[Run](https://bacionejs.github.io/stuff/thinky.html)
 
 ### Query Examples
 
