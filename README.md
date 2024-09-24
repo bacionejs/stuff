@@ -34,10 +34,10 @@ Brought to you by Stuff
 
 
 After pasting the content of https://js13kgames.com/2024/games into page.txt, the scripts below perform some tasks:
-- Gets games from github  
+- Gets games from github (only some, see todo)
 - Unzips games  
-- Unrolls roadroller  
-- Extracts data to be used by thinky.js
+- Unrolls roadroller (only some, see todo)
+- Extracts data to be used by thinky.js (only some, see limitations)
 
 ### `git.sh`
 ```bash
