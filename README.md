@@ -25,7 +25,7 @@ Brought to you by Stuff
 
 ### Limitations
 - **Data only contains words used by more than one game**
-- If you use zzfx and there are no word tokens which perfectly match at **least one other game**, then it is excluded, for example if your token is ZzFXM vs zzfxM.
+- If you use zzfx and there are no word tokens which perfectly match at **least one other game**, then it is excluded, for example one game with token ZzFXM vs two games with token zzfxM.
 
 ## Developer Notes
 
