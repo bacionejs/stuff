@@ -26,11 +26,15 @@ return Object.fromEntries(params.entries());
 
 
 function getWordsByGame(gameName) {
-let game = GAMES.find(g => g[0] === gameName);
-if (game) {
-  const wordLinks = game[1].map(index => `<a href="?word=${encodeURIComponent(WORDS[index])}">${WORDS[index]}</a>`).join('\n');
-  return `${wordLinks}`;
-}
+  let game = GAMES.find(g => g[0] === gameName);
+  if (game) {
+    const sortedIndices = game[1].sort((a, b) => WORDS[a].localeCompare(WORDS[b]));
+    const wordLinks = sortedIndices.map(index => 
+      `<a href="?word=${encodeURIComponent(WORDS[index])}">${WORDS[index]}</a>`
+    ).join('\n');
+    
+    return `${wordLinks}`;
+  }
 }
 
 
@@ -42,12 +46,16 @@ if (game) {
 
 
 function getGamesByWords(includeWords, excludeWords = []) {
-const filteredGames = GAMES.filter(([gameName, wordIndices]) => {
-  let gameWords = wordIndices.map(i => WORDS[i]);
-  return includeWords.every(word => gameWords.includes(word)) && excludeWords.every(word => !gameWords.includes(word));
-});
-const gameLinks = filteredGames.map(([gameName]) => `<a href="?game=${encodeURIComponent(gameName)}">${gameName}</a>`).join('\n');
-return `${gameLinks}`;
+  const filteredGames = GAMES.filter(([gameName, wordIndices]) => {
+    let gameWords = wordIndices.map(i => WORDS[i]);
+    return includeWords.every(word => gameWords.includes(word)) && excludeWords.every(word => !gameWords.includes(word));
+  });
+  const sortedGames = filteredGames.sort(([gameNameA], [gameNameB]) => gameNameA.localeCompare(gameNameB));
+  const gameLinks = sortedGames.map(([gameName]) => 
+    `<a href="?game=${encodeURIComponent(gameName)}">${gameName}</a>`
+  ).join('\n');
+
+  return `${gameLinks}`;
 }
 
 
