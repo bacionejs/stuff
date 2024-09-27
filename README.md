@@ -11,6 +11,9 @@ https://bacionejs.github.io/stuff/thinky.html?word=-while,-for
 audio?  
 https://bacionejs.github.io/stuff/thinky.html?word=AudioContext  
 
+zzfx?  
+https://bacionejs.github.io/stuff/thinky.html?word=zzfx
+
 find your buddies and other strange oddities at Thinky  
 Brought to you by Stuff  
 
