@@ -135,7 +135,7 @@ zzfx?
     result = countGames();
   } else {
     let r=getWordsByGame(game);
-    result=`${r.split('\n').length} words used by ${game}\n\n${r}`;
+    result=`${r.split('\n').length} words used by <a href="https://js13kgames.com/2024/games/${game}">${game}↗️</a>\n\n${r}`;
   }
 } else if (params.hasOwnProperty('word')) {
   if (!word) {
