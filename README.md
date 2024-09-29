@@ -35,7 +35,7 @@ I posted these notes so other people can
 - The ```extract.sh``` script extracts the data to be used by ```thinky.js```  
 
 #### git.sh
-Manually paste into page.txt, the text of https://js13kgames.com/2024/games  
+Manually paste into ```page.txt```, the text of https://js13kgames.com/2024/games  
 ```bash
 #!/bin/bash
 #get game names
