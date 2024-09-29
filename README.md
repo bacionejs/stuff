@@ -31,12 +31,11 @@ I posted these notes so other people can
 
 
 **These scripts were run on Android Termux**  
-- The unroll.js (un-roadroller) script below is run like ```node unroll.js games```  
-- The unroll.js script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
+- The unroll.js (un-roadroller) script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
 - The extract.sh script extracts the data to be used by thinky.js  
 
 #### git.sh
-manually paste into page.txt, the text of https://js13kgames.com/2024/games  
+Manually paste into page.txt, the text of https://js13kgames.com/2024/games  
 ```bash
 #!/bin/bash
 #get game names
@@ -69,6 +68,7 @@ find games -name '* *' -exec bash -c 'mv -v "$0" "`echo $0 | tr " " "-"`"' {} +
 
 
 #### unroll.js
+```node unroll.js games```  
 ```javascript
 let fs = require('fs');
 let path = require('path');
