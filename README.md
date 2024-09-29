@@ -30,7 +30,7 @@ I posted these notes so other people can
 - make suggestions for doing it **right**
 
 
-#### These scripts were run on Android Termux.  
+**These scripts were run on Android Termux**  
 - The unroll.js (un-roadroller) script below is run like ```node unroll.js games```  
 - The unroll.js script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
 - The extract.sh script extracts the data to be used by thinky.js  
