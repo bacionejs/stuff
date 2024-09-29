@@ -27,7 +27,7 @@ Brought to you by Stuff
 **THIS ARE NOT INSTRUCTIONS**  
 
 The unroll.js script below is run like ```node unroll.js games```  
-The unroll.js script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, please let me know.  
+The unroll.js script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
 The extract.sh script extracts the data to be used by thinky.js  
 
 ### git.sh
