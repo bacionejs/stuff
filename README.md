@@ -36,10 +36,9 @@ I posted these notes so other people can
 - The extract.sh script extracts the data to be used by thinky.js  
 
 #### git.sh
+manually paste into page.txt, the text of https://js13kgames.com/2024/games  
 ```bash
 #!/bin/bash
-rm -r games; mkdir games
-#manually paste into page.txt, the text of https://js13kgames.com/2024/games
 #get game names
 cat page.txt | sed '1,4d' | head -n -20 | awk 'NR % 3 == 1' | \
 #fix game names
