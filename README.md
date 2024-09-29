@@ -25,7 +25,7 @@ Brought to you by Stuff
 ## Developer Notes
 todo
 
-
+### git.sh
 ```bash
 #!/bin/bash
 rm -r games; mkdir games
@@ -59,7 +59,7 @@ find games -name '* *' -exec bash -c 'mv -v "$0" "`echo $0 | tr " " "-"`"' {} +
 
 
 
-
+### unroll.js
 ```javascript
 let fs = require('fs');
 let path = require('path');
@@ -138,7 +138,7 @@ processDirectory(startDir);
 
 
 
-
+### extract.sh
 ```bash
 #!/bin/bash
 # Find all .js and .html files
