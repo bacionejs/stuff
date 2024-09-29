@@ -35,7 +35,7 @@ I posted these notes so other people can
 - The unroll.js script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
 - The extract.sh script extracts the data to be used by thinky.js  
 
-### git.sh
+#### git.sh
 ```bash
 #!/bin/bash
 rm -r games; mkdir games
@@ -69,7 +69,7 @@ find games -name '* *' -exec bash -c 'mv -v "$0" "`echo $0 | tr " " "-"`"' {} +
 
 
 
-### unroll.js
+#### unroll.js
 ```javascript
 let fs = require('fs');
 let path = require('path');
@@ -148,7 +148,7 @@ processDirectory(startDir);
 
 
 
-### extract.sh
+#### extract.sh
 ```bash
 #!/bin/bash
 # Canonicalize zzfx
