@@ -149,7 +149,7 @@ processDirectory(startDir);
 ```bash
 #!/bin/bash
 # Canonicalize zzfx
-find . -type f \( -name '*.html' -o -name '*.js' \) -exec sed -i -r 's/module:\[\[\[/zzfx/gi;s/zzfx\w*/zzfx/gi' {} +
+find games -type f \( -name '*.html' -o -name '*.js' \) -exec sed -i -r 's/module:\[\[\[/zzfx/gi;s/zzfx\w*/zzfx/gi' {} +
 # Find all .js and .html files
 # Remove base64
 # Split the remaining content into tokens based on non-alphanumeric except _
