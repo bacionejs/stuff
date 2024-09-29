@@ -31,8 +31,8 @@ I posted these notes so other people can
 
 
 **These scripts were run on Android Termux**  
-- The unroll.js (un-roadroller) script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
-- The extract.sh script extracts the data to be used by thinky.js  
+- The ```unroll.js``` (un-roadroller) script is a homegrown hack. If you know the *right* way, like a tool, or better unroll logic, **please let me know**.  
+- The ```extract.sh``` script extracts the data to be used by ```thinky.js```  
 
 #### git.sh
 Manually paste into page.txt, the text of https://js13kgames.com/2024/games  
