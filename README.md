@@ -21,9 +21,10 @@ Brought to you by Stuff
 
 ### Limitations
 - **The data only contains words used by more than one game**. This is a **hack**, a cheap way to get what is significant, by consensus.
+- Only html/js. No json, etc.
 
 ## Developer Notes
-todo
+**THIS ARE NOT INSTRUCTIONS**  
 
 ### git.sh
 ```bash
@@ -141,6 +142,8 @@ processDirectory(startDir);
 ### extract.sh
 ```bash
 #!/bin/bash
+# Canonicalize zzfx
+find . -type f \( -name '*.html' -o -name '*.js' \) -exec sed -i -r 's/module:\[\[\[/zzfx/gi;s/zzfx\w*/zzfx/gi' {} +
 # Find all .js and .html files
 # Remove base64
 # Split the remaining content into tokens based on non-alphanumeric except _
