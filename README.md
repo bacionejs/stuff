@@ -36,7 +36,8 @@ I posted these notes so other people can
 
 #### git.sh
 Manually paste into ```page.txt```, the text of https://js13kgames.com/2024/games  
-Make a folder called ```games```
+Make a folder called ```games```  
+Run ```./git.sh```  
 ```bash
 #!/bin/bash
 #get game names
@@ -69,7 +70,7 @@ find games -name '* *' -exec bash -c 'mv -v "$0" "`echo $0 | tr " " "-"`"' {} +
 
 
 #### unroll.js
-```node unroll.js games```  
+Run ```node unroll.js games```  
 ```javascript
 let fs = require('fs');
 let path = require('path');
@@ -149,6 +150,7 @@ processDirectory(startDir);
 
 
 #### extract.sh
+Run ```./extract.sh```
 ```bash
 #!/bin/bash
 # Canonicalize zzfx
