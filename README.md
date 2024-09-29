@@ -36,6 +36,7 @@ I posted these notes so other people can
 
 #### git.sh
 Manually paste into ```page.txt```, the text of https://js13kgames.com/2024/games  
+Make a folder called ```games```
 ```bash
 #!/bin/bash
 #get game names
