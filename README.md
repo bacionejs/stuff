@@ -24,8 +24,8 @@ Brought to you by Stuff
 - Only html/js. No json, etc.
 
 ### Misc
-Thinky is designed to compare 188 games and uses consensus to reduce 20,000 words to 5,000 words. If you want, I can change it.
-Here are some scripts to analyze your own code.
+Thinky is designed to compare 188 games and uses consensus to reduce 20,000 words to 5,000 words. If you want, I can change it.  
+Here are some scripts to analyze your own code.  
 Sort all words by length  
 ```cat minified.js|tr -cs '[:alnum:]_' '\n'|awk '{print length,$0}'|sort -u|sort -n|cut -d' ' -f2```  
 
