@@ -20,11 +20,10 @@ Brought to you by Stuff
 
 
 ### Limitations
-- **The data only contains words used by more than one game**
+- **The data only contains words used by more than one game**. Thinky is designed to compare 188 games and uses **consensus** to reduce 20,000 words to 5,000 words. If you want, I can change it.  
 - Only html/js. No json, etc.
 
 ### Misc
-Thinky is designed to compare 188 games and uses **consensus** to reduce 20,000 words to 5,000 words. If you want, I can change it.  
 
 Here are some scripts to analyze your own code.  
 
