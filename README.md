@@ -27,8 +27,11 @@ Brought to you by Stuff
 Thinky is designed to compare 188 games and uses **consensus** to reduce 20,000 words to 5,000 words. If you want, I can change it.  
 
 Here are some scripts to analyze your own code.  
+
 **Sort all words by length**  
-```cat minified.js|tr -cs '[:alnum:]_' '\n'|awk '{print length,$0}'|sort -u|sort -n|cut -d' ' -f2```  
+
+```cat minified.js|sed 's/base64[^=]*=//g'|tr -cs '[:alnum:]_' '\n'|awk '{print length,$0}'|sort -u|sort -n|cut -d' ' -f2```  
+
 
 ## Developer Notes
 **THIS ARE NOT INSTRUCTIONS**  
