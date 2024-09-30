@@ -20,19 +20,20 @@ Brought to you by Stuff
 
 
 ### Limitations
-- **The data only contains words used by more than one game**. This is a **hack**, a cheap way to get what is significant, by consensus.
+- **The data only contains words used by more than one game**
 - Only html/js. No json, etc.
 
 ### Misc
-Thinky is designed to compare 188 games and uses consensus to reduce 20,000 words to 5,000 words. If you want, I can change it.  
+Thinky is designed to compare 188 games and uses **consensus** to reduce 20,000 words to 5,000 words. If you want, I can change it.  
+
 Here are some scripts to analyze your own code.  
-Sort all words by length  
+**Sort all words by length**  
 ```cat minified.js|tr -cs '[:alnum:]_' '\n'|awk '{print length,$0}'|sort -u|sort -n|cut -d' ' -f2```  
 
 ## Developer Notes
 **THIS ARE NOT INSTRUCTIONS**  
 I posted these notes so other people can
-- see why the data produced, is the way it is
+- see the specific logic used
 - make suggestions for doing it **right**
 
 
