@@ -161,8 +161,8 @@ output.innerHTML += `${all}<div style="white-space: pre-line; font-size: xx-smal
 
 
 
-fetchWords(); fetchGames(); processQuery();
-//Promise.all([fetchWordsFile(), fetchGamesFile()]).then(processQuery);
+//fetchWords(); fetchGames(); processQuery();
+Promise.all([fetchWordsFile(), fetchGamesFile()]).then(processQuery);
 
 function fetchWords() {
 WORDS = words().split(',');
