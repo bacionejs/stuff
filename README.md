@@ -38,7 +38,7 @@ Here are some scripts to analyze your own code.
 
 I posted these notes so other people can
 - see the specific logic used
-- make suggestions for doing it **right**
+- make [suggestions](https://github.com/bacionejs/stuff/discussions) for doing it **right**
 
 
 **These scripts were run on Android Termux**  
