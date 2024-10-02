@@ -33,7 +33,9 @@ Here are some scripts to analyze your own code.
 
 
 ## Developer Notes
-**THIS ARE NOT INSTRUCTIONS**  
+
+**THESE ARE NOT INSTRUCTIONS**  
+
 I posted these notes so other people can
 - see the specific logic used
 - make suggestions for doing it **right**
