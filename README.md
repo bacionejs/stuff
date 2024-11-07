@@ -1,6 +1,6 @@
 # Thinky
 [Run](https://bacionejs.github.io/stuff/thinky.html)  
-Thinky, a js13 code query tool  
+Thinky, a js13kgames 2024 code query tool  
 
 ever wonder who uses speechsynth?  
 https://bacionejs.github.io/stuff/thinky.html?word=speechSynthesis  
