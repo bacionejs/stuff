@@ -1,6 +1,8 @@
 # Thinky
 [Run](https://bacionejs.github.io/stuff/thinky.html)  
-Thinky, a js13kgames 2024 code query tool  
+
+## Purpose  
+Thinky is query tool for analyzing the source code of 188 games in the [js13kgames](https://js13kgames.com) 2024 competition   
 
 ever wonder who uses speechsynth?  
 https://bacionejs.github.io/stuff/thinky.html?word=speechSynthesis  
