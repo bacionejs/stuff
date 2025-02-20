@@ -2,7 +2,7 @@
 [Run](https://bacionejs.github.io/stuff/thinky.html)  
 
 ## Purpose  
-Thinky is query tool for analyzing the source code of 188 games in the [js13kgames](https://js13kgames.com) 2024 competition   
+Thinky is a query tool for analyzing the source code of 188 games in the [js13kgames](https://js13kgames.com) 2024 competition   
 
 ever wonder who uses speechsynth?  
 https://bacionejs.github.io/stuff/thinky.html?word=speechSynthesis  
