@@ -116,7 +116,7 @@ let result="";
 if (!params.hasOwnProperty('game') && !params.hasOwnProperty('word')) { 
 //nothing
 result=`
-Thinky is query tool for analyzing the source code of 188 games in the js13kgames 2024 competition
+Thinky is a query tool for analyzing the source code of 188 games in the js13kgames 2024 competition
 
 ever wonder who uses speechsynth?
 <a href="?word=speechSynthesis">?word=speechSynthesis</a>
