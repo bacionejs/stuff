@@ -1,0 +1,2338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>js13k games</title>
+  <style>
+    body { font-family: sans-serif; line-height: 1.5; padding: 1em; }
+    .owner { margin-bottom: 1em; }
+    .repos a { display: inline-block; margin: 0.2em 0; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div id="output"></div>
+
+<script>
+const data = `
+0ctothorp|Grim Reaper Dies Too|https://js13kgames.com/entries/grim-reaper-dies-too
+0ctothorp|The Last Tower|https://js13kgames.com/2023/games/the-last-tower
+0r0b0r0|Isometric Fish|https://js13kgames.com/entries/isometric-fish-eye-fractal-flight-simulator
+0r0b0r0|Mandala Horse Saga|https://js13kgames.com/entries/mandala-horse-saga
+384cz|Anachronic|https://js13kgames.com/2023/games/anachronic
+384cz|The Cat Jumper|https://js13kgames.com/2023/games/the-cat-jumper
+4lbertoC|Mirror Delivery|https://js13kgames.com/entries/mirror-delivery
+4onen|Peaceful Forest Walk|https://js13kgames.com/entries/peaceful-forest-walk
+4onen|The City Without That Number|https://js13kgames.com/2024/games/the-city-without-that-number
+4padrian|Back...to where we left off|https://js13kgames.com/entries/backto-where-we-left-off
+4padrian|Did you escape?|https://js13kgames.com/entries/did-you-escape
+64Mega|Commander Crash|https://js13kgames.com/entries/commander-crash
+64Mega|Lost In Labyrinth|https://js13kgames.com/entries/lost-in-labyrinth
+64Mega|Xycore|https://js13kgames.com/entries/xycore
+ABCarnage|LostintheWoods|https://js13kgames.com/entries/lostinthewoods
+ABODFTW|Don't Touch Anything!|https://js13kgames.com/entries/dont-touch-anything
+AD-Edge|SubSpace|https://js13kgames.com/entries/subspace-zero
+AD-Edge|The Anti|https://js13kgames.com/2024/games/the-anti-poker-protocol
+Aboisier|Crab Island|https://js13kgames.com/entries/crab-island
+AdrianArroyoCalle|Miss City|https://js13kgames.com/entries/miss-city
+AhmedElyamani|Move my World|https://js13kgames.com/entries/move-my-world
+Alba-22|PopBall|https://js13kgames.com/entries/popball
+AleCamara|404ms|https://js13kgames.com/entries/404ms
+AlessioDeAngelis|Glitch 'n Destroy|https://js13kgames.com/entries/glitch-n-destroy
+AlessioDeAngelis|Reversed Words|https://js13kgames.com/entries/reversed-words
+Alex-dqw|Escape from Hell|https://js13kgames.com/entries/escape-from-hell
+AlexOuyang|Reversal|https://js13kgames.com/entries/reversal
+Allwin12|RushLetters|https://js13kgames.com/entries/rushletters
+Alpine-Games-Dev|One Guard|https://js13kgames.com/2023/games/one-guard
+AmaanC|Space Burn|https://js13kgames.com/entries/space-burn
+AmaanC|Swarm|https://js13kgames.com/entries/swarm
+AmaanC|Turnometry|https://js13kgames.com/entries/turnometry
+AmigoTaco|Radiation|https://js13kgames.com/entries/radiation
+AmigoTaco|The bestial temple|https://js13kgames.com/entries/the-bestial-temple
+Andrek25|V|https://js13kgames.com/entries/v-13k
+AndyJAdams|Hold On|https://js13kgames.com/entries/hold-on
+Aniike-t|13th Century City Builder|https://js13kgames.com/2023/games/13th-century-city-builder
+Aniike-t|Shadow Survivor|https://js13kgames.com/2024/games/shadow-survivor
+Antix-Development|Badluck Butter Chicken Flies The Unfriendly Skies|https://js13kgames.com/2024/games/badluck-butter-chicken-flies-the-unfriendly-skies
+Antix-Development|Badluck Butter Chicken Goes To Outer Space|https://js13kgames.com/2024/games/badluck-butter-chicken-goes-to-outer-space
+Antix-Development|Don't Die To Ghosts|https://js13kgames.com/entries/dont-die-to-ghosts
+Antix-Development|Putt Till You Die|https://js13kgames.com/entries/putt-till-you-die
+Antix-Development|SOS|https://js13kgames.com/entries/sos
+Antix-Development|When Your Neighbors Are Mongols|https://js13kgames.com/2023/games/when-your-neighbors-are-mongols
+AntonyMayer|Lost Compass|https://js13kgames.com/entries/lost-compass
+ApoorvSaxena|firelite|https://js13kgames.com/entries/firelite
+Arian-D|Not online|https://js13kgames.com/entries/not-online
+ArkahnX|Simple Construction|https://js13kgames.com/entries/simple-construction
+ArkahnX|Tanks|https://js13kgames.com/entries/tanks
+ArkahnX|colorSquare|https://js13kgames.com/entries/colorsquare
+ArkahnX|tower|https://js13kgames.com/entries/tower-defense-13
+ArmaanMoh|A Dogs Adventure|https://js13kgames.com/2023/games/a-dogs-adventure
+ArmaanMoh|Age of The Demigods|https://js13kgames.com/2023/games/age-of-the-demigods
+ArmaanMoh|The Magna Carta|https://js13kgames.com/2023/games/the-magna-carta
+Armen138|13 Tanks|https://js13kgames.com/entries/13-tanks
+ArtsicleOfficial|Collision Capacity|https://js13kgames.com/entries/collision-capacity
+AshBardhan|Robo Galactic Shooter|https://js13kgames.com/entries/robo-galactic-shooter
+AshKyd|Polar Defender|https://js13kgames.com/entries/polar-defender
+AshKyd|Road Blocks|https://js13kgames.com/entries/road-blocks
+Ashishtotla|Thief city|https://js13kgames.com/entries/thief-city
+AswinChand97|Keep me red|https://js13kgames.com/entries/keep-me-red
+Auroriax|BackFlipped|https://js13kgames.com/entries/backflipped
+Auroriax|Celestial Lighthouse|https://js13kgames.com/entries/celestial-lighthouse
+Auroriax|Edge Not Found|https://js13kgames.com/entries/edge-not-found
+AviKKi|Connect|https://js13kgames.com/entries/connect
+Ayuu|Forgetful God|https://js13kgames.com/entries/forgetful-god
+Ayuu|Idle Merchant Guild|https://js13kgames.com/2023/games/idle-merchant-guild
+Ayuu|The Lost Panda Miner|https://js13kgames.com/entries/the-lost-panda-miner
+BIHENASO|Friend of the Fallen|https://js13kgames.com/entries/friend-of-the-fallen
+BIHENASO|MVLM|https://js13kgames.com/entries/mvlm
+BenjaminWFox|Beats Not Found|https://js13kgames.com/entries/beats-not-found
+BenjaminWFox|Certified Professional|https://js13kgames.com/entries/certified-professional
+BenjaminWFox|FRONTIERS|https://js13kgames.com/entries/frontiers
+BenjaminWFox|Khan|https://js13kgames.com/2023/games/khan-westward-conquest
+BenjaminWFox|Need Find Tribbles|https://js13kgames.com/entries/need-find-tribbles
+BenjaminWFox|Offline: O.E.C.T|https://js13kgames.com/entries/offline-oect
+BenjaminWFox|ROW|https://js13kgames.com/entries/row
+BenjaminWFox|SECTOR 13|https://js13kgames.com/2024/games/sector-13
+BenjaminWFox|UNSEEN|https://js13kgames.com/entries/unseen
+Bewelge|Space|https://js13kgames.com/entries/space
+Blairh23|Depth Charge|https://js13kgames.com/entries/depth-charge
+Bluzix|Bring Back the Berries|https://js13kgames.com/entries/bring-back-the-berries
+BoldBigflank|Backlit|https://js13kgames.com/entries/backlit-treasure-escape
+BoldBigflank|Close To Me|https://js13kgames.com/entries/close-to-me
+BoldBigflank|Polyhedron Runner|https://js13kgames.com/entries/polyhedron-runner
+BoldBigflank|Sculpting Done Quick|https://js13kgames.com/entries/sculpting-done-quick
+BoldBigflank|The Emerald Serpent|https://js13kgames.com/2024/games/the-emerald-serpent
+BoldBigflank|The Mystery at Glamis Castle|https://js13kgames.com/2023/games/the-mystery-at-glamis-castle
+BoldBigflank|Tut's Tomb|https://js13kgames.com/entries/tuts-tomb
+Bournvita1998|Compete|https://js13kgames.com/entries/compete-for-key
+BrianDGLS|Connection Defender|https://js13kgames.com/entries/connection-defender
+BrianDouglasIE|Genghis Castle Battle|https://js13kgames.com/2023/games/genghis-castle-battle
+BrunoAssuncao|Elemental Memory|https://js13kgames.com/entries/elemental-memory
+ByteDecoder|404 MISSION|https://js13kgames.com/entries/404-mission
+Calada2|Dinoffline|https://js13kgames.com/entries/dinoffline
+Calada2|Space Portal|https://js13kgames.com/entries/space-portal
+Calada2|Tilted|https://js13kgames.com/entries/tilted
+Calada2|WasteWorld|https://js13kgames.com/entries/wasteworld
+Calada2|ZombieBurger|https://js13kgames.com/entries/zombieburger
+Calanthe|Buggy SnAkE|https://js13kgames.com/entries/buggy-snake
+Calanthe|Lost in CYBERSPACE|https://js13kgames.com/entries/lost-in-cyberspace
+Calanthe|Swift|https://js13kgames.com/entries/swift
+Cannnto|-13|https://js13kgames.com/2024/games/13-seconds-to-kill
+Castanix|Lost in the Distance|https://js13kgames.com/entries/lost-in-the-distance
+CharlWeitz|They're Back!|https://js13kgames.com/entries/theyre-back
+Chiko4Samples|Rock Feud|https://js13kgames.com/2023/games/rock-feud
+ChooKing|Zombie Fungus|https://js13kgames.com/entries/zombie-fungus
+ChrisToffee|Silly Goose and Moose|https://js13kgames.com/entries/silly-goose-and-moose
+ChristianJHughes|Offline: A Social Media Experience|https://js13kgames.com/entries/offline-a-social-media-experience
+ChronicallySerious|Over And Ugh|https://js13kgames.com/entries/over-and-ugh
+ClassicalJo|Blinker|https://js13kgames.com/entries/blinker
+Clocks-in-a-Cooler|Delete!|https://js13kgames.com/entries/delete
+Clocks-in-a-Cooler|The Weaving Rocket|https://js13kgames.com/entries/the-weaving-rocket
+ClockworkChilli|R3V3RS3 IT|https://js13kgames.com/entries/r3v3rs3-it
+CodeChomper|Block Hammer|https://js13kgames.com/entries/block-hammer
+CoderPrans|Space Shooter|https://js13kgames.com/entries/space-shooter
+Computer-CGuy|Jouer|https://js13kgames.com/entries/jouer
+Computer-CGuy|Manquant|https://js13kgames.com/entries/manquant
+Computer-CGuy|Recular|https://js13kgames.com/entries/recular
+Computer-CGuy|Reptour|https://js13kgames.com/entries/reptour
+Costava|Broken Bounty|https://js13kgames.com/entries/broken-bounty
+Costava|Parity Ship|https://js13kgames.com/entries/parity-ship
+Costava|Red Billion|https://js13kgames.com/entries/red-billion
+Craiky|Browser 404|https://js13kgames.com/entries/browser-404
+Craiky|Castaway|https://js13kgames.com/entries/castaway
+Craiky|Keep Your Space!|https://js13kgames.com/entries/keep-your-space
+Craiky|Labyrinth of Death|https://js13kgames.com/entries/labyrinth-of-death
+Craiky|The_Coder's Game|https://js13kgames.com/entries/thecoders-game
+CrociDB|Anthority|https://js13kgames.com/entries/anthority
+CrociDB|Phosphorus Dating|https://js13kgames.com/entries/phosphorus-dating
+CrociDB|Spacebar Clicker|https://js13kgames.com/entries/spacebar-clicker
+CutFuyi|Idle Necromancer|https://js13kgames.com/entries/idle-necromancer
+CutFuyi|Sniff your Game|https://js13kgames.com/entries/sniff-your-game
+CutFuyi|Space Race|https://js13kgames.com/entries/space-race
+Cutch|Lost In Space. Endless Destruction.|https://js13kgames.com/entries/lost-in-space-endless-destruction
+Dachande663|Lost Time|https://js13kgames.com/entries/lost-time
+Danie12345|Gone One Hour|https://js13kgames.com/entries/gone-one-hour
+DanielaBraniste|Cat Out!|https://js13kgames.com/entries/cat-out
+DarknessFX|FX404Seconds|https://js13kgames.com/entries/fx404seconds
+DerBenniBanni|Aargh! Triskaideka attacks!|https://js13kgames.com/2024/games/aargh-triskaideka-attacks
+DerBenniBanni|Death's Apprentice|https://js13kgames.com/entries/deaths-apprentice
+DerBenniBanni|SPACETAXI|https://js13kgames.com/entries/spacetaxi
+DerBenniBanni|WitchCup1276|https://js13kgames.com/2023/games/witchcup1276
+DerpSpaceIndustries|DerpSpaceNine|https://js13kgames.com/entries/derpspacenine
+DianaMMartins|Saeculum XIII agricultura|https://js13kgames.com/2023/games/saeculum-xiii-agricultura
+DigitalEmpathyGames|Debo estar en moda|https://js13kgames.com/entries/debo-estar-en-moda
+DiogoCostaCunha|Forgotten Island|https://js13kgames.com/entries/forgotten-island
+DiponGhosh|Reunion|https://js13kgames.com/entries/reunion
+DivineOmega|Drawbacks|https://js13kgames.com/entries/drawbacks
+DoheeKang|The Colorful Journey|https://js13kgames.com/entries/the-colorful-journey
+Donitzo|Envisionator|https://js13kgames.com/entries/envisionator
+Donitzo|Retrohaunt|https://js13kgames.com/entries/retrohaunt
+EdLynch|Back to the 80s|https://js13kgames.com/entries/back-to-the-80s
+EdLynch|Space In Space|https://js13kgames.com/entries/space-in-space
+EduardoLopes|Elemental Block Shooters|https://js13kgames.com/entries/elemental-block-shooters
+EduardoLopes|Tiny Stealth|https://js13kgames.com/entries/tiny-stealth
+ElGregos|Instructions lost|https://js13kgames.com/entries/instructions-lost
+ElementalSystems|A Space in the Sun|https://js13kgames.com/entries/a-space-in-the-sun
+ElementalSystems|Complicit|https://js13kgames.com/entries/complicit
+ElementalSystems|ICE|https://js13kgames.com/entries/ice-x
+ElementalSystems|Magik|https://js13kgames.com/entries/magik-404
+ElementalSystems|Slowed Dao Run|https://js13kgames.com/2023/games/slowed-dao-run
+ElementalSystems|Sopwith Back|https://js13kgames.com/entries/sopwith-back
+ElementalSystems|Strata|https://js13kgames.com/entries/strata
+ElementalSystems|The Devil's Fourplay|https://js13kgames.com/entries/the-devils-fourplay
+ElementalSystems|The Lost Packets|https://js13kgames.com/entries/the-lost-packets
+ElementalSystems|cargo|https://js13kgames.com/entries/cargo-72
+EliasMachuanin|Brick Fall|https://js13kgames.com/entries/brick-fall
+EneaEntertainment|Salvation Of Fallen Angel|https://js13kgames.com/entries/salvation-of-fallen-angel
+ErickPetru|Jewelsback|https://js13kgames.com/entries/jewelsback
+ErikSom|Push Back|https://js13kgames.com/entries/push-back
+Eruant|Treasure Hunt|https://js13kgames.com/entries/treasure-hunt
+Eruant|Wisp|https://js13kgames.com/entries/wisp
+EvanHahn|Origin|https://js13kgames.com/entries/origin
+EyeOfMidas|Merchant of Death|https://js13kgames.com/entries/merchant-of-death
+EyeOfMidas|P4ck3t|https://js13kgames.com/entries/p4ck3t
+FR0ST1N|Pew Pew|https://js13kgames.com/entries/pew-pew
+Feenposhleen|Rise!|https://js13kgames.com/entries/rise
+Feenposhleen|SUB13|https://js13kgames.com/2024/games/sub13
+Feenposhleen|Sails!|https://js13kgames.com/2023/games/sails
+Figur8|spaceWord|https://js13kgames.com/entries/spaceword
+Finnegan2100|ALIEN DISPOSAL CREW|https://js13kgames.com/entries/alien-disposal-crew
+Firenibbler|Anti Virus|https://js13kgames.com/entries/anti-virus
+Firenibbler|Mission 13|https://js13kgames.com/entries/mission-13-lost-in-space
+FiveEsses|Feb 13th: Death's Day Off|https://js13kgames.com/entries/feb-13th-deaths-day-off
+Floriaen|Digger|https://js13kgames.com/entries/digger
+Floriaen|Genesis|https://js13kgames.com/entries/genesis
+FoggyMist|Join the cubes|https://js13kgames.com/entries/join-the-cubes
+FrederikP|Tanky McTankface|https://js13kgames.com/entries/tanky-mctankface
+GianlucaGuarini|The Fly|https://js13kgames.com/entries/the-fly
+Gimond|Just go straight|https://js13kgames.com/entries/just-go-straight
+Github2diogo|404 BC Pinball|https://js13kgames.com/entries/404-bc-pinball
+Github2diogo|Space Cowboy|https://js13kgames.com/entries/space-cowboy
+Github2diogo|Tales of Cerberus|https://js13kgames.com/entries/tales-of-cerberus
+Github2diogo|Try to be Not Found|https://js13kgames.com/entries/try-to-be-not-found
+Github2diogo|deadly jumps & slides on the run|https://js13kgames.com/entries/deadly-jumps-slides-on-the-run
+Github2diogo|hit SPACE to BEGIN|https://js13kgames.com/entries/hit-space-to-begin
+GnsP|404 : Road Not Found|https://js13kgames.com/entries/404-road-not-found
+GregPeck|1024 Moves|https://js13kgames.com/entries/1024-moves
+GregPeck|404th floor|https://js13kgames.com/entries/404th-floor
+GregPeck|Castle Attack|https://js13kgames.com/2023/games/castle-attack
+GregPeck|GL|https://js13kgames.com/entries/gl-escape
+GregPeck|Immunity collapse|https://js13kgames.com/entries/immunity-collapse
+GregPeck|JSRacer|https://js13kgames.com/entries/jsracer
+GregPeck|Popnoid|https://js13kgames.com/entries/popnoid
+GregPeck|Space Tribute|https://js13kgames.com/entries/space-tribute
+GregPeck|Tenacity|https://js13kgames.com/entries/tenacity
+GregorySDTaylor|Starship Toggle|https://js13kgames.com/entries/starship-toggle
+GrizzlyNacho|Space Sredavni|https://js13kgames.com/entries/space-sredavni
+Hambo3|Death or Gloria|https://js13kgames.com/entries/death-or-gloria
+Hambo3|Get the Flock Outta Here|https://js13kgames.com/2024/games/get-the-flock-outta-here
+Hambo3|Go Forth and Conquer|https://js13kgames.com/2023/games/go-forth-and-conquer
+Hambo3|Invasion from Jupiter in Space|https://js13kgames.com/entries/invasion-from-jupiter-in-space
+Hambo3|Kitaku|https://js13kgames.com/entries/kitaku
+Hambo3|Puppy|https://js13kgames.com/entries/puppy
+Hambo3|Watashi no shashin|https://js13kgames.com/entries/watashi-no-shashin
+Harmades|Playback|https://js13kgames.com/entries/playback
+HattoriHanzuo|Lost in Paradise|https://js13kgames.com/entries/lost-in-paradise
+Havolt|Offline Hacker|https://js13kgames.com/entries/offline-hacker
+Hermanya|Drake's quest 🏃|https://js13kgames.com/entries/drakes-quest
+Hoffs|Lost in Eternity|https://js13kgames.com/entries/lost-in-eternity
+Hogia|13 Seconds To Midnight|https://js13kgames.com/2024/games/13-seconds-to-midnight
+HomerDilpleu|Cathedral builder|https://js13kgames.com/2023/games/cathedral-builder
+HomerDilpleu|Unloved 13|https://js13kgames.com/2024/games/unloved-13
+Hope41|44 Save All|https://js13kgames.com/entries/44-save-all
+Hude06|The Last Bullet|https://js13kgames.com/2024/games/the-last-bullet
+Hundao|Traversor|https://js13kgames.com/entries/traversor
+HyphnKnight|Alter|https://js13kgames.com/entries/alter
+IMakeGames|B1ack0ut|https://js13kgames.com/entries/b1ack0ut
+IMakeGames|the internet is broken (again)|https://js13kgames.com/entries/the-internet-is-broken-again
+Iftahh|Men In Maze|https://js13kgames.com/entries/men-in-maze
+Iftahh|Space Invaders|https://js13kgames.com/entries/space-invaders-reimagined
+Iftahh|The Unlucky King|https://js13kgames.com/entries/the-unlucky-king
+IgorFIE|13s Tactics|https://js13kgames.com/2024/games/13s-tactics
+IgorFIE|Get Out Of My Personal Space|https://js13kgames.com/entries/get-out-of-my-personal-space
+IgorFIE|The Knighting of Sr Isaac|https://js13kgames.com/2023/games/the-knighting-of-sr-isaac
+IgorFIE|The Raising Fighting Spirits|https://js13kgames.com/entries/the-raising-fighting-spirits
+IlhamArif|Lost In Memory|https://js13kgames.com/entries/lost-in-memory
+Indakwa|DEATH CAVES|https://js13kgames.com/entries/death-caves
+InsOpDe|Save the Matrix|https://js13kgames.com/entries/save-the-matrix
+IroncladDev|Salvadoran Reclamation: MS|https://js13kgames.com/2024/games/salvadoran-reclamation-ms-13
+ItachiHyuga|The Backlash|https://js13kgames.com/entries/the-backlash
+ItachiHyuga|The Black Hole|https://js13kgames.com/entries/the-black-hole
+IvanFon|Internet Quest|https://js13kgames.com/entries/internet-quest
+IvanovCosmin|Incurable|https://js13kgames.com/entries/incurable
+JMankopf|Re|https://js13kgames.com/entries/re-wire
+JackOatley|Exo|https://js13kgames.com/entries/exo
+JackOatley|Round Robin|https://js13kgames.com/entries/round-robin
+JakeTurner616|Z0MB13|https://js13kgames.com/2024/games/z0mb13
+Jakub-T-Nowak|ROR|https://js13kgames.com/entries/ror
+JimmyLERAY|Hyper Audio Maze|https://js13kgames.com/entries/hyper-audio-maze
+JoaoBPereira|Lost in the Maze|https://js13kgames.com/entries/lost-in-the-maze
+JordiRos|VR is back|https://js13kgames.com/entries/vr-is-back
+Jorengarenar|Back Scratching Salon|https://js13kgames.com/entries/back-scratching-salon
+Jorger|13 Hours|https://js13kgames.com/2024/games/13-hours
+Jorger|13 Order|https://js13kgames.com/2024/games/13-order
+Jorger|Archery Master|https://js13kgames.com/2023/games/archery-master
+Jorger|Back to the Battle Ship|https://js13kgames.com/entries/back-to-the-battle-ship
+Jorger|Death March|https://js13kgames.com/entries/death-march
+Jorger|Pipes Rush|https://js13kgames.com/entries/pipes-rush
+Jorger|Space War|https://js13kgames.com/entries/space-war
+Jorger|Space4|https://js13kgames.com/entries/space4
+Jorger|The last Link|https://js13kgames.com/entries/the-last-link
+JoseHerminioCollas|Ameb|https://js13kgames.com/entries/ameb
+Juankz|Ned Snow|https://js13kgames.com/entries/ned-snow
+Juankz|The Line|https://js13kgames.com/entries/the-line
+JulianRaso|BlockRun|https://js13kgames.com/entries/blockrun
+Julio-Soto|-4º Offline|https://js13kgames.com/entries/4o-offline
+Julio-Soto|LOSTindeed|https://js13kgames.com/entries/lostindeed
+K3PAA|FREEZOBIA|https://js13kgames.com/2024/games/freezobia
+KFBgames|Cool dolphin|https://js13kgames.com/2024/games/cool-dolphin
+Kaisei-Fukaya|Balance|https://js13kgames.com/entries/balance
+KamilZu|Deadly Fire|https://js13kgames.com/entries/deadly-fire
+KamilZu|Dynasty|https://js13kgames.com/2023/games/dynasty
+KamilZu|The Curse of 13 Cats|https://js13kgames.com/2024/games/the-curse-of-13-cats
+Kamilczak020|Misconnected|https://js13kgames.com/entries/misconnected
+KeepMusplay|Deadly Taxi|https://js13kgames.com/entries/deadly-taxi-the-road-of-death
+KeepMusplay|Escape from death|https://js13kgames.com/entries/escape-from-death
+KeepMusplay|Exploring Egyptian Tombs|https://js13kgames.com/entries/exploring-egyptian-tombs
+Kehos|Satellite Situation|https://js13kgames.com/entries/satellite-situation
+KeithKarnage|Beat Bricks|https://js13kgames.com/entries/beat-bricks
+KeithKarnage|Hex Crusaders|https://js13kgames.com/2023/games/hex-crusaders
+KeithKarnage|HoloSim|https://js13kgames.com/entries/holosim
+KeithKarnage|League of Heroes|https://js13kgames.com/entries/league-of-heroes
+KeithKarnage|Lost Luna|https://js13kgames.com/entries/lost-luna
+KeithKarnage|Space Force|https://js13kgames.com/entries/space-force
+KeithKarnage|Wizard Tower|https://js13kgames.com/entries/wizard-tower
+Kendrickkwok316|Death RIPper|https://js13kgames.com/entries/death-ripper
+Kendrickkwok316|MongoRun|https://js13kgames.com/2023/games/mongorun
+Kenoshen|Capture The Flag|https://js13kgames.com/entries/capture-the-flag
+KevinEtchells|Get Back From Robot City|https://js13kgames.com/entries/get-back-from-robot-city
+KevinEtchells|Off The Lines|https://js13kgames.com/entries/off-the-lines
+KevinEtchells|You Are Offline|https://js13kgames.com/entries/you-are-offline
+KevinVDVelden|Visible & Co.|https://js13kgames.com/entries/visible-co
+KilledByAPixel|Bounce Back|https://js13kgames.com/entries/bounce-back
+KilledByAPixel|DR1V3N WILD|https://js13kgames.com/2024/games/dr1v3n-wild
+KilledByAPixel|Egg Time Rewind|https://js13kgames.com/entries/egg-time-rewind
+KilledByAPixel|NoteCraft|https://js13kgames.com/entries/notecraft
+KilledByAPixel|OS13k|https://js13kgames.com/entries/os13k
+KilledByAPixel|Space Huggers|https://js13kgames.com/entries/space-huggers
+Kimbatt|Defense of the 13th City|https://js13kgames.com/2023/games/defense-of-the-13th-city
+Kimbatt|Hit the space!|https://js13kgames.com/entries/hit-the-space
+Kimbatt|The Deadly Obstacle Course|https://js13kgames.com/entries/the-deadly-obstacle-course
+Koltzow|Riding Hoods|https://js13kgames.com/entries/riding-hoods
+KonradLinkowski|FileNotFound|https://js13kgames.com/entries/filenotfound
+KonradLinkowski|Saptcha|https://js13kgames.com/entries/saptcha
+KonradLinkowski|Space Invaders|https://js13kgames.com/entries/space-invaders
+Krol22|IT|https://js13kgames.com/entries/it-man
+Krol22|Overforged|https://js13kgames.com/2023/games/overforged
+KuberKode|Alien Spaceship|https://js13kgames.com/entries/alien-spaceship
+KucingKode|Laundry In Debt|https://js13kgames.com/2024/games/laundry-in-debt
+Kunalgarg2100|Lost Path|https://js13kgames.com/entries/lost-path
+Lafinboy|Simons 13|https://js13kgames.com/entries/simons-13
+LakshmanKishore|Alquerque|https://js13kgames.com/2023/games/alquerque
+LakshmanKishore|Facing 13|https://js13kgames.com/2024/games/facing-13
+LakshmanKishore|Space Game|https://js13kgames.com/entries/space-game
+Led10-Deda|Feed With Words|https://js13kgames.com/entries/feed-with-words
+LegitCodeRed|The Red Square Hates To Be Online|https://js13kgames.com/entries/the-red-square-hates-to-be-online
+LeinRa96|Asteroidodge|https://js13kgames.com/entries/asteroidodge
+LocalGhostMedia|The Almighty Evil|https://js13kgames.com/entries/the-almighty-evil
+LoganPB|13th Restaurant Rush|https://js13kgames.com/2024/games/13th-restaurant-rush
+Low-Fat-Lard|404 soccer|https://js13kgames.com/entries/404-soccer
+Low-Fat-Lard|Alien|https://js13kgames.com/entries/alien-scroll
+Low-Fat-Lard|Star Jaws|https://js13kgames.com/entries/star-jaws
+Low-Fat-Lard|Tetris 404|https://js13kgames.com/entries/tetris-404
+LudensCogitet|Super Polo Bros.|https://js13kgames.com/2023/games/super-polo-bros
+LudmilaBash|Chains|https://js13kgames.com/entries/chains
+LukeKB|Wolly is where?|https://js13kgames.com/entries/wolly-is-where
+Lukenickerson|404 Orbiting Asteroids|https://js13kgames.com/entries/404-orbiting-asteroids
+Lukenickerson|Apollo|https://js13kgames.com/2024/games/apollo-13kb
+Lukenickerson|Bit Butcher|https://js13kgames.com/entries/bit-butcher
+Lukenickerson|Master of 13k Suns|https://js13kgames.com/entries/master-of-13k-suns
+Lukenickerson|Return to the Moon|https://js13kgames.com/entries/return-to-the-moon
+Lukenickerson|Shikken|https://js13kgames.com/2023/games/shikken
+Lukenickerson|Star Hopper: Glitch Jump|https://js13kgames.com/entries/star-hopper-glitch-jump
+Lukenickerson|Star|https://js13kgames.com/entries/star-crasher
+Lukenickerson|Ælbahkat: The Lost Islands|https://js13kgames.com/entries/aelbahkat-the-lost-islands
+M-Sadeea|Go Back|https://js13kgames.com/entries/go-back
+MCWillington|PixelShips|https://js13kgames.com/entries/pixelships
+Maartenf|DISCONN3!CTED|https://js13kgames.com/entries/disconn3cted
+MadhuriQA|Randomly Lost|https://js13kgames.com/entries/randomly-lost
+Madisonw|Are You Lost?|https://js13kgames.com/entries/are-you-lost
+Magic-Mayo|404 Exit Not Found|https://js13kgames.com/entries/404-exit-not-found
+MagnusLindh|Gothic Tower|https://js13kgames.com/2023/games/gothic-tower
+MakeshiftMitten|Bombs Away|https://js13kgames.com/entries/bombs-away
+MakeshiftMitten|Lost Carrots|https://js13kgames.com/entries/lost-carrots
+MakeshiftMitten|PatchNotes|https://js13kgames.com/entries/patchnotes
+MakeshiftMitten|Radial|https://js13kgames.com/entries/radial
+ManoDestra|Rogue|https://js13kgames.com/entries/rogue-19
+MarekLabuz|Time Runner|https://js13kgames.com/entries/time-runner
+MarekLabuz|You were disconnected|https://js13kgames.com/entries/you-were-disconnected
+MarkRhodes|Disconnect Maze|https://js13kgames.com/entries/disconnect-maze
+MartinTale|Deadly Affection|https://js13kgames.com/entries/deadly-affection
+MartinTale|Gibbonacci|https://js13kgames.com/2023/games/gibbonacci
+MartinTale|Go Away|https://js13kgames.com/entries/go-away
+MartinTale|Not 13|https://js13kgames.com/2024/games/not-13
+MartinTale|Soul Not Found|https://js13kgames.com/entries/soul-not-found
+MattiaFortunati|A Day In The Life|https://js13kgames.com/entries/a-day-in-the-life
+MattiaFortunati|GLITCHICKEN|https://js13kgames.com/entries/glitchicken
+MattiaFortunati|PACKABUNCHAS|https://js13kgames.com/entries/packabunchas
+MattiaFortunati|Reverse Ground Battle|https://js13kgames.com/entries/reverse-ground-battle
+McFunkypants|Tangletruck|https://js13kgames.com/entries/tangletruck
+McFunkypants|Tradewarp|https://js13kgames.com/entries/tradewarp
+Mehran-Shakerinava|Glitcher|https://js13kgames.com/entries/glitcher
+Mezriss|13th Gate|https://js13kgames.com/2024/games/13th-gate
+Michael-wm|Game of Backstabbers|https://js13kgames.com/entries/game-of-backstabbers
+Michael-wm|ISP|https://js13kgames.com/entries/isp
+MichelLimaDesigner|13 Cards Dungeon|https://js13kgames.com/2024/games/13-cards-dungeon
+Mik39sch|404!! Lost treasure|https://js13kgames.com/entries/404-lost-treasure
+Mik39sch|Lost Treasure Death with Zombies|https://js13kgames.com/entries/lost-treasure-death-with-zombies
+Mik39sch|Run away from pied piper of Hamelin|https://js13kgames.com/2023/games/run-away-from-pied-piper-of-hamelin
+Mik39sch|Spaces in space|https://js13kgames.com/entries/spaces-in-space
+MilanDonhowe|Backstabbers|https://js13kgames.com/entries/backstabbers
+MinhPhu0304|Space Exploration|https://js13kgames.com/entries/space-exploration
+Mklmndl|Elementalist|https://js13kgames.com/entries/elementalist
+Mobilpadde|9 Colored Game|https://js13kgames.com/entries/9-colored-game
+Moon-Scarlet|playing only "space" key|https://js13kgames.com/entries/playing-only-space-key
+MorenoIgor|BOXBOXBOXBOXBOX|https://js13kgames.com/entries/boxboxboxboxbox
+Moshk94|Gears Not Found|https://js13kgames.com/entries/gears-not-found
+Moshk94|High Treason|https://js13kgames.com/entries/high-treason
+Moshk94|Prime Guy|https://js13kgames.com/2024/games/prime-guy
+MrDobi|Blissful Llama Arena|https://js13kgames.com/entries/blissful-llama-arena
+MrDobi|Elements Crusader|https://js13kgames.com/entries/elements-crusader
+MrDobi|Fear of Alones|https://js13kgames.com/entries/fear-of-alones
+MrDobi|the Circle Masters|https://js13kgames.com/entries/the-circle-masters
+Muciojad|Sabotage|https://js13kgames.com/entries/sabotage
+Mycra|Online|https://js13kgames.com/entries/online
+N8python|Mars Defence|https://js13kgames.com/entries/mars-defence
+NAndrej|Backo|https://js13kgames.com/entries/backo
+Nalinc|Cosmic Shooters|https://js13kgames.com/entries/cosmic-shooters
+Navin77|BackupBot|https://js13kgames.com/entries/backupbot
+Nichtgian|NichtOffline|https://js13kgames.com/entries/nichtoffline
+Nick-StormID|Snakes and Ladders|https://js13kgames.com/2023/games/snakes-and-ladders
+NickBranstein|Nomis 2|https://js13kgames.com/entries/nomis-2
+NickBranstein|Nomis|https://js13kgames.com/entries/nomis
+NicolaPasquali|Programmer Quest|https://js13kgames.com/entries/programmer-quest
+NicolaPasquali|Reverse Simon|https://js13kgames.com/entries/reverse-simon
+Nienormalny|Labyrinth Vr Experience|https://js13kgames.com/entries/labyrinth-vr-experience
+Nightscratch|Guardian Village|https://js13kgames.com/2023/games/guardian-village
+NikLever|Sir Coadalot and the Holy Grail|https://js13kgames.com/2023/games/sir-coadalot-and-the-holy-grail
+NikLever|Steamshot 13|https://js13kgames.com/2024/games/steamshot-13
+NoNiMad|13 Bubbles|https://js13kgames.com/2024/games/13-bubbles
+NoNiMad|LabyIO|https://js13kgames.com/entries/labyio
+Nomeh-Uchenna-Gabriel|The OFFLINE Cryptomilitant|https://js13kgames.com/entries/the-offline-cryptomilitant
+Omega404|404! MissingPage|https://js13kgames.com/entries/404-missingpage
+Ovilia|Every Alien Loves 404|https://js13kgames.com/entries/every-alien-loves-404
+Ovilia|SNAKE IT BACK|https://js13kgames.com/entries/snake-it-back
+Pabloitto|Cachoras Revenge|https://js13kgames.com/entries/cachoras-revenge
+Pabloitto|Surviving the elements|https://js13kgames.com/entries/surviving-the-elements
+Patrick64|Captain Nicebeard, The Reverse Pirate|https://js13kgames.com/entries/captain-nicebeard-the-reverse-pirate
+Patrick64|Tumble Fish|https://js13kgames.com/entries/tumble-fish
+Patton97|Dengar|https://js13kgames.com/entries/dengar
+Petah|Backionary|https://js13kgames.com/entries/backionary
+Petah|Spacetime|https://js13kgames.com/entries/spacetime
+Pink-Flag|River of Woe|https://js13kgames.com/entries/river-of-woe
+PixelJerry|Dreaming of Fire|https://js13kgames.com/entries/dreaming-of-fire
+PixelJerry|Invertagon|https://js13kgames.com/entries/invertagon
+PixelJerry|Nexus overload|https://js13kgames.com/entries/nexus-overload
+Platane|Delph|https://js13kgames.com/entries/delph
+Platane|Flour Oh! Flour|https://js13kgames.com/entries/flour-oh-flour
+Platane|Jurassic Nursery|https://js13kgames.com/2023/games/jurassic-nursery
+Platane|Skull Ocean|https://js13kgames.com/entries/skull-ocean
+Platane|Sushi Kitchen|https://js13kgames.com/entries/sushi-kitchen
+Platane|Vernissage|https://js13kgames.com/entries/vernissage
+Platane|alchemist defence|https://js13kgames.com/entries/alchemist-defence
+Platane|midnight pizza temptation|https://js13kgames.com/entries/midnight-pizza-temptation
+PrizeBots|Fresh Fruit Feeder|https://js13kgames.com/2024/games/fresh-fruit-feeder
+Quinten|Black Hole Square|https://js13kgames.com/entries/black-hole-square
+Quinten|The Tridecomino Coral Reef|https://js13kgames.com/2024/games/the-tridecomino-coral-reef
+ROODAY|The Earth Invader|https://js13kgames.com/entries/the-earth-invader
+RabdeepKaur|Treasure|https://js13kgames.com/2024/games/treasure-thirteen
+RafaelLammel|Watch Your Back!|https://js13kgames.com/entries/watch-your-back
+RafalKornel|XIII Feet Underground|https://js13kgames.com/2023/games/xiii-feet-underground
+RagingPix3l|spaceshmup|https://js13kgames.com/entries/spaceshmup
+Ralt|Snake|https://js13kgames.com/entries/snake
+Rayne|LOST ROBOT|https://js13kgames.com/entries/lost-robot
+ReikVal|Hsur|https://js13kgames.com/entries/hsur
+Remgrandt|Super++ Section|https://js13kgames.com/entries/super-section
+RicoP|CUBES|https://js13kgames.com/entries/cubes
+Riturajcse|The Lost Elephant|https://js13kgames.com/entries/the-lost-elephant
+Riturajcse|The colourful board|https://js13kgames.com/entries/the-colourful-board
+RobeeeJay|Forest Racer|https://js13kgames.com/entries/forest-racer
+RomanMiniv|Crusaders and their Journeys|https://js13kgames.com/2023/games/crusaders-and-their-journeys
+RomanMiniv|How it started|https://js13kgames.com/2024/games/how-it-started
+RoriRodler|Invitation|https://js13kgames.com/entries/invitation
+Rybar|Flippy|https://js13kgames.com/entries/flippy
+Rybar|Greeble|https://js13kgames.com/entries/greeble
+Rybar|Six And Seven|https://js13kgames.com/2024/games/six-and-seven
+Rybar|Space Garden|https://js13kgames.com/entries/space-garden
+Rybar|Super Glitch Box|https://js13kgames.com/entries/super-glitch-box
+Rybar|The Chroma Incident|https://js13kgames.com/entries/the-chroma-incident
+Ryuno-Ki|An Offline Life|https://js13kgames.com/entries/an-offline-life
+Ryuno-Ki|Breaker|https://js13kgames.com/entries/breaker-panel
+Ryuno-Ki|Lido Space|https://js13kgames.com/entries/lido-space
+Ryuno-Ki|Life Death Tower Defense|https://js13kgames.com/entries/life-death-tower-defense
+Ryuno-Ki|Polygone|https://js13kgames.com/entries/polygone-trust-not-found
+Ryuno-Ki|Retro Castlevania Colloseum|https://js13kgames.com/entries/retro-castlevania-colloseum
+Ryuno-Ki|The Baltic League|https://js13kgames.com/2023/games/the-baltic-league
+Ryuno-Ki|Unnamed|https://js13kgames.com/2024/games/unnamed
+Ryusi-in|Going Home|https://js13kgames.com/entries/going-home
+SHIVA-sopho|Color Switch|https://js13kgames.com/entries/color-switch
+Sabihashaik|Mittens!|https://js13kgames.com/entries/mittens
+SalvatorePreviti|Dante|https://js13kgames.com/entries/dante
+SamirHodzic|It's Merlin|https://js13kgames.com/2023/games/its-merlin
+SamirHodzic|Lost Treasure|https://js13kgames.com/entries/lost-treasure
+SamirHodzic|Quest of Tod|https://js13kgames.com/entries/quest-of-tod
+SamirHodzic|Way Out|https://js13kgames.com/entries/way-out
+SamuelVanEgmond|Medieval Matchup|https://js13kgames.com/2023/games/medieval-matchup
+SamuelVanEgmond|The King's Crowns|https://js13kgames.com/2024/games/the-kings-crowns
+Sanzak|Lost In Time|https://js13kgames.com/entries/lost-in-time
+Saturnyn|Angry Boars|https://js13kgames.com/entries/angry-boars
+Saturnyn|ChessPursuit|https://js13kgames.com/entries/chesspursuit
+Saturnyn|Peanball|https://js13kgames.com/entries/peanball
+Satyam1203|Village Not Found|https://js13kgames.com/entries/village-not-found-404-to-200
+Schnark|Elementary Challenges|https://js13kgames.com/entries/elementary-challenges
+Schnark|I’ve lost my parents!|https://js13kgames.com/entries/ive-lost-my-parents
+Schnark|Lord Balsekil's Lairs of Bad Luck|https://js13kgames.com/2024/games/lord-balsekils-lairs-of-bad-luck
+Schnark|Robot Coder|https://js13kgames.com/entries/robot-coder
+Schnark|Sir Bruno’s Minnelied|https://js13kgames.com/2023/games/sir-brunos-minnelied
+Schnark|Space Exploration (2021)|https://js13kgames.com/entries/space-exploration-2021
+Schnark|The Martians are Back!|https://js13kgames.com/entries/the-martians-are-back
+Schnark|Yellow and Blue|https://js13kgames.com/entries/yellow-and-blue
+SebastianNette|Anti Gravity Kittens|https://js13kgames.com/entries/anti-gravity-kittens
+SebastianNette|Chibi Battlemonsters|https://js13kgames.com/entries/chibi-battlemonsters
+SebastianNette|Super Cute Bubble Pets from Hell|https://js13kgames.com/entries/super-cute-bubble-pets-from-hell
+SebastianNette|Texas Hold'em|https://js13kgames.com/entries/texas-holdem
+SergiCL|Lines Off|https://js13kgames.com/entries/lines-off
+ShinyStar|Lost|https://js13kgames.com/entries/lost
+ShinyStar|p̯͟a̼̫c̯͝m̭͇a̷͈n̦̕|https://js13kgames.com/entries/pacman
+Shipra9779|THE DATA BACKUP|https://js13kgames.com/entries/the-data-backup
+Shrumpf|SRTFYL|https://js13kgames.com/entries/srtfyl-shoot-rectangles-to-find-your-loot
+Shubham7997|Avoid Being Hit|https://js13kgames.com/entries/avoid-being-hit
+Shubham7997|Back To Source|https://js13kgames.com/entries/back-to-source
+Shubham7997|HTTP|https://js13kgames.com/entries/http-hero
+Shubidumdu|Astroach|https://js13kgames.com/entries/astroach
+Shubidumdu|Finn: the Little Collector|https://js13kgames.com/entries/finn-the-little-collector
+Siorki|2048 / 13|https://js13kgames.com/2024/games/2048-13
+Siorki|Alive'n'Loaded|https://js13kgames.com/entries/alivenloaded
+Siorki|Ballarena 2013k|https://js13kgames.com/entries/ballarena-2013k
+Siorki|Diamond Run|https://js13kgames.com/entries/diamond-run
+Siorki|Escape|https://js13kgames.com/entries/escape
+Siorki|Infiltration|https://js13kgames.com/entries/infiltration
+Siorki|Line of Fire|https://js13kgames.com/entries/line-of-fire
+Siorki|Pest Control : Weasels|https://js13kgames.com/entries/pest-control-weasels
+Siorki|Staccato|https://js13kgames.com/entries/staccato
+Slayug|Boball|https://js13kgames.com/entries/boball
+Slynchy|::FRIENDS NOT FOUND::|https://js13kgames.com/entries/friends-not-found
+SmithDev1237|Reverse G Block|https://js13kgames.com/entries/reverse-g-block
+SobyDamn|!Found|https://js13kgames.com/entries/found
+Solinca|Mug|https://js13kgames.com/entries/mug-gniwech
+SomeKittens|SPACESHIPS!|https://js13kgames.com/entries/spaceships
+SonnyQin|Flee|https://js13kgames.com/2024/games/flee
+SonnyQin|REVENGE|https://js13kgames.com/2023/games/revenge
+SouthpawGoblin|Bio|https://js13kgames.com/entries/bio-server
+SouthpawGoblin|Dawn Breaker|https://js13kgames.com/entries/dawn-breaker
+SouthpawGoblin|Hunt&Harvest|https://js13kgames.com/entries/huntharvest
+SoylentGraham|Grave Quest|https://js13kgames.com/entries/grave-quest
+Speedy6451|Simple Sailing Simulator|https://js13kgames.com/2023/games/simple-sailing-simulator
+StefanBlamberg|Glitchy Control|https://js13kgames.com/entries/glitchy-control
+StefanBlamberg|Little Tank War|https://js13kgames.com/entries/little-tank-war
+StefanBlamberg|circle of elements|https://js13kgames.com/entries/circle-of-elements
+Stiggstogg|Cathedral Master Builder|https://js13kgames.com/2023/games/cathedral-master-builder
+StinkyPig|The Wrong Universe|https://js13kgames.com/entries/the-wrong-universe
+SubZtep|Flow of Four|https://js13kgames.com/entries/flow-of-four
+SubZtep|Whirled on the Spirit Spiral|https://js13kgames.com/entries/whirled-on-the-spirit-spiral
+Taxcamp|Stay off theline|https://js13kgames.com/entries/stay-off-theline
+TerabyteTiger|Spacebar's Space Bar|https://js13kgames.com/entries/spacebars-space-bar
+TheJosh|I've lost my doge|https://js13kgames.com/entries/ive-lost-my-doge
+TheJosh|Lost Worlds|https://js13kgames.com/entries/lost-worlds
+ThijsDreef|distortion|https://js13kgames.com/entries/distortion
+Thunraz|Aquatic Beast Force|https://js13kgames.com/entries/aquatic-beast-force
+TimChandra|The Great Escape|https://js13kgames.com/entries/the-great-escape
+TimPietrusky|Road: The Game|https://js13kgames.com/entries/road-the-game
+TimPietrusky|asdf|https://js13kgames.com/entries/asdf
+Tismas|Lost Square Adventures|https://js13kgames.com/entries/lost-square-adventures
+Tismas|Network Defender|https://js13kgames.com/entries/network-defender
+Tismas|Path Finder|https://js13kgames.com/entries/path-finder
+Tleffelman7|The Thirteen Storms of Divine Wrath|https://js13kgames.com/2024/games/the-thirteen-storms-of-divine-wrath
+Tote|Maps Off!|https://js13kgames.com/entries/maps-off
+Tote|yourSpace|https://js13kgames.com/entries/yourspace
+Troilk|Candy Wrapper|https://js13kgames.com/entries/candy-wrapper
+TylerMcKenzie|Brave Space|https://js13kgames.com/entries/brave-space
+UDXS|Fortress Fracture.|https://js13kgames.com/entries/fortress-fracture
+UnQualified|The Odul Mages|https://js13kgames.com/entries/the-odul-mages
+Vertfromage|Backside Ball|https://js13kgames.com/entries/backside-ball
+Vertfromage|Burning the plants|https://js13kgames.com/entries/burning-the-plants
+Vertfromage|Jeff's Nightmare|https://js13kgames.com/entries/jeffs-nightmare
+Vertfromage|Journey to the East; Silk Road Adventure|https://js13kgames.com/2023/games/journey-to-the-east-silk-road-adventure
+Vertfromage|Robot Mission 404|https://js13kgames.com/entries/robot-mission-404
+Vertfromage|Space Invasion Simulator|https://js13kgames.com/entries/space-invasion-simulator
+ViLPy|Glitchtris|https://js13kgames.com/entries/glitchtris
+ViLPy|Hades Defence|https://js13kgames.com/entries/hades-defence
+ViLPy|Search of Sounds|https://js13kgames.com/entries/search-of-sounds
+ViROscar|Can't find the page|https://js13kgames.com/entries/cant-find-the-page
+Vintharas|Earth that was|https://js13kgames.com/entries/earth-that-was
+Visrozar|BackStone|https://js13kgames.com/entries/backstone
+Vivekrajput20|Hit the balls|https://js13kgames.com/entries/hit-the-balls
+Vp3n|BlobRising|https://js13kgames.com/entries/blobrising
+WHITE6982|SNAKEE|https://js13kgames.com/2024/games/snakee
+WMAR-9|13% LOW|https://js13kgames.com/2024/games/13-low
+WMAR-9|404 Princess|https://js13kgames.com/entries/404-princess
+WMAR-9|Fall|https://js13kgames.com/entries/fall-down
+WMAR-9|Giant Leap|https://js13kgames.com/entries/giant-leap
+WMAR-9|Knight|https://js13kgames.com/2023/games/knight
+Xanmia|Battleship Earth Simulator|https://js13kgames.com/entries/battleship-earth-simulator
+Xanmia|ReUniVerse|https://js13kgames.com/entries/reuniverse
+Xanmia|Save the Semicolon|https://js13kgames.com/entries/save-the-semicolon
+XavierCooney|METAGRAV|https://js13kgames.com/entries/metagrav
+XerxesNoble|ProjectConnect|https://js13kgames.com/entries/projectconnect
+YahorPadlucki|CD2 Offline|https://js13kgames.com/entries/cd2-offline
+ZeevKatz|Scroll!|https://js13kgames.com/entries/scroll
+Zerneax|Hack Your Neighbours|https://js13kgames.com/entries/hack-yours-neighbours
+ZeyuKeithFu|BACKSIDE|https://js13kgames.com/entries/backside
+ZeyuKeithFu|Back on Track|https://js13kgames.com/entries/back-on-track
+Zolmeister|Fuco|https://js13kgames.com/entries/fuco
+Zolmeister|戦士|https://js13kgames.com/entries/senshi
+Zutatensuppe|Offline Dinosaur Game|https://js13kgames.com/entries/offline-dinosaur-game
+Zutatensuppe|Reverse Emerald Mine|https://js13kgames.com/entries/reverse-emerald-mine
+acamara|Comeback|https://js13kgames.com/entries/comeback
+acamara|Explorer camp|https://js13kgames.com/entries/explorer-camp
+acashmkj|Lost Cards|https://js13kgames.com/entries/lost-cards
+adam-adair|Celestial Bodies|https://js13kgames.com/entries/celestial-bodies
+adam-adair|ScriptFox13k|https://js13kgames.com/entries/scriptfox13k
+adam-adair|You've Bot Mail|https://js13kgames.com/entries/youve-bot-mail
+adigabai|Changing World|https://js13kgames.com/entries/changing-world
+aditya-r-m|Twisty Polyhedra|https://js13kgames.com/entries/twisty-polyhedra
+adrian2358|Go Go Programming Dystopia|https://js13kgames.com/entries/go-go-programming-dystopia
+adrian2358|Shameful Murder Desperadoes|https://js13kgames.com/2024/games/shameful-murder-desperadoes
+adrien-gueret|Brewing Disaster|https://js13kgames.com/2024/games/brewing-disaster
+adrien-gueret|Earth Invader|https://js13kgames.com/entries/earth-invader
+adrien-gueret|Number Knight|https://js13kgames.com/2023/games/number-knight
+adrien-gueret|Terror Defense|https://js13kgames.com/entries/terror-defense
+afrontend|angle|https://js13kgames.com/entries/angle
+agar3s|404 Rhythm not found|https://js13kgames.com/entries/404-rhythm-not-found
+agar3s|Evil Glitch|https://js13kgames.com/entries/evil-glitch
+agar3s|Spaceship Wars 13k|https://js13kgames.com/entries/spaceship-wars-13k
+agar3s|The Empire Str13ks Back|https://js13kgames.com/entries/the-empire-str13ks-back
+agar3s|The Matr13k|https://js13kgames.com/entries/the-matr13k
+agar3s|VIER|https://js13kgames.com/entries/vier-wizard-wars
+agentultra|Death13k|https://js13kgames.com/entries/death13k
+agentultra|Lost Artifacts of the Anduin|https://js13kgames.com/entries/lost-artifacts-of-the-anduin
+airyng|Feast and courtesans|https://js13kgames.com/2023/games/feast-and-courtesans
+ajakubo1|Blackbox: Lost Particles|https://js13kgames.com/entries/blackbox-lost-particles
+ajakubo1|Shapewars|https://js13kgames.com/entries/shapewars
+ajbkr|Back to the Island|https://js13kgames.com/entries/back-to-the-island
+ajcore|Awkward Turtle|https://js13kgames.com/entries/awkward-turtle
+ajcore|Hotel 404|https://js13kgames.com/entries/hotel-404
+aksommerville|Economy of Motion|https://js13kgames.com/2024/games/economy-of-motion
+alanpreed|Datacentre Simulator|https://js13kgames.com/entries/datacentre-simulator
+alex00712|Time of enjoy|https://js13kgames.com/entries/time-of-enjoy
+alexandercurtis|Back from Kooky Island|https://js13kgames.com/entries/back-from-kooky-island
+alexejrotar|Fungus|https://js13kgames.com/entries/fungus
+alfi-s|Starshmup|https://js13kgames.com/entries/starshmup
+alixbrunsperger|Offline!|https://js13kgames.com/entries/offline
+almushel|Loot Not Found|https://js13kgames.com/entries/loot-not-found
+alpha2k|13 Bricks|https://js13kgames.com/entries/13-bricks
+alphadose|Curvy|https://js13kgames.com/entries/curvy
+alphadose|Illusion Click|https://js13kgames.com/entries/illusion-click
+alszczep|13legions|https://js13kgames.com/2024/games/13legions
+alternative451|13K bytes under the seas|https://js13kgames.com/entries/13k-bytes-under-the-seas
+alternative451|BombRoll|https://js13kgames.com/entries/bombroll
+alternative451|Silent network|https://js13kgames.com/entries/silent-network
+alternative451|mini space|https://js13kgames.com/entries/mini-space
+amarocolas|sven go home|https://js13kgames.com/entries/sven-go-home
+ameliabradley|Fiber Optic|https://js13kgames.com/entries/fiber-optic
+amolinasalazar|Lights Back On|https://js13kgames.com/entries/lights-back-on
+amyyf|Back to Skull Island|https://js13kgames.com/entries/back-to-skull-island
+anasrar|Orbit Jump|https://js13kgames.com/entries/orbit-jump
+andrewcouch|Elemental Card Wars|https://js13kgames.com/entries/elemental-card-wars
+andrey-avdeev|Blackout|https://js13kgames.com/entries/blackout
+andrey-avdeev|ReGravy|https://js13kgames.com/entries/regravy
+andru255|Packet Jumpr|https://js13kgames.com/entries/packet-jumpr
+andy-mcgrath|send the asteroids back|https://js13kgames.com/entries/send-the-asteroids-back
+andyfleming|Glitch Warrior|https://js13kgames.com/entries/glitch-warrior
+andyfleming|ROBO SLAYER 3000|https://js13kgames.com/entries/robo-slayer-3000
+andykswong|_INVADERS|https://js13kgames.com/entries/invaders
+andyps|Glitch Cube|https://js13kgames.com/entries/glitch-cube
+ani1998ket|Watch_Your_Back|https://js13kgames.com/entries/watchyourback
+ankitjain28may|FirstGame|https://js13kgames.com/entries/firstgame
+anthonycosgrave|MEE|https://js13kgames.com/entries/mee-ooowwww
+anthonycosgrave|The Horde! The Horde! The Horde!|https://js13kgames.com/2023/games/the-horde-the-horde-the-horde
+antonioraventos|Energy Drink|https://js13kgames.com/entries/energy-drink
+anttihaavikko|Casual Crusade|https://js13kgames.com/2023/games/casual-crusade
+anttihaavikko|Coup Ahoo|https://js13kgames.com/2024/games/coup-ahoo
+anttihaavikko|Magna Carta|https://js13kgames.com/2023/games/magna-carta
+anveshc05|Lost Characters|https://js13kgames.com/entries/lost-characters
+apfrod|YARLY!|https://js13kgames.com/entries/yarly
+aplegatt|Elementium|https://js13kgames.com/entries/elementium
+apragacz|Labirynth|https://js13kgames.com/entries/labirynth
+apragacz|MineRoads|https://js13kgames.com/entries/mineroads
+ar-naseef|Lost Pixels|https://js13kgames.com/entries/lost-pixels
+arawkins|Blasting Shrapnel|https://js13kgames.com/entries/blasting-shrapnel
+arcadeJHS|13th oF fAmE|https://js13kgames.com/entries/13th-of-fame
+arcadiogarcia|Event horizon|https://js13kgames.com/entries/event-horizon
+arcadiogarcia|Lost Tab: The Evil Autoplaying Video Strikes Again|https://js13kgames.com/entries/lost-tab-the-evil-autoplaying-video-strikes-again
+archiewald|KickIt!|https://js13kgames.com/entries/kickit
+arikwex|Infernal Throne|https://js13kgames.com/entries/infernal-throne
+arikwex|Runekeeper|https://js13kgames.com/2023/games/runekeeper
+arikwex|SHUTTLEDECK|https://js13kgames.com/entries/shuttledeck
+armaldio|Lost Squares|https://js13kgames.com/entries/lost-squares
+arturaugusto|Anti|https://js13kgames.com/entries/anti-gravity-cave
+arturaugusto|Bolos The Dog|https://js13kgames.com/entries/bolos-the-dog
+arturaugusto|Faraday cage Rampage|https://js13kgames.com/entries/faraday-cage-rampage
+arturaugusto|K1n3kt Archery|https://js13kgames.com/2023/games/k1n3kt-archery
+arturitu|Go Back (And Do It Again)|https://js13kgames.com/entries/go-back-and-do-it-again
+aselitto|Dekatria Mansion|https://js13kgames.com/2024/games/dekatria-mansion
+ashbhir|Together Again|https://js13kgames.com/entries/together-again
+ashwinvaidya17|Chaos|https://js13kgames.com/entries/chaos
+asif0228|Color Combination|https://js13kgames.com/entries/color-combination
+asisaa|Bo the dog|https://js13kgames.com/entries/bo-the-dog
+attilahorvath|Gib|https://js13kgames.com/entries/gib
+attilahorvath|Neon Dungeon|https://js13kgames.com/entries/neon-dungeon
+aurhe|ap11|https://js13kgames.com/entries/ap11
+aurium|Ant Realm|https://js13kgames.com/entries/ant-realm
+aurium|Before it Back OnLine|https://js13kgames.com/entries/before-it-back-online
+aurium|Bunny|https://js13kgames.com/entries/bunny
+aurium|Dodos|https://js13kgames.com/entries/dodos-escaping-from-extinction
+aurium|Dungeon Puzzle|https://js13kgames.com/entries/dungeon-puzzle
+aurium|Feudalistic Overlap|https://js13kgames.com/2023/games/feudalistic-overlap
+aurium|Get the Pigeon|https://js13kgames.com/entries/get-the-pigeon
+aurium|Gravity|https://js13kgames.com/entries/gravity
+aurium|Mass Crosses|https://js13kgames.com/entries/mass-crosses
+aurium|MineCSSweeper|https://js13kgames.com/2024/games/minecssweeper
+aurium|Ocular Glitch|https://js13kgames.com/entries/ocular-glitch
+aurium|Planetary|https://js13kgames.com/entries/planetary-an-starship-fight-game
+aurium|Pong|https://js13kgames.com/entries/pong
+aurium|SimLand|https://js13kgames.com/entries/simland
+aurium|SpacePinball|https://js13kgames.com/entries/spacepinball
+avruivo|spellCast Away|https://js13kgames.com/entries/spellcast-away
+ayDavidGitHere|Cemetery|https://js13kgames.com/entries/cemetery
+ayDavidGitHere|Floating|https://js13kgames.com/entries/floating
+ayDavidGitHere|Orbiter|https://js13kgames.com/entries/orbiter
+aycansblx|super best ... whatever|https://js13kgames.com/entries/super-best-whatever
+aydinugur|life|https://js13kgames.com/entries/life-and-death
+aymanfarhat|Back Online!|https://js13kgames.com/entries/back-online
+aymanfarhat|Jumbit|https://js13kgames.com/entries/jumbit
+azulus|Omega 13K|https://js13kgames.com/entries/omega-13k
+b3rtram|SpaceY|https://js13kgames.com/entries/spacey
+bacionejs|Exterminator|https://js13kgames.com/2024/games/exterminator
+bacionejs|Tredici Malefici|https://js13kgames.com/2024/games/tredici-malefici
+badcorporatelogo|Shooooooot!!|https://js13kgames.com/entries/shooooooot
+banthar|Find That Glitch|https://js13kgames.com/entries/find-that-glitch
+bartaz|Scroll Run|https://js13kgames.com/entries/scroll-run
+bartaz|The Book of Pages Not Found|https://js13kgames.com/entries/the-book-of-pages-not-found
+bartaz|go OFFLINE|https://js13kgames.com/entries/go-offline
+bartoszglow|Force of Elementals|https://js13kgames.com/entries/force-of-elementals
+basilean|Captain's Log|https://js13kgames.com/entries/captains-log
+baturinsky|2AP: Backyard Assault|https://js13kgames.com/entries/2ap-backyard-assault
+baturinsky|Fat Kids on Trampoline|https://js13kgames.com/entries/fat-kids-on-trampoline
+baturinsky|Galactic Communications inc.|https://js13kgames.com/entries/galactic-communications-inc
+baturinsky|Murder Map Monkey|https://js13kgames.com/entries/murder-map-monkey
+baturinsky|Snake vs Invaders|https://js13kgames.com/entries/snake-vs-invaders
+baturinsky|Terra Mobilis|https://js13kgames.com/2024/games/terra-mobilis
+baturinsky|Triskaidekagenesis|https://js13kgames.com/2024/games/triskaidekagenesis
+baturinsky|Warp Station 13K|https://js13kgames.com/entries/warp-station-13k
+baturinsky|Weird Cannon|https://js13kgames.com/2023/games/weird-cannon
+baylej|My first pong game|https://js13kgames.com/entries/my-first-pong-game
+bazylevnik0|CastleFire|https://js13kgames.com/2023/games/castlefire
+bbaustin|Parry|https://js13kgames.com/2023/games/parry
+bbaustin|PicoBuddy|https://js13kgames.com/2024/games/picobuddy
+bcerc|Super Pinto Rally Racer|https://js13kgames.com/entries/super-pinto-rally-racer
+bcerc|Timber Terry|https://js13kgames.com/entries/timber-terry
+bczy|Shoot Those Spaceships|https://js13kgames.com/entries/shoot-those-spaceships
+beeglebug|Castle Escape|https://js13kgames.com/entries/castle-escape
+beeglebug|Entombed|https://js13kgames.com/entries/entombed
+beeglebug|Xiiivious|https://js13kgames.com/entries/xiiivious
+bencoder|Island Not Found|https://js13kgames.com/entries/island-not-found
+bencoder|xx142|https://js13kgames.com/entries/xx142-b2exe
+benjamin-t-brown|Heart of the Gods|https://js13kgames.com/entries/heart-of-the-gods
+benjamin-t-brown|Orbital Golfing|https://js13kgames.com/entries/orbital-golfing
+benjamin-t-brown|Planet: Offline|https://js13kgames.com/entries/planet-offline
+benjamin-t-brown|Realm 404|https://js13kgames.com/entries/realm-404
+benjamin-t-brown|Tavernity|https://js13kgames.com/2023/games/tavernity
+benjamin-t-brown|XIII Days To Save The Kingdom|https://js13kgames.com/2024/games/xiii-days-to-save-the-kingdom
+benjamin-t-brown|Y THO|https://js13kgames.com/entries/y-tho
+benjymous|The Legend of Yeti|https://js13kgames.com/entries/the-legend-of-yeti-404
+benjymous|sing|https://js13kgames.com/entries/sing-song-ding-dong
+benlanier|Just Plane Astray|https://js13kgames.com/entries/just-plane-astray
+bernhard-hofmann|Lock Puzzle|https://js13kgames.com/entries/lock-puzzle
+bersLucas|When my vpn goes offline it allows all kinds of people to snoop on my computer, such as demons...|https://js13kgames.com/entries/when-my-vpn-goes-offline-it-allows-all-kinds-of-people-to-snoop-on-my-computer-such-as-demons
+bhuvanameenakshi|World Lost|https://js13kgames.com/entries/world-lost
+bibixx|Lost in Vim|https://js13kgames.com/entries/lost-in-vim
+bigbap|Gravity Control|https://js13kgames.com/entries/gravity-control
+bigjocker|Bricks|https://js13kgames.com/entries/bricks
+bigjocker|trapped|https://js13kgames.com/entries/trapped
+bitnenfer|EXTREME MINI MASSACRE|https://js13kgames.com/entries/extreme-mini-massacre
+bitnenfer|La Once|https://js13kgames.com/entries/la-once
+bitnenfer|Nigo's Cave|https://js13kgames.com/entries/nigos-cave
+bitowl|raw | space|https://js13kgames.com/entries/raw-space
+bitwhirlpool|Sharks and Trains|https://js13kgames.com/2024/games/sharks-and-trains
+blackmiaool|TATD|https://js13kgames.com/entries/tatd
+blueboxes|Element War|https://js13kgames.com/entries/element-war
+blueboxes|Escape from Maze 13|https://js13kgames.com/entries/escape-from-maze-13
+blueboxes|Flight Back Home|https://js13kgames.com/entries/flight-back-home
+bluehipy|Death In Holiday|https://js13kgames.com/entries/death-in-holiday
+bnRietveld|The Jolly Rogier|https://js13kgames.com/entries/the-jolly-rogier
+bncastle|Bubble Trap!|https://js13kgames.com/entries/bubble-trap
+bojanpejkovic|WIRED|https://js13kgames.com/entries/wired
+botwing|The Dead Don't Die|https://js13kgames.com/entries/the-dead-dont-die
+briangershon|MileHigh|https://js13kgames.com/entries/milehigh
+bridgerrholt|Glitch Arena|https://js13kgames.com/entries/glitch-arena
+brunodemarchi|Ball Madness|https://js13kgames.com/entries/ball-madness
+brunofarache|Ninja Tracking|https://js13kgames.com/entries/ninja-tracking
+brunoskonrad|Back To That Platform I Was On Before Jumping|https://js13kgames.com/entries/back-to-that-platform-i-was-on-before-jumping
+bschlenk|Planet Hoppers|https://js13kgames.com/entries/planet-hoppers
+bsenst|distant|https://js13kgames.com/entries/distant
+burntcustard|20461 Dioretsa|https://js13kgames.com/entries/20461-dioretsa
+burntcustard|3DC5S|https://js13kgames.com/entries/3dc5s
+burntcustard|Tiny Yurts|https://js13kgames.com/2023/games/tiny-yurts
+byemc|Death by Hamster|https://js13kgames.com/entries/death-by-hamster
+byemc|Thirteen Minutes To Space|https://js13kgames.com/2024/games/thirteen-minutes-to-space
+bytecombo|Admiral Schiffchen|https://js13kgames.com/entries/admiral-schiffchen
+caiochagas|Glitch Guy|https://js13kgames.com/entries/glitch-guy
+camerakendall|Holy Knight|https://js13kgames.com/2023/games/holy-knight
+camsjams|Universe Not Found|https://js13kgames.com/entries/universe-not-found
+candelibas|Invoke the Code!|https://js13kgames.com/entries/invoke-the-code
+capsticm|Cryptomania|https://js13kgames.com/entries/cryptomania-game-of-thrones-quotes
+captainpainway|Coconutty|https://js13kgames.com/entries/coconutty
+carbsrule|Vortlinio|https://js13kgames.com/entries/vortlinio
+carbsrule|Zamo|https://js13kgames.com/entries/zamo
+carlini|Yet Another Doom Clone|https://js13kgames.com/entries/yet-another-doom-clone
+carlini|Yet Another MOBA|https://js13kgames.com/entries/yet-another-moba
+carlini|Yet Another Space Shooter|https://js13kgames.com/entries/yet-another-space-shooter
+carsonbarlow|Arena013|https://js13kgames.com/entries/arena013
+carsonbarlow|Galactic Winds II: The Lost Battle|https://js13kgames.com/entries/galactic-winds-ii-the-lost-battle
+carsonbarlow|Nommon Brothers|https://js13kgames.com/entries/nommon-brothers
+carsonbarlow|Omega Glitch|https://js13kgames.com/entries/omega-glitch
+casom13|Blib Blupper|https://js13kgames.com/entries/blib-blupper
+cassidoo|Thirteen Potions|https://js13kgames.com/2023/games/thirteen-potions
+cavegeek|Lost in Deep Space|https://js13kgames.com/entries/lost-in-deep-space
+cawoodm|Get Lost Hombre!|https://js13kgames.com/entries/get-lost-hombre
+cawoodm|Offline Pizza|https://js13kgames.com/entries/offline-pizza
+cedwards145|Fall Back!|https://js13kgames.com/entries/fall-back
+cellcrowd|4O4|https://js13kgames.com/entries/4o4
+cemalgnlts|Only One|https://js13kgames.com/2023/games/only-one
+chandlerprall|Mindless|https://js13kgames.com/entries/mindless
+chanibal|Death And Taxes|https://js13kgames.com/entries/death-and-taxes
+charan-web|FLAPPY|https://js13kgames.com/entries/flappy-bird-game
+chemaska|Elemental Stone|https://js13kgames.com/entries/elemental-stone
+chenghaoc|TetRis|https://js13kgames.com/entries/tetris
+chiaho903|Deep Inside|https://js13kgames.com/entries/deep-inside
+chiaogu|Planetfall|https://js13kgames.com/entries/planetfall
+chiaogu|Stolen Sword|https://js13kgames.com/entries/stolen-sword
+chinchang|Century Spikes|https://js13kgames.com/2023/games/century-spikes
+chinchang|Key Battle|https://js13kgames.com/entries/key-battle
+chinchang|Remember|https://js13kgames.com/entries/remember
+chinchang|Repeewsenim VR|https://js13kgames.com/entries/repeewsenim-vr
+chinchang|Repeewsenim|https://js13kgames.com/entries/repeewsenim
+chinchang|The Lost Pixel|https://js13kgames.com/entries/the-lost-pixel
+chinchang|Word Blast|https://js13kgames.com/entries/word-blast
+chinchang|World is Falling|https://js13kgames.com/entries/world-is-falling
+chrischongyj|Dodge That Shit|https://js13kgames.com/entries/dodge-that-shit
+chrisrgibb|0xDEAD|https://js13kgames.com/entries/0xdead
+christianamenos|Joe's space|https://js13kgames.com/entries/joes-space
+christopher4lis|Young Magi, Awaken|https://js13kgames.com/2023/games/young-magi-awaken
+christrott|Exit Not Found|https://js13kgames.com/entries/exit-not-found
+ciaranbrohan|Autopilot Offline|https://js13kgames.com/entries/autopilot-offline
+ckmahoney|Bard's Fantasy|https://js13kgames.com/entries/bards-fantasy
+ckolin|GOLFROG|https://js13kgames.com/2024/games/golfrog
+ckolin|Humpback Revenge|https://js13kgames.com/entries/humpback-revenge
+ckolin|Space Wallaby|https://js13kgames.com/entries/space-wallaby
+ckolin|Templo Mayor|https://js13kgames.com/entries/templo-mayor
+cobrajs|Pied Pipe Revolution|https://js13kgames.com/2023/games/pied-pipe-revolution
+coderitual|Rebound|https://js13kgames.com/entries/rebound
+coderitual|Round Royale|https://js13kgames.com/entries/round-royale
+coderprateek|Emma|https://js13kgames.com/entries/emma-3d
+codyebberson|JS13K Battlegrounds|https://js13kgames.com/entries/js13k-battlegrounds
+codyebberson|MINIPUNK|https://js13kgames.com/entries/minipunk
+codyebberson|Phantomicus|https://js13kgames.com/2024/games/phantomicus
+codyebberson|The Adventures of Captain Callisto|https://js13kgames.com/entries/the-adventures-of-captain-callisto
+codyebberson|The Unavoidable|https://js13kgames.com/entries/the-unavoidable
+codymikol|LINK|https://js13kgames.com/entries/link
+codyssia|I Need My Space!|https://js13kgames.com/entries/i-need-my-space
+colingourlay|Tile Score|https://js13kgames.com/entries/tile-score
+con-|WoE|https://js13kgames.com/entries/woe-war-of-elements
+corpille|A Deadly Bet|https://js13kgames.com/2024/games/a-deadly-bet
+corpille|The Last Tear|https://js13kgames.com/entries/the-last-tear
+corsonandroski|At Journey's End|https://js13kgames.com/entries/at-journeys-end
+craiggoddenpayne|Agent XIII|https://js13kgames.com/entries/agent-xiii
+crhallberg|Action Hero Academy Shooting Range|https://js13kgames.com/entries/action-hero-academy-shooting-range
+cs17jjc|Asteroid 404|https://js13kgames.com/entries/asteroid-404
+cstuncsik|FEWA|https://js13kgames.com/entries/fewa
+csubagio|Neon Runner '84|https://js13kgames.com/entries/neon-runner-84
+csubagio|Robin of Thirteensley|https://js13kgames.com/2023/games/robin-of-thirteensley
+ctanamas|404 SECONDS|https://js13kgames.com/entries/404-seconds
+cubbK|Mess My Brain|https://js13kgames.com/entries/mess-my-brain
+cuongdcdev|Ghost Smash|https://js13kgames.com/entries/ghost-smash
+curtastic|Emoji Swap|https://js13kgames.com/entries/emoji-swap
+curtastic|Hugo the Wizard|https://js13kgames.com/2023/games/hugo-the-wizard
+curtastic|Spell Spells|https://js13kgames.com/2024/games/spell-spells
+curtastic|World of Emojis|https://js13kgames.com/entries/world-of-emojis
+curtastic|Zooback Rider|https://js13kgames.com/entries/zooback-rider
+cylau1031|Conscious|https://js13kgames.com/entries/conscious
+cytrowski|Time remnants|https://js13kgames.com/entries/time-remnants-go-back-in-time-and-fix-the-timeline
+cyw116|Backspace Magic|https://js13kgames.com/entries/backspace-magic
+cyw116|Function Space|https://js13kgames.com/entries/function-space
+czajkowski|Ghosts|https://js13kgames.com/entries/ghosts
+d-jeffery|Achluophobia|https://js13kgames.com/entries/achluophobia
+d-jeffery|Blind|https://js13kgames.com/entries/blind-spot-dodge
+d-jeffery|Double Vision|https://js13kgames.com/entries/double-vision
+d-jeffery|Emoji Memory|https://js13kgames.com/entries/emoji-memory
+d-jeffery|Kite Kaos|https://js13kgames.com/2023/games/kite-kaos
+d-jeffery|Necrotic Commander|https://js13kgames.com/entries/necrotic-commander
+d-jeffery|Packet Thief|https://js13kgames.com/entries/packet-thief
+d-jeffery|Twisted Tunnels|https://js13kgames.com/entries/twisted-tunnels
+daivan|404 File not found|https://js13kgames.com/entries/404-file-not-found
+daivan|Dont step on thirteen|https://js13kgames.com/2024/games/dont-step-on-thirteen
+daivan|Palindrome|https://js13kgames.com/entries/palindrome
+daivan|That time I tried running away from space|https://js13kgames.com/entries/that-time-i-tried-running-away-from-space
+danWithABeard|Blend|https://js13kgames.com/entries/blend
+dancramp|Space Worm|https://js13kgames.com/entries/space-worm
+danieldjohnson|TIME || ƎMIT|https://js13kgames.com/entries/time-mit
+danielfdzperez|Reverse World|https://js13kgames.com/entries/reverse-world
+danish9412|Turtles can't skate|https://js13kgames.com/entries/turtles-cant-skate
+dannyli0109|Back to the beginning|https://js13kgames.com/entries/back-to-the-beginning
+danprince|Norman the Necromancer|https://js13kgames.com/entries/norman-the-necromancer
+darkenvy|LibreCraft|https://js13kgames.com/entries/librecraft
+darkwebdev|AAARRRRGGG!!|https://js13kgames.com/entries/aaarrrrggg
+darshanrane|Cattlost|https://js13kgames.com/entries/cattlost
+darshanrane|Chasing Lights|https://js13kgames.com/entries/chasing-lights
+darshanrane|Falling Blocks|https://js13kgames.com/entries/falling-blocks
+darshanrane|Glitch Drive|https://js13kgames.com/entries/glitch-drive
+davesides3|Spatial Poker|https://js13kgames.com/entries/spatial-poker
+daviddurham|Get Back Up|https://js13kgames.com/entries/get-back-up
+daviddurham|Roll Tanks|https://js13kgames.com/entries/roll-tanks
+davidpanik|Offline Search|https://js13kgames.com/entries/offline-search-the-game
+davidpanik|Reverse Invaders|https://js13kgames.com/entries/reverse-invaders
+daxartio|FKnight|https://js13kgames.com/entries/fknight
+dazsim|Back Home|https://js13kgames.com/entries/back-home
+dbrad|2D4X13K|https://js13kgames.com/entries/2d4x13k
+dbrad|Forgotten Depths: Path of the Necromancer|https://js13kgames.com/entries/forgotten-depths-path-of-the-necromancer
+dbrad|Forsaken|https://js13kgames.com/entries/forsaken
+dbrad|RESCUE not FOUND|https://js13kgames.com/entries/rescue-not-found
+dbrad|Super Backpacking Adventure|https://js13kgames.com/entries/super-backpacking-adventure
+dburgos|Hold the Cloud|https://js13kgames.com/entries/hold-the-cloud
+debone|Nort|https://js13kgames.com/entries/nort
+dejanGH|Darkened Path|https://js13kgames.com/entries/darkened-path
+dejanGH|Memory Level|https://js13kgames.com/entries/memory-level
+delanni|INCREDIBIRD|https://js13kgames.com/entries/incredibird
+depp|HDD Liberator|https://js13kgames.com/entries/hdd-liberator
+depp|I Want to Help Fight the Demon Overlord, but I’m Just an Intern!|https://js13kgames.com/entries/i-want-to-help-fight-the-demon-overlord-but-im-just-an-intern
+depp|Welcome to Cyberspace|https://js13kgames.com/entries/welcome-to-cyberspace
+derellac|CastleRun Maze|https://js13kgames.com/2023/games/castlerun-maze
+dgjxqz|Canvas Elevator Traffic Simulator|https://js13kgames.com/entries/canvas-elevator-traffic-simulator
+dgoemans|Grav Bot|https://js13kgames.com/entries/grav-bot
+dgoemans|Jolly Rogier: Shipwrecked|https://js13kgames.com/entries/jolly-rogier-shipwrecked
+dgtlrstnc|Offweb|https://js13kgames.com/entries/offweb
+diegocardoso93|back to exploration|https://js13kgames.com/entries/back-to-exploration
+diegosoriarios|Can You Fix My Server?|https://js13kgames.com/entries/can-you-fix-my-server
+diegosoriarios|Cry in The 13th|https://js13kgames.com/2024/games/cry-in-the-13th
+diegosoriarios|House Not Found|https://js13kgames.com/entries/house-not-found
+diningeachox|Escape from XGS|https://js13kgames.com/entries/escape-from-xgs-57
+dinkar|Up & Down|https://js13kgames.com/entries/up-down
+diogok|HeroGame|https://js13kgames.com/entries/herogame
+dkozhukhar|Jet Back Gravity|https://js13kgames.com/entries/jet-back-gravity
+dlbucci|A.S.T.R.O.|https://js13kgames.com/entries/astro
+dlbucci|It Comes in Threes|https://js13kgames.com/entries/it-comes-in-threes
+dmcinnes|Spiro|https://js13kgames.com/entries/spiro
+dmin|Fort@dmin|https://js13kgames.com/2023/games/fortdmin
+dodormeur|A ship in time|https://js13kgames.com/entries/a-ship-in-time
+dodormeur|Lost Soul|https://js13kgames.com/entries/lost-soul
+dodormeur|lost packet|https://js13kgames.com/entries/lost-packet
+dogagenc|Flying Bubbles|https://js13kgames.com/entries/flying-bubbles
+dollarone|A bad day for Frank|https://js13kgames.com/entries/a-bad-day-for-frank
+dollarone|Eftiell: Back to the Crypt|https://js13kgames.com/entries/eftiell-back-to-the-crypt
+dollarone|Frank in the Disco Dimensions|https://js13kgames.com/entries/frank-in-the-disco-dimensions
+dollarone|Spines|https://js13kgames.com/entries/spines
+dosaki|Hell Inc.|https://js13kgames.com/entries/hell-inc
+dosaki|Not Warehouse 13|https://js13kgames.com/2024/games/not-warehouse-13
+dosaki|Seating Space Planner|https://js13kgames.com/entries/seating-space-planner
+dosaki|Swords & Quills|https://js13kgames.com/2023/games/swords-quills
+dosaki|The Analyser|https://js13kgames.com/entries/the-analyser
+dotfury|Simple Shooter|https://js13kgames.com/entries/simple-shooter
+dougkusanagi|Astronaut in Trouble|https://js13kgames.com/entries/astronaut-in-trouble
+dp|Fear the Dark|https://js13kgames.com/entries/fear-the-dark
+dp|VicBlitz|https://js13kgames.com/entries/vicblitz
+dqsmith|Bubble Jumper|https://js13kgames.com/entries/bubble-jumper
+dreamblader|We Must Go Back!|https://js13kgames.com/entries/we-must-go-back
+drnoir|SuperpositionVR|https://js13kgames.com/entries/superpositionvr
+dth12|ENDLESS DEATH|https://js13kgames.com/entries/endless-death
+ducmtran|Friendly Alien|https://js13kgames.com/entries/friendly-alien
+dunindunin|Backsteroid|https://js13kgames.com/entries/backsteroid
+dunindunin|Offline puzzles|https://js13kgames.com/entries/offline-puzzles
+dunindunin|Players not found|https://js13kgames.com/entries/players-not-found
+dunindunin|S(H|N)AKE|https://js13kgames.com/entries/shnake
+dunindunin|chess arena|https://js13kgames.com/entries/chess-arena
+dustinpfister|Powdered Toast Man 13k|https://js13kgames.com/entries/powdered-toast-man-13k
+dustinpfister|Red Space|https://js13kgames.com/entries/red-space
+dustinpfister|bFly|https://js13kgames.com/entries/bfly
+dustinpfister|deglitcher13k|https://js13kgames.com/entries/deglitcher13k
+dustinpfister|orbCraft13k|https://js13kgames.com/entries/orbcraft13k
+dwhiffing|Final Lift|https://js13kgames.com/2024/games/final-lift
+dwhiffing|Noxious Nebula|https://js13kgames.com/entries/noxious-nebula
+dwhiffing|Star Exploder|https://js13kgames.com/entries/star-exploder
+dwhiffing|The Machine|https://js13kgames.com/entries/the-machine
+dwhiffing|The Silk Trail|https://js13kgames.com/2023/games/the-silk-trail
+eadadi|Space|https://js13kgames.com/entries/space-gum
+easwee|Balls juggle!|https://js13kgames.com/entries/balls-juggle
+easwee|Baloon operator|https://js13kgames.com/entries/baloon-operator
+easwee|Snooffline|https://js13kgames.com/entries/snooffline
+easwee|Throw back|https://js13kgames.com/entries/throw-back
+ecj2|Verloren|https://js13kgames.com/entries/verloren
+eguneys|A0A|https://js13kgames.com/entries/a0a
+eguneys|Backout|https://js13kgames.com/entries/backout
+eguneys|Backshooter|https://js13kgames.com/entries/backshooter
+eguneys|Coler|https://js13kgames.com/entries/coler
+eguneys|Cooler|https://js13kgames.com/2024/games/cooler
+eguneys|Mavi|https://js13kgames.com/entries/mavi
+eguneys|belly flop|https://js13kgames.com/2023/games/belly-flop
+eguneys|blue retro|https://js13kgames.com/2023/games/blue-retro
+eguneys|jumpso|https://js13kgames.com/entries/jumpso
+ehgoodenough|OVERCLOCK.EXE|https://js13kgames.com/entries/overclockexe
+ehgoodenough|Zompocalypse|https://js13kgames.com/entries/zompocalypse
+ehtd|Fantastic Monster Chronicles|https://js13kgames.com/entries/fantastic-monster-chronicles
+ehtd|Shield Maiden|https://js13kgames.com/entries/shield-maiden
+ehtd|The Spear of Time|https://js13kgames.com/entries/the-spear-of-time
+ekros|10plus3|https://js13kgames.com/2024/games/10plus3
+ekros|Find Matt|https://js13kgames.com/entries/find-matt
+ekros|Lunar Pods|https://js13kgames.com/entries/lunar-pods
+ekros|Skeleathon|https://js13kgames.com/entries/skeleathon
+eliasku|13|https://js13kgames.com/entries/13
+eliasku|FRI3|https://js13kgames.com/2024/games/fri3
+ellenbboe|right|https://js13kgames.com/entries/right
+elliot-nelson|Harold is Heavy|https://js13kgames.com/2023/games/harold-is-heavy
+elliot-nelson|Letchworth Village|https://js13kgames.com/entries/letchworth-village
+elliot-nelson|Moth|https://js13kgames.com/entries/moth
+elliot-nelson|Raven|https://js13kgames.com/entries/raven
+elliot-nelson|Shadow of the Keening Star|https://js13kgames.com/entries/shadow-of-the-keening-star
+elliot-nelson|WIZARD WITH A SHOTGUN|https://js13kgames.com/entries/wizard-with-a-shotgun
+elouai|The Minion Escapes|https://js13kgames.com/entries/the-minion-escapes
+elusivegames|Elemental Office!|https://js13kgames.com/entries/elemental-office
+emilienregent|Wheelements|https://js13kgames.com/entries/wheelements
+entonlazaj|The Mail|https://js13kgames.com/entries/the-mail
+enzeberg|Tritetris|https://js13kgames.com/entries/tritetris-a-game-that-extends-from-tetris
+eoinmcg|BUNNY LOST!|https://js13kgames.com/entries/bunny-lost
+eoinmcg|Bewitched!|https://js13kgames.com/2023/games/bewitched
+eoinmcg|BuzzOff!|https://js13kgames.com/entries/buzzoff
+eoinmcg|Day Of The Glitch|https://js13kgames.com/entries/day-of-the-glitch
+eoinmcg|Enjoy The Sunshine (Get Offline!)|https://js13kgames.com/entries/enjoy-the-sunshine-get-offline
+eoinmcg|Freebird|https://js13kgames.com/entries/freebird
+eoinmcg|Gecko Blaster|https://js13kgames.com/2024/games/gecko-blaster
+eoinmcg|RoboFlip|https://js13kgames.com/entries/roboflip
+eott|nbody|https://js13kgames.com/entries/nbody
+epicjoanna|FREEEDOOOM!!!!!!!|https://js13kgames.com/2023/games/freeedooom
+eprincev-egor|Cable in forest|https://js13kgames.com/entries/cable-in-forest
+eprouver|Big Movie Hacker|https://js13kgames.com/entries/big-movie-hacker
+eprouver|Blanks Detective|https://js13kgames.com/entries/blanks-detective
+eprouver|Relink|https://js13kgames.com/entries/relink
+eprouver|The Lonely 13|https://js13kgames.com/2024/games/the-lonely-13
+eprouver|The Monk's Window|https://js13kgames.com/2023/games/the-monks-window
+erdemgonul|Ladies Man|https://js13kgames.com/entries/ladies-man
+erdiizgi|Die to Born|https://js13kgames.com/entries/die-to-born
+ericdrowell|Bubba's Back Room|https://js13kgames.com/entries/bubbas-back-room
+ericdrowell|Evil Wood|https://js13kgames.com/entries/evil-wood
+ericdrowell|Safe Space|https://js13kgames.com/entries/safe-space
+ericdrowell|Zurbo|https://js13kgames.com/entries/zurbo
+erwinandres|Backspace It|https://js13kgames.com/entries/backspace-it
+erwinandres|Request & Response|https://js13kgames.com/entries/request-response
+erwinandres|They Are Behind You|https://js13kgames.com/entries/they-are-behind-you
+eschatonic|Adrift|https://js13kgames.com/entries/adrift
+eschatonic|Back 2 Back|https://js13kgames.com/entries/back-2-back
+eschatonic|Gravity Golf|https://js13kgames.com/entries/gravity-golf
+eschatonic|Heaven Ascent|https://js13kgames.com/entries/heaven-ascent
+eschatonic|Systems Offline|https://js13kgames.com/entries/systems-offline
+espadrine|A Verse on Leverage|https://js13kgames.com/entries/a-verse-on-leverage
+evilstar|Mexico Escape|https://js13kgames.com/entries/mexico-escape
+f0086|Without reverser|https://js13kgames.com/entries/without-reverser
+f0086|fuTris|https://js13kgames.com/entries/futris
+f0086|muri|https://js13kgames.com/entries/muri
+fabiosantoscode|Please Finish In 13th Place|https://js13kgames.com/2024/games/please-finish-in-13th-place
+factoradic|MESS|https://js13kgames.com/entries/mess
+faebeee|Pixels from outerspace|https://js13kgames.com/entries/pixels-from-outerspace
+faisald-rahman|404 Box|https://js13kgames.com/entries/404-box
+faisald-rahman|Fill The Space|https://js13kgames.com/entries/fill-the-space
+fatfisz|Anti|https://js13kgames.com/entries/anti-paradox-run
+fatfisz|Asteroid Miner|https://js13kgames.com/entries/asteroid-miner
+fatfisz|Setlerio|https://js13kgames.com/entries/setlerio
+fatfisz|Sobanko|https://js13kgames.com/entries/sobanko
+fatfisz|Space Wizard Toast Spinning|https://js13kgames.com/entries/space-wizard-toast-spinning
+fawwaz|Back to School|https://js13kgames.com/entries/back-to-school
+fbedussi|404|https://js13kgames.com/entries/404
+fbedussi|Can you hear me?|https://js13kgames.com/entries/can-you-hear-me
+fbedussi|Guess the letter|https://js13kgames.com/2023/games/guess-the-letter
+fbedussi|Space sweeper|https://js13kgames.com/entries/space-sweeper
+fed135|Puzzle from hell|https://js13kgames.com/entries/puzzle-from-hell
+federicojacobi|13s|https://js13kgames.com/2024/games/13s
+federicojacobi|Angry Temujin|https://js13kgames.com/2023/games/angry-temujin
+fedetibaldo|Connection|https://js13kgames.com/entries/connection
+feklee|ROTOGAMEsq|https://js13kgames.com/entries/rotogamesq
+felipez3r0|A|https://js13kgames.com/entries/a-box-invaders
+felladrin|Back Read|https://js13kgames.com/entries/back-read
+felladrin|Cat Goric: Escape from the Warp Chamber|https://js13kgames.com/entries/cat-goric-escape-from-the-warp-chamber
+felladrin|POPULATION: 404|https://js13kgames.com/entries/population-404
+felladrin|YoYo Haku Pool|https://js13kgames.com/entries/yoyo-haku-pool
+fernakasa|Asteroids404|https://js13kgames.com/entries/asteroids404
+ferronsays|Air Fury|https://js13kgames.com/entries/air-fury
+ferronsays|Level 10|https://js13kgames.com/entries/level-10
+ferronsays|Lucky Streak|https://js13kgames.com/entries/lucky-streak
+ferronsays|The Last Spartan|https://js13kgames.com/entries/the-last-spartan
+fizba|Far From Ground Control|https://js13kgames.com/entries/far-from-ground-control
+florian-s-code|Rectangular 13K|https://js13kgames.com/entries/rectangular-13k
+floriico|Fight back|https://js13kgames.com/entries/fight-back
+floriico|Lost Island|https://js13kgames.com/entries/lost-island
+flowerio|Balloon Problems|https://js13kgames.com/entries/balloon-problems
+flushpot1125|Find the changed back|https://js13kgames.com/entries/find-the-changed-back
+foumart|Formation Absent|https://js13kgames.com/entries/formation-absent
+foumart|Moai Alley|https://js13kgames.com/2023/games/moai-alley
+foumart|Odyssey|https://js13kgames.com/2024/games/odyssey
+foumart|Skip'n Glitch|https://js13kgames.com/entries/skipn-glitch
+foumart|Storm Of The Chaos Bane|https://js13kgames.com/entries/storm-of-the-chaos-bane
+foumart|Super Bunny Strikes Back!|https://js13kgames.com/entries/super-bunny-strikes-back
+foumart|WinWin|https://js13kgames.com/entries/winwin
+foumart|in ASCENT|https://js13kgames.com/entries/in-ascent
+fraziern|A|https://js13kgames.com/entries/a-snake
+frenchfaso|BiT|https://js13kgames.com/entries/bit-back-in-time
+furstenheim|Robo Wars|https://js13kgames.com/entries/robo-wars
+gabboraron|Back to the Earth|https://js13kgames.com/entries/back-to-the-earth
+gabboraron|Constellation Wars|https://js13kgames.com/entries/constellation-wars
+gabboraron|DebrISS|https://js13kgames.com/entries/debriss
+gabboraron|FIND THE LOST CROSS!|https://js13kgames.com/entries/find-the-lost-cross
+gabboraron|Keep them OFF the LINE|https://js13kgames.com/entries/keep-them-off-the-line
+gabboraron|Mitternacht|https://js13kgames.com/entries/mitternacht
+gabboraron|PrisonRi0t|https://js13kgames.com/entries/prisonri0t
+gabboraron|Witch Hunter|https://js13kgames.com/2024/games/witch-hunter
+gabboraron|search for the errors|https://js13kgames.com/entries/search-for-the-errors
+gabrieledarrigo|Sciara of Colors|https://js13kgames.com/entries/sciara-of-colors
+gabrieledarrigo|Thirteen Destroyer|https://js13kgames.com/entries/thirteen-destroyer
+gabrielerbetta|Network Defense|https://js13kgames.com/entries/network-defense
+gagamoto|Charming Rainbow Rabbit|https://js13kgames.com/entries/charming-rainbow-rabbit
+gagamoto|Nimbus|https://js13kgames.com/entries/nimbus
+gagiopapinni|Back & Forth|https://js13kgames.com/entries/back-forth
+gamealchemist|Escape from Flip City|https://js13kgames.com/entries/escape-from-flip-city
+garthwales|Lost Drifter|https://js13kgames.com/entries/lost-drifter
+garuna-m6|MindFlash|https://js13kgames.com/entries/mindflash
+gauravmuk|Flappy Ball|https://js13kgames.com/entries/flappy-ball
+gauravmuk|Lost Cruise|https://js13kgames.com/entries/lost-cruise
+getrealjustin|reversal probe|https://js13kgames.com/entries/reversal-probe
+ghazniali95|The Lost Diamonds|https://js13kgames.com/entries/the-lost-diamonds
+gheja|Bokosan|https://js13kgames.com/entries/bokosan
+gheja|Bring your customers back online!|https://js13kgames.com/entries/bring-your-customers-back-online
+gheja|Cooking for Skully|https://js13kgames.com/entries/cooking-for-skully
+gheja|Glitch in outer space|https://js13kgames.com/entries/glitch-in-outer-space
+gheja|Hauntriska|https://js13kgames.com/2024/games/hauntriska
+gheja|Marshmallow playback|https://js13kgames.com/entries/marshmallow-playback
+gheja|Operation Cleanaholeic|https://js13kgames.com/entries/operation-cleanaholeic
+gheja|Raccoon Transport 404|https://js13kgames.com/entries/raccoon-transport-404
+gheja|Trado Polo explores|https://js13kgames.com/2023/games/trado-polo-explores
+gheja|Where is Winston|https://js13kgames.com/entries/where-is-winston
+gheja|untitled13|https://js13kgames.com/entries/untitled13
+gigatesseract|Survival|https://js13kgames.com/entries/survival
+girish3|Dodger|https://js13kgames.com/entries/dodger
+githubschman|Rain Bow|https://js13kgames.com/entries/rain-bow
+gjeck|Mazeren|https://js13kgames.com/entries/mazeren
+glevoux|How I Saved the Internet|https://js13kgames.com/entries/how-i-saved-the-internet
+gllms|Off Line|https://js13kgames.com/entries/off-line
+gogoprog|Mini13 : A very minimal fps|https://js13kgames.com/2024/games/mini13-a-very-minimal-fps
+gogoprog|Minipuyo|https://js13kgames.com/2023/games/minipuyo
+gokhantank|pixel|https://js13kgames.com/entries/pixel-copter
+goldenratio|Green Orb|https://js13kgames.com/entries/green-orb
+goldins|Shutdown|https://js13kgames.com/entries/shutdown
+graetas|upside_down|https://js13kgames.com/entries/upsidedown
+grassydragon|Planet 404 that is yet to be found|https://js13kgames.com/entries/planet-404-that-is-yet-to-be-found
+grebneerg|Wandering Moon|https://js13kgames.com/entries/wandering-moon
+greeneman42|Pipe Net|https://js13kgames.com/entries/pipe-net
+gregorybesson|Fast way to die|https://js13kgames.com/entries/fast-way-to-die
+gregorybesson|StalineBingo|https://js13kgames.com/entries/stalinebingo
+gregpabian|Captain Reverso|https://js13kgames.com/entries/captain-reverso
+gregpabian|Cyber Shmup|https://js13kgames.com/entries/cyber-shmup
+gregpabian|Rescue Copter|https://js13kgames.com/entries/rescue-copter
+gregwoodsfrontier|Echoes of Depth|https://js13kgames.com/entries/echoes-of-depth
+gregwoodsfrontier|Wands of Triskaidekai|https://js13kgames.com/2024/games/wands-of-triskaidekai
+grelf-net|Cards13k|https://js13kgames.com/2024/games/cards13k
+grelf-net|Free Spirits|https://js13kgames.com/entries/free-spirits
+gre|AMAZ3D|https://js13kgames.com/entries/amaz3d
+gre|Behind Asteroids|https://js13kgames.com/entries/behind-asteroids-the-dark-side
+gre|IBEX|https://js13kgames.com/entries/ibex
+gre|Timelapse|https://js13kgames.com/entries/timelapse
+gryszkiewicz|Mage 2016|https://js13kgames.com/entries/mage-2016
+gtanczyk|MasterPlan|https://js13kgames.com/entries/masterplan-offline-multiplayer-game
+gtanczyk|Monster Steps|https://js13kgames.com/2024/games/monster-steps
+gtanczyk|Riversed|https://js13kgames.com/entries/riversed
+gtspina|The Game|https://js13kgames.com/entries/the-game
+gurumukhi|Give Space|https://js13kgames.com/entries/give-space
+gurumukhi|WhozFast|https://js13kgames.com/entries/whozfast
+gyoshev|Life of Blobb|https://js13kgames.com/entries/life-of-blobb
+hagainiv|Angry Cleaning Robot|https://js13kgames.com/entries/angry-cleaning-robot
+hakan-einarsson|The Soothsayer and the Carpenter|https://js13kgames.com/entries/the-soothsayer-and-the-carpenter
+hakan-einarsson|To Health With You!|https://js13kgames.com/2023/games/to-health-with-you
+hakelimopu|Wandermaze|https://js13kgames.com/entries/wandermaze
+halfnelson|Reverse and Try Again|https://js13kgames.com/entries/reverse-and-try-again
+hannujaakkola|A DRIVING GAME WHERE ACTUALLY YOUR CAR IS THE WORST|https://js13kgames.com/entries/a-driving-game-where-actually-your-car-is-the-worst
+harsanalif|A King's Journey: Chapter 3: Trapped & Poisoned|https://js13kgames.com/entries/a-kings-journey-chapter-3-trapped-poisoned
+harsanalif|SLIP|https://js13kgames.com/entries/slip
+harsh-98|Adventure Time|https://js13kgames.com/entries/adventure-time
+harsh-98|Ludo|https://js13kgames.com/entries/ludo
+harshalitalele|Catch the Signal|https://js13kgames.com/entries/catch-the-signal
+hchangjae|stronger|https://js13kgames.com/entries/stronger
+hellosiyan|Ghost Goes Lost|https://js13kgames.com/entries/ghost-goes-lost
+hellosiyan|Sand|https://js13kgames.com/entries/sand
+hemanth-hk|Shoot2Live|https://js13kgames.com/entries/shoot2live
+hemanth-hk|Toe|https://js13kgames.com/entries/toe-tac-tic
+hemartin|Chicken on a Line|https://js13kgames.com/entries/chicken-on-a-line
+hemartin|Run Chicken Run|https://js13kgames.com/entries/run-chicken-run
+hemkaran|Sum It Up|https://js13kgames.com/entries/sum-it-up
+herebefrogs|2021: a Space Opera|https://js13kgames.com/entries/2021-a-space-opera
+herebefrogs|A Tourist in Paris|https://js13kgames.com/entries/a-tourist-in-paris
+herebefrogs|Blade Gunner|https://js13kgames.com/entries/blade-gunner
+herebefrogs|Do Not Look Back!|https://js13kgames.com/entries/do-not-look-back
+herebefrogs|Highway 404|https://js13kgames.com/entries/highway-404
+herebefrogs|SUP3RFR1GHT VR|https://js13kgames.com/2024/games/sup3rfr1ght-vr
+herebefrogs|Stand By Me|https://js13kgames.com/entries/stand-by-me
+herebefrogs|Submersible Warship 2063|https://js13kgames.com/entries/submersible-warship-2063
+hex13|Counting Mind|https://js13kgames.com/2024/games/counting-mind
+hex13|Noble Rivers|https://js13kgames.com/2023/games/noble-rivers
+hex13|Radiospace Failure|https://js13kgames.com/entries/radiospace-failure
+hgcummings|RunRun Rabbit|https://js13kgames.com/entries/runrun-rabbit
+hgcummings|Tonality|https://js13kgames.com/entries/tonality
+hgcummings|kill|https://js13kgames.com/entries/kill-9
+hitokun-s|Death March 100 days|https://js13kgames.com/entries/death-march-100-days
+hjplumtree|Escape or Die|https://js13kgames.com/entries/escape-or-die
+hjplumtree|Heal The World|https://js13kgames.com/entries/heal-the-world
+hjplumtree|MOON RABBITS|https://js13kgames.com/entries/moon-rabbits
+hjplumtree|Stolen Happiness|https://js13kgames.com/entries/stolen-happiness
+holosiek|Back up|https://js13kgames.com/entries/back-up
+holyujwesss|Space Tanks|https://js13kgames.com/entries/space-tanks
+horizon0708|charged|https://js13kgames.com/entries/charged
+hostmepanda|Escape 13th floor dungeon|https://js13kgames.com/2024/games/escape-13th-floor-dungeon
+hseager|Exilium: The Fall of Dominus|https://js13kgames.com/2024/games/exilium-the-fall-of-dominus
+huijari|Game of Ur|https://js13kgames.com/entries/game-of-ur
+hvox|Paraskevidekatriaphobia|https://js13kgames.com/2024/games/paraskevidekatriaphobia
+hybr85|1:13 AM|https://js13kgames.com/2024/games/1-13-am
+iAndrew25|M13E|https://js13kgames.com/2024/games/m13e
+iGitScor|Robot time machine|https://js13kgames.com/entries/robot-time-machine
+iGitScor|Soldier run|https://js13kgames.com/entries/soldier-run
+iGitScor|Who would you choose ?|https://js13kgames.com/entries/who-would-you-choose
+iShafayet|Khilji's Folly|https://js13kgames.com/2023/games/khiljis-folly
+iShafayet|National Accident Day|https://js13kgames.com/2024/games/national-accident-day
+iShafayet|OCD Relief|https://js13kgames.com/entries/ocd-relief
+iShafayet|PolyLithic|https://js13kgames.com/entries/polylithic
+ianllewellyn|Gunship13k|https://js13kgames.com/entries/gunship13k
+ibrahim-301|Last Moon Bunker|https://js13kgames.com/entries/last-moon-bunker
+ibrahim-301|Space Bar Maker|https://js13kgames.com/entries/space-bar-maker
+ickack|SpaceDucts!|https://js13kgames.com/entries/spaceducts
+igamerx|Dungeon Of Curse|https://js13kgames.com/2024/games/dungeon-of-curse
+igamerx|The 13th King's Odyssey|https://js13kgames.com/2023/games/the-13th-kings-odyssey
+ighour|Back to Game|https://js13kgames.com/entries/back-to-game
+ilesar|Pickr|https://js13kgames.com/entries/pickr
+imagineeeinc|Where in Space?|https://js13kgames.com/entries/where-in-space
+imanolperez|Button Football|https://js13kgames.com/entries/button-football
+imanolperez|Space Journey|https://js13kgames.com/entries/space-journey
+imanolperez|spinElements|https://js13kgames.com/entries/spinelements
+imgss|wolf and sheep|https://js13kgames.com/entries/wolf-and-sheep
+imkieransmith|DEEP SPACE|https://js13kgames.com/entries/deep-space
+imscary|Can't Get Back|https://js13kgames.com/entries/cant-get-back
+imscary|The Unseen Network|https://js13kgames.com/entries/the-unseen-network
+indies4indies|Geometriko|https://js13kgames.com/entries/geometriko
+infernet89|B.|https://js13kgames.com/2023/games/b
+infernet89|Beef Jezos Space Program|https://js13kgames.com/entries/beef-jezos-space-program
+infernet89|DECIDOPHOBIA|https://js13kgames.com/2024/games/decidophobia
+infernet89|Four or FOUR|https://js13kgames.com/entries/four-or-four
+infernet89|Have you missed the TUTORIAL for life?|https://js13kgames.com/entries/have-you-missed-the-tutorial-for-life
+infernet89|How the **** did you get there?|https://js13kgames.com/entries/how-the-did-you-get-there
+infernet89|Ouroboros|https://js13kgames.com/entries/ouroboros
+infernet89|Sand Adder|https://js13kgames.com/entries/sand-adder
+infernet89|The END of the WORLD|https://js13kgames.com/entries/the-end-of-the-world
+infernet89|The Value of Time 2|https://js13kgames.com/entries/the-value-of-time-2
+infernet89|This game has a random title|https://js13kgames.com/entries/this-game-has-a-random-title
+infernet89|Trick That Tome|https://js13kgames.com/entries/trick-that-tome
+inlbe|EAAITO|https://js13kgames.com/entries/eaaito
+inlbe|Information Super Highway 404|https://js13kgames.com/entries/information-super-highway-404
+inlbe|Oh, My Poor Rheumatic Back|https://js13kgames.com/entries/oh-my-poor-rheumatic-back
+inlbe|Pacific Air Battle|https://js13kgames.com/entries/pacific-air-battle
+inlbe|Space Station Ordeal|https://js13kgames.com/entries/space-station-ordeal
+inlbe|The Walls Are Lasers|https://js13kgames.com/entries/the-walls-are-lasers
+inn3rGames|Got your back!|https://js13kgames.com/entries/got-your-back
+intentmoose|Papyrus, Please|https://js13kgames.com/entries/papyrus-please
+intentmoose|Robo 13th regiment attack|https://js13kgames.com/2024/games/robo-13th-regiment-attack
+invider|City of Lost Drones|https://js13kgames.com/entries/city-of-lost-drones
+invider|Cybergrid|https://js13kgames.com/entries/cybergrid-13
+invider|Liminal Gap Runner|https://js13kgames.com/2024/games/liminal-gap-runner
+invider|Surveyor|https://js13kgames.com/entries/surveyor
+isacben|Unblock|https://js13kgames.com/2024/games/unblock
+isacben|Wanted|https://js13kgames.com/2023/games/wanted
+ishg|desrever1|https://js13kgames.com/entries/desrever1
+itachi-2016|Lost Colors|https://js13kgames.com/entries/lost-colors
+iurmarius|GeekTacToe|https://js13kgames.com/entries/geektactoe
+ivo-|Galaxy Trip|https://js13kgames.com/entries/galaxy-trip
+jBlack87|Detro|https://js13kgames.com/entries/detro
+jaammees|Exit|https://js13kgames.com/entries/exit
+jaammees|Stay Off The Red Line|https://js13kgames.com/entries/stay-off-the-red-line
+jaammees|Teleport|https://js13kgames.com/entries/teleport
+jaammees|racer|https://js13kgames.com/entries/racer
+jaburns|404kph|https://js13kgames.com/entries/404kph
+jaburns|CannonBolf|https://js13kgames.com/2023/games/cannonbolf
+jaburns|Galaxy Rider|https://js13kgames.com/entries/galaxy-rider
+jaburns|Slipstream 13k|https://js13kgames.com/entries/slipstream-13k
+jackghicks|I Am Geoffrey!|https://js13kgames.com/entries/i-am-geoffrey
+jacklehamster|The Terror of Mongolia|https://js13kgames.com/2023/games/the-terror-of-mongolia
+jackrugile|Elematter|https://js13kgames.com/entries/elematter
+jackrugile|Radius Raid|https://js13kgames.com/entries/radius-raid
+jackrugile|SpacePi|https://js13kgames.com/entries/spacepi
+jacksonfrankland|Solar Storm|https://js13kgames.com/entries/solar-storm
+jacobgardner|Get Gerry Home|https://js13kgames.com/entries/get-gerry-home
+jaeg|BotWar|https://js13kgames.com/entries/botwar
+jaeg|Dark Legend|https://js13kgames.com/entries/dark-legend
+jaeg|Glitch in Virtual Reality|https://js13kgames.com/entries/glitch-in-virtual-reality
+jaeg|Just Your Luck Casino|https://js13kgames.com/entries/just-your-luck-casino
+jaeg|Simon|https://js13kgames.com/entries/simon
+jagenjo|Deep13|https://js13kgames.com/2024/games/deep13
+jagenjo|EVAC3D|https://js13kgames.com/entries/evac3d
+jagenjo|Knights of Acre|https://js13kgames.com/2023/games/knights-of-acre
+jakubsikora|Lost Luggage|https://js13kgames.com/entries/lost-luggage
+jakubtelec|Byte! Deliver Yourself|https://js13kgames.com/entries/byte-deliver-yourself
+jaldhar|Olympic Hide & Seek Retrospective: Atlanta 1996|https://js13kgames.com/entries/olympic-hide-seek-retrospective-atlanta-1996
+jaldhar|Perdu|https://js13kgames.com/entries/perdu
+jaller94|Asteroids Extended|https://js13kgames.com/entries/asteroids-extended
+jaller94|Boat racing 404|https://js13kgames.com/entries/boat-racing-404
+jaller94|Fly South|https://js13kgames.com/entries/fly-south
+jaller94|We fight back!|https://js13kgames.com/entries/we-fight-back
+jalvarez2016|Meadow|https://js13kgames.com/entries/meadow
+jamWithJS|Refuel The Factory|https://js13kgames.com/entries/refuel-the-factory
+jamesmeister14|Lost in Font|https://js13kgames.com/entries/lost-in-font
+jamesseanwright|Glitch Hunt|https://js13kgames.com/entries/glitch-hunt
+jamesseanwright|Time Worm!|https://js13kgames.com/entries/time-worm
+jameswilddev|Back in Black|https://js13kgames.com/entries/back-in-black
+jani-nykanen|Dying Dreams|https://js13kgames.com/entries/dying-dreams
+jani-nykanen|Ghosted|https://js13kgames.com/2024/games/ghosted
+jani-nykanen|Knight Dreams|https://js13kgames.com/2023/games/knight-dreams
+jani-nykanen|PUZZLEggs|https://js13kgames.com/entries/puzzleggs
+jani-nykanen|The Maze of Space Goblins|https://js13kgames.com/entries/the-maze-of-space-goblins
+jani-nykanen|Those Final Seconds|https://js13kgames.com/2024/games/those-final-seconds
+jannehuo|Space Trouble|https://js13kgames.com/entries/space-trouble
+japhethbalane|Entangled|https://js13kgames.com/entries/entangled
+japhethbalane|Square|https://js13kgames.com/entries/square
+japhethbalane|glitch|https://js13kgames.com/entries/glitch
+jaredyork|Aurora Snap|https://js13kgames.com/2024/games/aurora-snap
+jaredyork|CosmoColonies|https://js13kgames.com/entries/cosmocolonies
+jaredyork|Crystal Blast|https://js13kgames.com/entries/crystal-blast
+jaredyork|Fortifia|https://js13kgames.com/2023/games/fortifia
+jaredyork|Steer Clear|https://js13kgames.com/entries/steer-clear
+jaredyork|Stella Proelium|https://js13kgames.com/entries/stella-proelium
+jaredyork|Storm Surge|https://js13kgames.com/entries/storm-surge
+jarvispact|the|https://js13kgames.com/entries/the-hidden-death
+javi11|Richy the squeaker boy|https://js13kgames.com/entries/richy-the-squeaker-boy
+javirana19|Breakout Game|https://js13kgames.com/2023/games/breakout-game
+jayther|Death Estate|https://js13kgames.com/entries/death-estate
+jayther|Employee Not Found|https://js13kgames.com/entries/employee-not-found
+jayther|Turtleback|https://js13kgames.com/entries/turtleback
+jeremiahfernandez97|Forklift Simulator 2022|https://js13kgames.com/entries/forklift-simulator-2022
+jeremiahfernandezzzz|Raider of the Lost Gems|https://js13kgames.com/entries/raider-of-the-lost-gems
+jeremiahfernandezzzz|off|https://js13kgames.com/entries/off-grid
+jeremyjackson89|The Rescue|https://js13kgames.com/entries/the-rescue
+jessiesu|What's That Sound?|https://js13kgames.com/entries/whats-that-sound
+jesstelford|Death Golf|https://js13kgames.com/entries/death-golf
+jesstelford|Shoot Back|https://js13kgames.com/entries/shoot-back
+jesusolmossanchez|LOST AND ANGRY|https://js13kgames.com/entries/lost-and-angry
+jlbousing|Boom|https://js13kgames.com/entries/boom-chase
+joeyapa|Adrift to the Abyss|https://js13kgames.com/entries/adrift-to-the-abyss
+joeyapa|Offline Mobile Gear|https://js13kgames.com/entries/offline-mobile-gear
+johnafolayan|Battle Surge|https://js13kgames.com/entries/battle-surge
+johnafolayan|Lone Guard|https://js13kgames.com/entries/lone-guard-the-software
+johnedvard|Black Jack 404|https://js13kgames.com/entries/black-jack-404
+johnedvard|Bubble Burst|https://js13kgames.com/2024/games/bubble-burst
+johnedvard|Circle Back|https://js13kgames.com/entries/circle-back
+johnedvard|Hang by a thread|https://js13kgames.com/entries/hang-by-a-thread
+johnedvard|Kurve Space|https://js13kgames.com/entries/kurve-space
+johnedvard|Samurai Sam|https://js13kgames.com/2023/games/samurai-sam
+jonathan-vallet|13 Steps to Escape|https://js13kgames.com/2024/games/13-steps-to-escape
+jonathan-vallet|Alone in darkness|https://js13kgames.com/entries/alone-in-darkness
+jonathan-vallet|Cardice|https://js13kgames.com/entries/cardice
+jonathan-vallet|Electro|https://js13kgames.com/entries/electro
+jonathan-vallet|Lonely soul|https://js13kgames.com/entries/lonely-soul
+jonathan-vallet|Super Peach World|https://js13kgames.com/entries/super-peach-world
+jonathan-vallet|Tindeath|https://js13kgames.com/entries/tindeath
+jonwiesman|Back Back Back Back Gone!|https://js13kgames.com/entries/back-back-back-back-gone
+jonwiesman|Mulligan's Island|https://js13kgames.com/entries/mulligans-island
+joorce|Back to oxygen|https://js13kgames.com/entries/back-to-oxygen
+jordanjwatkins|America Offline|https://js13kgames.com/entries/america-offline
+jordanjwatkins|Bot's Back|https://js13kgames.com/entries/bots-back
+jordanjwatkins|Death Cure|https://js13kgames.com/entries/death-cure
+jordanjwatkins|Fear Species 13|https://js13kgames.com/2024/games/fear-species-13-k
+jordanjwatkins|Glitch Blob|https://js13kgames.com/entries/glitch-blob
+jordanjwatkins|Gnomedom|https://js13kgames.com/entries/gnomedom
+jordanjwatkins|Jam Champs: 404 Princess Not Found|https://js13kgames.com/entries/jam-champs-404-princess-not-found
+jordanjwatkins|The Space Bar Salooneasy|https://js13kgames.com/entries/the-space-bar-salooneasy
+jordanjwatkins|Vagabond King of Cards|https://js13kgames.com/2023/games/vagabond-king-of-cards
+jorgetrad99|Logic Shooter|https://js13kgames.com/entries/logic-shooter
+joseasv|Lost Pages|https://js13kgames.com/entries/lost-pages
+josebuenodvlp|NoetWork|https://js13kgames.com/entries/noetwork
+joseph-kaainoa|Escape! Room|https://js13kgames.com/entries/escape-room
+josephjaniga|desreveR|https://js13kgames.com/entries/desrever
+joseprio|Galaxy Raid|https://js13kgames.com/entries/galaxy-raid
+joseprio|Planet Not Found|https://js13kgames.com/entries/planet-not-found
+joshgoebel|ZigClimb Reborn|https://js13kgames.com/entries/zigclimb-reborn
+joshuashoemaker|She's Lost|https://js13kgames.com/entries/shes-lost
+jppresents|lost in space|https://js13kgames.com/entries/lost-in-space
+js636f|Don't Go Back|https://js13kgames.com/entries/dont-go-back
+jsdisco|Music Memory|https://js13kgames.com/entries/music-memory
+jubelcassio|System Crawler|https://js13kgames.com/entries/system-crawler
+juhani-o|Game Of Death|https://js13kgames.com/entries/game-of-death
+juhani-o|The Forbidden Number|https://js13kgames.com/2024/games/the-forbidden-number
+julienkermarec|Access Points|https://js13kgames.com/entries/access-points
+julienkermarec|Backorder Storehouse|https://js13kgames.com/entries/backorder-storehouse
+junsikshim|Eat My Dust!|https://js13kgames.com/entries/eat-my-dust
+jure|1257 Samalas|https://js13kgames.com/2023/games/1257-samalas
+jure|The Dandelion Wars|https://js13kgames.com/2024/games/the-dandelion-wars
+jure|plusminus13|https://js13kgames.com/2024/games/plusminus13
+justenPalmer|Lost Sessions With Bob|https://js13kgames.com/entries/lost-sessions-with-bob
+justgage|Jarl|https://js13kgames.com/entries/jarl
+justinasfour04|Find an Exit|https://js13kgames.com/entries/find-an-exit
+justindarc|Sum 13|https://js13kgames.com/entries/sum-13
+justinmeiners|Volcano Drop|https://js13kgames.com/entries/volcano-drop
+justinsullard|13 Drums|https://js13kgames.com/2023/games/13-drums
+jvalecillos|404 laundry not found|https://js13kgames.com/entries/404-laundry-not-found
+jwigert|Moon Buggy Racing|https://js13kgames.com/entries/moon-buggy-racing
+k-daiguji|Apex Predator|https://js13kgames.com/entries/apex-predator
+k-daiguji|M7 Summit|https://js13kgames.com/2024/games/m7-summit
+k4ni5h|Lost Color Click|https://js13kgames.com/entries/lost-color-click
+kaizau|An HTTP Story|https://js13kgames.com/entries/an-http-story
+kakus|Brave Hero Adventure|https://js13kgames.com/entries/brave-hero-adventure
+kakus|Bulletcraft|https://js13kgames.com/entries/bulletcraft
+kakus|Shapes Love Numbers|https://js13kgames.com/entries/shapes-love-numbers
+kamal01k|Lost Sanity|https://js13kgames.com/entries/lost-sanity
+kamsac|Service Provider|https://js13kgames.com/entries/service-provider
+kanav-7|Key Locked|https://js13kgames.com/entries/key-locked
+kangjung|13C Defense|https://js13kgames.com/2023/games/13c-defense
+kangjung|13|https://js13kgames.com/2024/games/13-maze
+kangjung|Death Scythe|https://js13kgames.com/entries/death-scythe
+karanganesan|Gun Gale Offline|https://js13kgames.com/entries/gun-gale-offline
+karanganesan|Lost in Metaverse|https://js13kgames.com/entries/lost-in-metaverse
+karanganesan|Sword Art Offline|https://js13kgames.com/entries/sword-art-offline
+karjona|The Reapers: Tournament of Destiny|https://js13kgames.com/entries/the-reapers-tournament-of-destiny
+kaseyhinton|Space Defense Engineer|https://js13kgames.com/entries/space-defense-engineer
+katubrd|where?what?|https://js13kgames.com/entries/wherewhat
+kbanico|Lost in Guam|https://js13kgames.com/entries/lost-in-guam
+kcaze|Zodiac 13|https://js13kgames.com/entries/zodiac-13
+kdzwinel|The Amazing Mole|https://js13kgames.com/entries/the-amazing-mole
+kdzwinel|The Bad Luck Game|https://js13kgames.com/entries/the-bad-luck-game
+kennyfully1988|13all Room|https://js13kgames.com/2024/games/13all-room
+kesara|13Kars|https://js13kgames.com/entries/13kars
+kevadsett|Glitch Switcher|https://js13kgames.com/entries/glitch-switcher
+kevadsett|Late Runner|https://js13kgames.com/entries/late-runner
+kevadsett|Wind Rider|https://js13kgames.com/entries/wind-rider
+kevincennis|CRASIS|https://js13kgames.com/entries/crasis
+kforbrok|desert|https://js13kgames.com/entries/desert-simsh
+killbot|sHpere|https://js13kgames.com/entries/shpere
+kirbysayshi|Night Shift Barista|https://js13kgames.com/entries/night-shift-barista
+kirbysayshi|Signal Decay|https://js13kgames.com/entries/signal-decay
+kirilloid|rotatris|https://js13kgames.com/entries/rotatris
+kittykatattack|Oh Well!|https://js13kgames.com/entries/oh-well
+kkjdaniel|BitTrip|https://js13kgames.com/entries/bittrip
+knaple|Best Game Ever. Of All Time. Ever.|https://js13kgames.com/entries/best-game-ever-of-all-time-ever
+knyazer|Fighter planes|https://js13kgames.com/entries/fighter-planes
+kostik1337|CHOCH|https://js13kgames.com/entries/choch
+kostik1337|Kosminenvirtaus|https://js13kgames.com/entries/kosminenvirtaus
+kos|Beat Rocks|https://js13kgames.com/entries/beat-rocks
+kotoricode|NOT YET|https://js13kgames.com/entries/not-yet
+kozanecki-p|Long|https://js13kgames.com/entries/long-distance-relationship
+kozlov-victor|Lost Connection|https://js13kgames.com/entries/lost-connection
+kpluta|BeatIT|https://js13kgames.com/entries/beatit
+krajzeg|Compact Conflict|https://js13kgames.com/entries/compact-conflict
+krishnakanthati|Code|https://js13kgames.com/entries/code-farm
+krishnan57474|Lost in obstacles|https://js13kgames.com/entries/lost-in-obstacles
+krissz28|Traffic|https://js13kgames.com/entries/traffic
+kruffin|13|https://js13kgames.com/2024/games/13-blades
+krupinskij|Van Helsing|https://js13kgames.com/entries/van-helsing
+krzychukula|Canon Defense|https://js13kgames.com/entries/canon-defense
+kuchbhi|Catch13|https://js13kgames.com/entries/catch13
+kucukkanat|Call Center Mess|https://js13kgames.com/entries/call-center-mess
+kulak-at|Gravepassing|https://js13kgames.com/entries/gravepassing
+kulak-at|welcome to the cyberspace|https://js13kgames.com/entries/welcome-to-the-cyberspace
+kurazu|The Back|https://js13kgames.com/entries/the-back-up-of-you
+kutuluk|Bounty Islands|https://js13kgames.com/2024/games/bounty-islands
+kylejspeaker|They Are Lost|https://js13kgames.com/entries/they-are-lost
+kyodix|Watch Out|https://js13kgames.com/entries/watch-out
+l-brett|Dungeon Escape|https://js13kgames.com/entries/dungeon-escape
+ladyinblack|Guess My Triski|https://js13kgames.com/2024/games/guess-my-triski
+ladyinblack|Reversed Ice Throwers|https://js13kgames.com/entries/reversed-ice-throwers
+ladyinblack|We're Offline|https://js13kgames.com/entries/were-offline
+lanceewing|Astro Miners|https://js13kgames.com/entries/astro-miners
+lanceewing|Back to Life Adventure|https://js13kgames.com/entries/back-to-life-adventure
+lanceewing|Down the Drain|https://js13kgames.com/entries/down-the-drain
+lanceewing|I've Been Ghosting|https://js13kgames.com/entries/ive-been-ghosting
+lanceewing|Shadow Ball|https://js13kgames.com/entries/shadow-ball
+lanceewing|The 13th Door|https://js13kgames.com/2024/games/the-13th-door
+lanceewing|The King's Missing Page|https://js13kgames.com/entries/the-kings-missing-page
+lanceewing|You've Been Glitched|https://js13kgames.com/entries/youve-been-glitched
+langq235|Keep online|https://js13kgames.com/entries/keep-online
+lazyeels|Lost in my mind|https://js13kgames.com/entries/lost-in-my-mind
+lazyeels|Space mines|https://js13kgames.com/entries/space-mines
+lcapps-luke|13 Curses|https://js13kgames.com/2024/games/13-curses
+lcapps-luke|404|https://js13kgames.com/entries/404-remain-not-found
+lcapps-luke|Chrono Bomb|https://js13kgames.com/entries/chrono-bomb
+lcapps-luke|Death Game|https://js13kgames.com/entries/death-game
+lcapps-luke|Glitchformer|https://js13kgames.com/entries/glitchformer
+lcapps-luke|Lost In The Forest Dungeon|https://js13kgames.com/entries/lost-in-the-forest-dungeon
+lcapps-luke|Meandering Medieval Merchant|https://js13kgames.com/2023/games/meandering-medieval-merchant
+lcapps-luke|Network Offline|https://js13kgames.com/entries/network-offline
+lcapps-luke|Solar Defence|https://js13kgames.com/entries/solar-defence
+ldoc|Offline Race|https://js13kgames.com/entries/offline-race
+ldrummond|Cursed|https://js13kgames.com/entries/cursed
+ldrummond|Infernal Adolescence|https://js13kgames.com/2024/games/infernal-adolescence
+lean8086|70 seconds of terror|https://js13kgames.com/entries/70-seconds-of-terror
+leekish|The Sucker|https://js13kgames.com/entries/the-sucker
+leokuo0724|Mongol March|https://js13kgames.com/2023/games/mongol-march
+leokuo0724|Templar's Final Stand|https://js13kgames.com/2024/games/templars-final-stand
+lespin|electron life simulator|https://js13kgames.com/entries/electron-life-simulator
+lewdev|13attle TanKs|https://js13kgames.com/2024/games/13attle-tanks
+lhokktyn|Reverse the Darkness|https://js13kgames.com/entries/reverse-the-darkness
+lightster|Niwatori|https://js13kgames.com/2024/games/niwatori
+liningyuan|BounceBack|https://js13kgames.com/entries/bounceback
+liruenth|Encoded Maze|https://js13kgames.com/entries/encoded-maze
+liruenth|Greedy Circles: The maze of riches|https://js13kgames.com/entries/greedy-circles-the-maze-of-riches
+lislis|Quintessential|https://js13kgames.com/entries/quintessential
+lislis|backstreetsback|https://js13kgames.com/entries/backstreetsback
+lislis|cat meow|https://js13kgames.com/entries/cat-meow
+lociko|Rectangles|https://js13kgames.com/entries/rectangles
+logan-neyt|Loadshedding|https://js13kgames.com/entries/loadshedding
+loganfranken|Control|https://js13kgames.com/entries/control
+loganfranken|Elum|https://js13kgames.com/entries/elum
+loganfranken|Island Hopper|https://js13kgames.com/entries/island-hopper
+loganfranken|ParaTec Systems|https://js13kgames.com/entries/paratec-systems
+loktar00|Ribbit Smash|https://js13kgames.com/entries/ribbit-smash
+lopis|Ant Space|https://js13kgames.com/entries/ant-space
+lopis|For O'Foughr|https://js13kgames.com/entries/for-ofoughr
+lopis|Hoosdere|https://js13kgames.com/entries/hoosdere
+lopis|Market Street Tycoon|https://js13kgames.com/2023/games/market-street-tycoon
+lopis|Planet B|https://js13kgames.com/entries/planet-b
+lopis|Regresso|https://js13kgames.com/entries/regresso
+lopis|Signalmon|https://js13kgames.com/entries/signalmon
+lopis|Thirteen Terrible Stunts|https://js13kgames.com/2024/games/thirteen-terrible-stunts
+lovesupercomputer|The Lost Samurai|https://js13kgames.com/entries/the-lost-samurai
+lpagg|Dive and Pick|https://js13kgames.com/entries/dive-and-pick
+lpagg|HyperSpace|https://js13kgames.com/entries/hyperspace
+lshulyay|Breaking Brad|https://js13kgames.com/entries/breaking-brad
+lshulyay|KROOG|https://js13kgames.com/entries/kroog
+lshulyay|Simulacrum|https://js13kgames.com/entries/simulacrum
+lshulyay|TSVETT|https://js13kgames.com/entries/tsvett
+luanranufe|The Book of Ani|https://js13kgames.com/2023/games/the-book-of-ani
+lucasaug|Black Cat Lucky Hunter|https://js13kgames.com/entries/black-cat-lucky-hunter
+lucasaug|HTTP Runner|https://js13kgames.com/entries/http-runner
+lucentbeam|Trapped in the Hyperdimensional Maze|https://js13kgames.com/entries/trapped-in-the-hyperdimensional-maze
+luisgurmendez|Rescue Mission|https://js13kgames.com/entries/rescue-mission
+luisgurmendez|The Fall of "The Last Tower"|https://js13kgames.com/2023/games/the-fall-of-the-last-tower
+lynchbyte|Marco...?|https://js13kgames.com/2023/games/marco
+lynchbyte|Sunset Stars|https://js13kgames.com/entries/sunset-stars
+lynchbyte|Tic Tac Woe|https://js13kgames.com/entries/tic-tac-woe
+lynchbyte|Triskatopia|https://js13kgames.com/2024/games/triskatopia
+m-nakasato|BSoD|https://js13kgames.com/entries/bsod
+m-nakasato|Puzzle Tower|https://js13kgames.com/2023/games/puzzle-tower
+m-nakasato|Req N' Res|https://js13kgames.com/entries/req-n-res
+m-nakasato|TetromiGo|https://js13kgames.com/2024/games/tetromigo
+m-nakasato|space capture|https://js13kgames.com/entries/space-capture
+madhur-acharya|40Fighter|https://js13kgames.com/entries/40fighter
+madmarcel|Bear|https://js13kgames.com/entries/bear-be-gone-2000
+madmarcel|Behind the Scenery|https://js13kgames.com/entries/behind-the-scenery
+madmarcel|Felicity and the Fifth Element: Love|https://js13kgames.com/entries/felicity-and-the-fifth-element-love
+madmarcel|Hans Fixes the Internet|https://js13kgames.com/entries/hans-fixes-the-internet
+madmarcel|She is my universe|https://js13kgames.com/entries/she-is-my-universe
+madmarcel|Super Dragon Rescue|https://js13kgames.com/entries/super-dragon-rescue
+madmaw|Darkest Derelict|https://js13kgames.com/entries/darkest-derelict
+madmaw|Dragon Simulator|https://js13kgames.com/2023/games/dragon-simulator
+madmaw|Gunturion (Shoot the purple buildings)|https://js13kgames.com/entries/gunturion-shoot-the-purple-buildings
+madmaw|Lost Dungeon|https://js13kgames.com/entries/lost-dungeon
+madmaw|Maz|https://js13kgames.com/entries/maz
+madmaw|Play Back|https://js13kgames.com/entries/play-back
+madmaw|Poust|https://js13kgames.com/entries/poust
+madmaw|RIP|https://js13kgames.com/entries/rip
+madmaw|Raid Area 404|https://js13kgames.com/entries/raid-area-404
+maettig|SORADES 13K|https://js13kgames.com/entries/sorades-13k
+magnitudoOrg|Space Quiz Shooter|https://js13kgames.com/entries/space-quiz-shooter
+magnitudoOrg|Vertex Connector|https://js13kgames.com/entries/vertex-connector
+majo-javorka|Silly Little Tanks|https://js13kgames.com/entries/silly-little-tanks
+malec-palec|Enchanted Dungeon|https://js13kgames.com/entries/enchanted-dungeon
+malec-palec|Space Arcade|https://js13kgames.com/entries/space-arcade
+malec-palec|XIII Floor|https://js13kgames.com/2024/games/xiii-floor
+mallo-c|Thirteens everywhere...|https://js13kgames.com/2024/games/thirteens-everywhere
+mapedorr|The Keeper|https://js13kgames.com/entries/the-keeper
+marcosbitetti|Just Another Space Shooter|https://js13kgames.com/entries/just-another-space-shooter
+mardie|Find it!|https://js13kgames.com/entries/find-it
+mariandev|Backwards Adventure|https://js13kgames.com/entries/backwards-adventure
+mariandev|Kazuki's escape|https://js13kgames.com/entries/kazukis-escape
+mariandev|The forgotten cave|https://js13kgames.com/entries/the-forgotten-cave
+markknol|You have found|https://js13kgames.com/entries/you-have-found
+markusfisch|Conflict Management|https://js13kgames.com/entries/conflict-management
+markusfisch|Eugor|https://js13kgames.com/entries/eugor
+markusfisch|Glitch Yeagers|https://js13kgames.com/entries/glitch-yeagers
+markusfisch|Humwin & Darbold|https://js13kgames.com/entries/humwin-darbold
+markusfisch|Lost City Of S|https://js13kgames.com/2024/games/lost-city-of-s
+markusfisch|Lost Treasures|https://js13kgames.com/entries/lost-treasures
+markusfisch|Musa's Quest|https://js13kgames.com/2023/games/musas-quest
+markusfisch|Pronto|https://js13kgames.com/entries/pronto
+markusfisch|Soyuz 404|https://js13kgames.com/entries/soyuz-404
+markusfisch|Swimming With Sharks|https://js13kgames.com/entries/swimming-with-sharks
+marycourtland|Overpowered|https://js13kgames.com/entries/overpowered
+marycourtland|Shuttle Power Dash|https://js13kgames.com/entries/shuttle-power-dash
+masbagal|THE THIRTEENTH OFFERING|https://js13kgames.com/2024/games/the-thirteenth-offering
+mattdesl|Bellwoods|https://js13kgames.com/entries/bellwoods
+mattdesl|Whistleblower|https://js13kgames.com/entries/whistleblower
+matthewdiamant|Back to Earth|https://js13kgames.com/entries/back-to-earth
+matthewdiamant|There Can Be Only Death|https://js13kgames.com/entries/there-can-be-only-death
+matthewdiamant|Welcome to Space|https://js13kgames.com/entries/welcome-to-space
+maxFritzen|Lost and alone finding stuff, killing (laafsk)|https://js13kgames.com/entries/lost-and-alone-finding-stuff-killing-laafsk
+maxapps|Concentration Lost|https://js13kgames.com/entries/concentration-lost
+maxapps|Off the Line is Bad|https://js13kgames.com/entries/off-the-line-is-bad
+maxkrieger|Mario Catch|https://js13kgames.com/entries/mario-catch
+mbelmadani|Cloud Sweeper|https://js13kgames.com/entries/cloud-sweeper
+mccordgh|Me, Myself, and i|https://js13kgames.com/entries/me-myself-and-i
+mccordgh|THE CORE|https://js13kgames.com/entries/the-core
+mcnultyj|Dottie Back to Sun|https://js13kgames.com/entries/dottie-back-to-sun
+mdbarr|Enmeshed|https://js13kgames.com/entries/enmeshed
+mdiegoli|LOW RES PARTY!|https://js13kgames.com/entries/low-res-party
+mdiegoli|M.Y.H.E.R.O.|https://js13kgames.com/entries/myhero
+mdiegoli|Offline... in space!|https://js13kgames.com/entries/offline-in-space
+mefist0fel|Castle wars|https://js13kgames.com/2023/games/castle-wars
+megafatsquirrel|Arena of Glothad|https://js13kgames.com/entries/arena-of-glothad
+megafatsquirrel|Immoveable Puncher Man|https://js13kgames.com/entries/immoveable-puncher-man
+megagrump|Gamut Shift|https://js13kgames.com/entries/gamut-shift
+merlinvsalfonso|Merlin vs Alfonso|https://js13kgames.com/2023/games/merlin-vs-alfonso
+mguinea|Lost Pacman|https://js13kgames.com/entries/lost-pacman
+mguinea|Lost in a Space Odyssey|https://js13kgames.com/entries/lost-in-a-space-odyssey
+mguinea|Reverse Gravity Ninja|https://js13kgames.com/entries/reverse-gravity-ninja
+mguinea|Space Glitchy Invaders|https://js13kgames.com/entries/space-glitchy-invaders
+mguinea|The Void is Online|https://js13kgames.com/entries/the-void-is-online
+mhcurylo|GlitchSquad|https://js13kgames.com/entries/glitchsquad
+mhcurylo|Squared Lines js13k Reversed|https://js13kgames.com/entries/squared-lines-js13k-reversed
+mhelgeson|AUD13ND|https://js13kgames.com/2024/games/aud13nd
+mhelgeson|Need some space|https://js13kgames.com/entries/need-some-space
+mhmdjawad|Cookie Maze 3d|https://js13kgames.com/2024/games/cookie-maze-3d
+mhmdjawad|LimboRunner|https://js13kgames.com/entries/limborunner
+mhmdjawad|Maze Runner vs 13|https://js13kgames.com/2024/games/maze-runner-vs-13
+mhmdjawad|Robin Hood|https://js13kgames.com/2023/games/robin-hood
+mhmdjawad|The 13 Invaders|https://js13kgames.com/2024/games/the-13-invaders
+mhmdjawad|Tower Defence Walking 13s|https://js13kgames.com/2024/games/tower-defence-walking-13s
+mibix2|Bitty Jump|https://js13kgames.com/2024/games/bitty-jump
+michaelprimo|Bye Roll!|https://js13kgames.com/entries/bye-roll
+michaelprimo|Wonder Wanderer 3|https://js13kgames.com/entries/wonder-wanderer-3
+michalbe|A moment lost in time.|https://js13kgames.com/entries/a-moment-lost-in-time
+michalbe|Afterlife|https://js13kgames.com/entries/afterlife
+michalbe|Backcountry|https://js13kgames.com/entries/backcountry
+michalbe|ESCAPE (2021)|https://js13kgames.com/entries/escape-2021
+michalbe|LOGOUT|https://js13kgames.com/entries/logout
+michalbe|Oh no! All the textures are 404!|https://js13kgames.com/entries/oh-no-all-the-textures-are-404
+michalbe|ROAR|https://js13kgames.com/entries/roar
+michcioperz|Competitive Typo Annihilation|https://js13kgames.com/entries/competitive-typo-annihilation
+michealparks|Keep Calm|https://js13kgames.com/2023/games/keep-calm
+michealparks|The Galactic Asteroid Cleanup Mission|https://js13kgames.com/entries/the-galactic-asteroid-cleanup-1-way-ticket-last-resort-top-secret-mission
+michelts|13th Barber's Guild|https://js13kgames.com/2023/games/13th-barbers-guild
+michelts|Dante's Dev Hell|https://js13kgames.com/entries/dantes-dev-hell
+michelts|Thirteen Truco|https://js13kgames.com/2024/games/thirteen-truco
+mightyaleksey|Medieval Commerce|https://js13kgames.com/2023/games/medieval-commerce
+mightyaleksey|Spirit Hunter|https://js13kgames.com/2024/games/spirit-hunter
+milanmaheshwari|Planet 404|https://js13kgames.com/entries/planet-404
+mildmojo|Whistler's Motive|https://js13kgames.com/entries/whistlers-motive
+minortext|Not So Epic Car Adventure|https://js13kgames.com/entries/not-so-epic-car-adventure
+misabitencourt|Death Sea XIII|https://js13kgames.com/2023/games/death-sea-xiii
+missing-user|No more Space in Space|https://js13kgames.com/entries/no-more-space-in-space
+mitchellabrouwer|ET Escape|https://js13kgames.com/entries/et-escape
+mitermayer|ShapeBlocks|https://js13kgames.com/entries/shapeblocks
+mitruch|GalacticDiamond|https://js13kgames.com/entries/galacticdiamond
+miwamiwa|ape naps|https://js13kgames.com/entries/ape-naps
+miwamiwa|sam's js13k game|https://js13kgames.com/entries/sams-js13k-game
+miwamiwa|spacew|https://js13kgames.com/entries/spacew
+mixon00|Lazer Car|https://js13kgames.com/entries/lazer-car
+mixon00|Reversed Sandwich Maker|https://js13kgames.com/entries/reversed-sandwich-maker
+mkemppainen|Death becomes her|https://js13kgames.com/entries/death-becomes-her
+mkemppainen|Living Space Wars: Orangutan Strikes Back|https://js13kgames.com/entries/living-space-wars-orangutan-strikes-back
+mlambir|nano|https://js13kgames.com/entries/nano-wirebot
+mneubrand|Bomb.js|https://js13kgames.com/entries/bombjs
+mnsilva2|Find the Papers|https://js13kgames.com/entries/find-the-papers
+mnsilva2|Start Over|https://js13kgames.com/entries/start-over
+mnsilva2|Toggle Blackout|https://js13kgames.com/entries/toggle-blackout
+modernfaust|Lost in Funland|https://js13kgames.com/entries/lost-in-funland
+monsterkodi|konnekt|https://js13kgames.com/entries/konnekt
+mooookar|TriskaidekaPool|https://js13kgames.com/2024/games/triskaidekapool
+morazor|The Cursed Mirror|https://js13kgames.com/entries/the-cursed-mirror
+mostofthings|Putt Putt Masters: die to win|https://js13kgames.com/entries/putt-putt-masters-die-to-win
+motamatheus06|Human Invaders|https://js13kgames.com/entries/human-invaders
+mpalmerlee|Chem Fight|https://js13kgames.com/entries/chem-fight
+mppiatkowski|TRASHem|https://js13kgames.com/entries/trashem
+mracette|Bardo|https://js13kgames.com/entries/bardo
+mracette|Big Fish|https://js13kgames.com/entries/big-fish
+mracette|Four, oh Four...|https://js13kgames.com/entries/four-oh-four
+mracette|SPACE JAM|https://js13kgames.com/entries/space-jam
+mrdoob|13kb|https://js13kgames.com/entries/13kb-404
+mrspeaker|Glowbougs|https://js13kgames.com/entries/glowbougs
+msecret|Finding Echo|https://js13kgames.com/entries/finding-echo
+msval|Bad Depot|https://js13kgames.com/entries/bad-depot
+mtmckenna|Absorbed|https://js13kgames.com/entries/absorbed
+mtmckenna|Bird Commander 2|https://js13kgames.com/entries/bird-commander-2
+mtmckenna|Convo IRL|https://js13kgames.com/entries/convo-irl
+mtmckenna|Entangolf|https://js13kgames.com/2024/games/entangolf
+mtmckenna|Infinite Missiles|https://js13kgames.com/entries/infinite-missiles
+mtmckenna|Plunder Survivors|https://js13kgames.com/2023/games/plunder-survivors
+mtmckenna|Vote by Mail: Funding Not Found|https://js13kgames.com/entries/vote-by-mail-funding-not-found
+mvasilkov|Blast 13 kilobytes|https://js13kgames.com/entries/blast-13-kilobytes
+mvasilkov|Couch 2048|https://js13kgames.com/entries/couch-2048
+mvasilkov|Don't let your dreams be memes|https://js13kgames.com/entries/dont-let-your-dreams-be-memes
+mvasilkov|Dwarfs: There and Back Again|https://js13kgames.com/entries/dwarfs-there-and-back-again
+mvasilkov|Escape the pit|https://js13kgames.com/entries/escape-the-pit
+mvasilkov|First Contact|https://js13kgames.com/entries/first-contact
+mvasilkov|I want to google the game|https://js13kgames.com/entries/i-want-to-google-the-game
+mvasilkov|King Thirteen|https://js13kgames.com/2024/games/king-thirteen
+mvasilkov|Reversed: The Game|https://js13kgames.com/entries/reversed-the-game
+mvasilkov|Shoot 13 Nomsters|https://js13kgames.com/2024/games/shoot-13-nomsters
+mvasilkov|Super Castle Game|https://js13kgames.com/2023/games/super-castle-game
+mvasilkov|The Neatness|https://js13kgames.com/entries/the-neatness
+mvasilkov|Where We're Going, We Do Need Roads|https://js13kgames.com/entries/where-were-going-we-do-need-roads
+mvasilkov|You have to get off line|https://js13kgames.com/entries/you-have-to-get-off-line
+mxlle|Deadly Echo|https://js13kgames.com/entries/deadly-echo
+mxlle|Guess the year|https://js13kgames.com/2023/games/guess-the-year
+mxlle|SPACE: Playful Adventures of Cat Emojis|https://js13kgames.com/entries/space-playful-adventures-of-cat-emojis
+mxlle|The Society of Multiphobics|https://js13kgames.com/2024/games/the-society-of-multiphobics
+mydeadzombie|Spiral13k|https://js13kgames.com/entries/spiral13k
+mysterycommand|Triskaidekapotamus|https://js13kgames.com/2024/games/triskaidekapotamus
+mys|Goblin Tower 13k|https://js13kgames.com/entries/goblin-tower-13k
+n17r4m|Gloopy|https://js13kgames.com/entries/gloopy
+n7best|Lost Islands|https://js13kgames.com/entries/lost-islands
+nandastone|Hum|https://js13kgames.com/entries/hum
+nandhini-sr|Bounce It Back|https://js13kgames.com/entries/bounce-it-back
+nasearle|Fall_Back!|https://js13kgames.com/entries/fallback
+nateener|Super Peasant|https://js13kgames.com/entries/super-peasant
+nblenke|GLYPH|https://js13kgames.com/entries/glyph-o-tron
+nesrak1|Capturing Souls on the River of The Dead|https://js13kgames.com/entries/capturing-souls-on-the-river-of-the-dead
+nesrak1|DACHU|https://js13kgames.com/entries/dachu
+nesrak1|SYSTEMS|https://js13kgames.com/entries/systems
+nesrak1|bakpak|https://js13kgames.com/entries/bakpak
+nesro|qress sqace|https://js13kgames.com/entries/qress-sqace
+nhaney|Stay Off the Line!|https://js13kgames.com/entries/stay-off-the-line
+nick6823|Elemental Drop Down|https://js13kgames.com/entries/elemental-drop-down
+nick6823|Jump Off Line|https://js13kgames.com/entries/jump-off-line
+nicklaslof|Adventure in ASCII space|https://js13kgames.com/entries/adventure-in-ascii-space
+nicklaslof|Courage|https://js13kgames.com/2024/games/courage
+nicklaslof|Running out of space|https://js13kgames.com/entries/running-out-of-space
+nicklaslof|Searching for 04|https://js13kgames.com/entries/searching-for-04
+nicklaslof|Space block invaders|https://js13kgames.com/entries/space-block-invaders
+nickshillingford|Disconnected|https://js13kgames.com/entries/disconnected
+nickshillingford|F|https://js13kgames.com/2024/games/f-stop
+nickshillingford|NetShark|https://js13kgames.com/entries/netshark
+nickwatton|Death's Hand|https://js13kgames.com/entries/deaths-hand
+nickwatton|Lost Love|https://js13kgames.com/entries/lost-love
+nicogreu|Give me my face back!|https://js13kgames.com/entries/give-me-my-face-back
+nicogreu|WooM|https://js13kgames.com/entries/woom
+nicologiuggiola|13C Gauntlet|https://js13kgames.com/2024/games/13c-gauntlet
+nicologiuggiola|Whack|https://js13kgames.com/entries/whack-a-dayumd
+nifey|Inter Planetary Internet|https://js13kgames.com/entries/inter-planetary-internet
+nifey|Left And Right|https://js13kgames.com/entries/left-and-right
+nifey|Lost in the woods|https://js13kgames.com/entries/lost-in-the-woods
+nikki|Tiny Dungeon|https://js13kgames.com/entries/tiny-dungeon
+nilsgawlik|Pizza Undelivery|https://js13kgames.com/entries/pizza-undelivery
+nilsgawlik|Shooty Alien Game|https://js13kgames.com/entries/shooty-alien-game
+nkholski|Backstabber Hero|https://js13kgames.com/entries/backstabber-hero
+nkholski|Billionaire Space Golf|https://js13kgames.com/entries/billionaire-space-golf
+nkholski|fyranollfyra|https://js13kgames.com/entries/fyranollfyra
+nluqo|Mission|https://js13kgames.com/entries/mission
+nluqo|Particularism|https://js13kgames.com/entries/particularism
+nohkwak|Match Circle|https://js13kgames.com/entries/match-circle
+notshanxx|Dynasty United|https://js13kgames.com/2023/games/dynasty-united
+nowaythisworks|Ace Cadet!|https://js13kgames.com/entries/ace-cadet
+nrkn|Ranger Down|https://js13kgames.com/entries/ranger-down
+nutty7t|Songbirds|https://js13kgames.com/entries/songbirds
+nvignola|Back in Dino|https://js13kgames.com/entries/back-in-dino
+nylki|Shifted Dimensions|https://js13kgames.com/entries/shifted-dimensions
+o-marchi|The Bad Luck Square|https://js13kgames.com/entries/the-bad-luck-square
+oatbeer|Falling Down|https://js13kgames.com/entries/falling-down
+obiSerra|A Khan's Soul|https://js13kgames.com/2023/games/a-khans-soul
+obiSerra|Raiders of the Lost Page|https://js13kgames.com/entries/raiders-of-the-lost-page
+obiSerra|Timer Madness|https://js13kgames.com/entries/timer-madness
+okzaq|Found bomb ?|https://js13kgames.com/entries/found-bomb
+okzaq|Keep white space!!|https://js13kgames.com/entries/keep-white-space
+olsn|Critter Defense|https://js13kgames.com/entries/critter-defense
+olvr|Deathmatch Dungeon|https://js13kgames.com/entries/deathmatch-dungeon
+olvr|Exit the Castle|https://js13kgames.com/2023/games/exit-the-castle
+onebytegone|Portolani|https://js13kgames.com/2023/games/portolani
+onefrankguy|Byte Rider|https://js13kgames.com/entries/byte-rider
+onefrankguy|Dewdrop Farm|https://js13kgames.com/entries/dewdrop-farm
+onefrankguy|Epic Loot|https://js13kgames.com/entries/epic-loot
+onefrankguy|Hard Vacuum: Recon|https://js13kgames.com/entries/hard-vacuum-recon
+onefrankguy|Mentat|https://js13kgames.com/entries/mentat
+onefrankguy|Rogue Reversal|https://js13kgames.com/entries/rogue-reversal
+onefrankguy|Singularity|https://js13kgames.com/entries/singularity
+onefrankguy|Spare Me|https://js13kgames.com/entries/spare-me
+onefrankguy|flip|https://js13kgames.com/entries/flip-flop
+oneminutesand|Lucky Seeds|https://js13kgames.com/entries/lucky-seeds
+ooflorent|Floor Thirteen|https://js13kgames.com/entries/floor-thirteen
+oscarbravovilla|C99+1|https://js13kgames.com/entries/c991
+oshannonlepper|Bombslide|https://js13kgames.com/entries/bombslide
+p0nch0d3v|Clash Of Elements|https://js13kgames.com/entries/clash-of-elements
+p0nch0d3v|The Pirates of the Wind|https://js13kgames.com/entries/the-pirates-of-the-wind
+p1100i|Glitch Hunters|https://js13kgames.com/entries/glitch-hunters
+p1100i|driftversed|https://js13kgames.com/entries/driftversed
+pachacamac|Glitchcon|https://js13kgames.com/entries/glitchcon
+pahund|Captain Katamov|https://js13kgames.com/entries/captain-katamov
+pandeykartikey|Pacman lost in tiles|https://js13kgames.com/entries/pacman-lost-in-tiles
+pandrRe|Filepurge|https://js13kgames.com/entries/filepurge
+panjea|pymm|https://js13kgames.com/entries/pymm
+parasyte|It's a Lovely Day for a Drive|https://js13kgames.com/entries/its-a-lovely-day-for-a-drive
+parth-p|Finding Precious|https://js13kgames.com/entries/finding-precious
+pawelsmigielski|Rogueluck|https://js13kgames.com/entries/rogueluck
+pbienek|Void|https://js13kgames.com/entries/void
+perdugames|Back to Bathroom|https://js13kgames.com/entries/back-to-bathroom
+perkurc|DeStar|https://js13kgames.com/entries/destar
+peterschmiz|PocketRocket|https://js13kgames.com/entries/pocketrocket
+phillipluther|Check Yourself|https://js13kgames.com/entries/check-yourself
+phoboslab|Q1K3|https://js13kgames.com/entries/q1k3
+phoboslab|UNDERRUN|https://js13kgames.com/entries/underrun
+phoboslab|VOIDCALL|https://js13kgames.com/entries/voidcall
+phongduong|Coiner|https://js13kgames.com/entries/coiner
+phongduong|Luon|https://js13kgames.com/entries/luon
+picosonic|Airspace Alpha Zulu|https://js13kgames.com/entries/airspace-alpha-zulu
+picosonic|BACKSPACE|https://js13kgames.com/entries/backspace-return-to-planet-figadore
+picosonic|Bee Kind|https://js13kgames.com/entries/bee-kind
+picosonic|Coding Golf|https://js13kgames.com/entries/coding-golf-broken-links
+picosonic|Crater Space|https://js13kgames.com/entries/crater-space
+picosonic|Planet Figadore has gone OFFLINE|https://js13kgames.com/entries/planet-figadore-has-gone-offline
+picosonic|Princess of Corinium|https://js13kgames.com/2023/games/princess-of-corinium
+picosonic|rollermaze|https://js13kgames.com/2024/games/rollermaze
+pioctor|BACKSPACE|https://js13kgames.com/entries/backspace
+pjnovas|Spider Busters|https://js13kgames.com/entries/spider-busters
+plissken2013es|Battle of Mages in the UniReverse|https://js13kgames.com/entries/battle-of-mages-in-the-unireverse
+plissken2013es|Glitch torpedo|https://js13kgames.com/entries/glitch-torpedo
+plissken2013es|Godai is back|https://js13kgames.com/entries/godai-is-back
+plissken2013es|Godai|https://js13kgames.com/entries/godai-the-five-great
+plissken2013es|I Must Call My Grandmother|https://js13kgames.com/entries/i-must-call-my-grandmother
+plissken2013es|Key Sprinter 13k|https://js13kgames.com/entries/key-sprinter-13k
+plissken2013es|Rogue Scavenger13K|https://js13kgames.com/entries/rogue-scavenger13k
+polavenki|Image puzzle|https://js13kgames.com/entries/image-puzzle
+polluterofminds|Feathers Not Found|https://js13kgames.com/entries/feathers-not-found
+polluterofminds|Zombie State University|https://js13kgames.com/entries/zombie-state-university-munchies-late-for-class
+poltorak1985|MeMo|https://js13kgames.com/entries/memo
+porumbeii|13 Samurai|https://js13kgames.com/2023/games/13-samurai
+porumbeii|The labyrinth of death|https://js13kgames.com/entries/the-labyrinth-of-death
+prankshaw|Bullet the Plane|https://js13kgames.com/entries/bullet-the-plane
+pranshuchittora|Math on Bytes|https://js13kgames.com/entries/math-on-bytes
+primedcore|Buoing: Black Hole|https://js13kgames.com/entries/buoing-black-hole
+primedcore|purplFLOW|https://js13kgames.com/entries/purplflow
+psema4|The Lost Scroll of Kardoom|https://js13kgames.com/entries/the-lost-scroll-of-kardoom
+psychint|Disposition|https://js13kgames.com/entries/disposition
+pulkonet|Splitter|https://js13kgames.com/entries/splitter
+qiray|Lose to win|https://js13kgames.com/entries/lose-to-win
+quangloc99|Earth|https://js13kgames.com/entries/earth-the-orbitless-planet
+quangthuyhoang|Back Down The Tower|https://js13kgames.com/entries/back-down-the-tower
+qw3n|4 elements tower defense|https://js13kgames.com/entries/4-elements-tower-defense
+qw3n|Fix the Glitch|https://js13kgames.com/entries/fix-the-glitch
+qw3n|Lost in the Woods ASCII style|https://js13kgames.com/entries/lost-in-the-woods-ascii-style
+qw3n|Reverse Maze|https://js13kgames.com/entries/reverse-maze
+r-joyce|Perditus|https://js13kgames.com/entries/perditus
+r3nceee|Curs3d|https://js13kgames.com/entries/curs3d
+r3nceee|The Last Space Bender|https://js13kgames.com/entries/the-last-space-bender
+rabernathy|Tonder|https://js13kgames.com/entries/tonder
+rachitGulati|Donut Ride|https://js13kgames.com/entries/donut-ride
+rachitGulati|Save My Duck|https://js13kgames.com/entries/save-my-duck
+rafaelcastrocouto|kfish|https://js13kgames.com/entries/kfish
+ragamo|MediWars|https://js13kgames.com/2023/games/mediwars
+raincoatforever|SunBurn|https://js13kgames.com/entries/sunburn
+randytayler|Back Relax|https://js13kgames.com/entries/back-relax
+randytayler|Get Jess Back|https://js13kgames.com/entries/get-jess-back
+randytayler|Human Not Found|https://js13kgames.com/entries/human-not-found
+randytayler|Sci|https://js13kgames.com/entries/sci-fi-alchemy
+raptor0999|Primonumerophobia|https://js13kgames.com/2024/games/primonumerophobia
+rational-kunal|Aim lab from hell|https://js13kgames.com/entries/aim-lab-from-hell
+razh|Another Day at the Website Factory|https://js13kgames.com/entries/another-day-at-the-website-factory
+razh|Backbeat|https://js13kgames.com/entries/backbeat
+razh|Neptune Blue|https://js13kgames.com/entries/neptune-blue
+razh|Roulette|https://js13kgames.com/entries/roulette
+razh|Two Ships Passing In The Night|https://js13kgames.com/entries/two-ships-passing-in-the-night
+razh|Wander|https://js13kgames.com/entries/wander
+razh|gl1tch.exe|https://js13kgames.com/entries/gl1tchexe
+razh|they will find you|https://js13kgames.com/entries/they-will-find-you
+rcabot|R e n e g a d e|https://js13kgames.com/entries/r-e-n-e-g-a-d-e
+reece-bennett|Return|https://js13kgames.com/entries/return
+reece-bennett|The Mongol Horde|https://js13kgames.com/2023/games/the-mongol-horde
+regularkid|Big Champ|https://js13kgames.com/entries/big-champ
+regularkid|Off The Line|https://js13kgames.com/entries/off-the-line
+regularkid|oh, flip!|https://js13kgames.com/entries/oh-flip
+remvst|Bad Luck Brian|https://js13kgames.com/entries/bad-luck-brian
+remvst|Everyone's Sky|https://js13kgames.com/entries/everyones-sky
+remvst|Glitch Buster|https://js13kgames.com/entries/glitch-buster
+remvst|Incident at BIO13K|https://js13kgames.com/entries/incident-at-bio13k
+remvst|It's Raining... Boxes?!|https://js13kgames.com/entries/its-raining-boxes
+remvst|Lost Beacons|https://js13kgames.com/entries/lost-beacons
+remvst|Ninja vs EVILCORP|https://js13kgames.com/entries/ninja-vs-evilcorp
+remvst|Path to Glory|https://js13kgames.com/2023/games/path-to-glory
+remvst|SQUAD 13|https://js13kgames.com/2024/games/squad-13
+remvst|Stick Skater|https://js13kgames.com/entries/stick-skater
+remvst|Taxi Drift|https://js13kgames.com/entries/taxi-drift
+remvst|Virtual War|https://js13kgames.com/entries/virtual-war
+remvst|[SWAGSHOT]|https://js13kgames.com/entries/swagshot
+renevanderark|Lost in Confusion|https://js13kgames.com/entries/lost-in-confusion
+repsej|The Way of the Dodo|https://js13kgames.com/2024/games/the-way-of-the-dodo
+retro-pigeon|Dimension 13|https://js13kgames.com/2024/games/dimension-13
+rezaxdi|Cable Maze|https://js13kgames.com/entries/cable-maze
+rhmoller|Area 404|https://js13kgames.com/entries/area-404-signal-not-found
+rhmoller|Barbenheim 13|https://js13kgames.com/2023/games/barbenheim-13
+rhmoller|Galactic Backfire|https://js13kgames.com/entries/galactic-backfire
+rhmoller|Lost Marbles|https://js13kgames.com/entries/lost-marbles
+riazXrazor|Touconect|https://js13kgames.com/entries/touconect
+richardjs|Nova Runner|https://js13kgames.com/entries/nova-runner
+richardjs|Siopa|https://js13kgames.com/entries/siopa
+rikharink|Interplanetary Transport System|https://js13kgames.com/entries/interplanetary-transport-system
+ringanta|Fill in 4|https://js13kgames.com/entries/fill-in-4
+ripter|Put BACK the toys|https://js13kgames.com/entries/put-back-the-toys
+ripter|SPACE Saver|https://js13kgames.com/entries/space-saver
+riya09|Disconnect|https://js13kgames.com/entries/disconnect
+rmkubik|A Hike in the Woods|https://js13kgames.com/entries/a-hike-in-the-woods
+rmkubik|Rocket Jockey: Captain Pick a Card's Great Escape|https://js13kgames.com/entries/rocket-jockey-captain-pick-a-cards-great-escape
+rmkubik|Status Code|https://js13kgames.com/entries/status-code
+rndD|Data Warrior: 13kb limit|https://js13kgames.com/2024/games/data-warrior-13kb-limit
+rndD|Mini Merchant|https://js13kgames.com/2023/games/mini-merchant
+rndD|Zigzagoon Overdrive: Tower defense|https://js13kgames.com/entries/zigzagoon-overdrive-tower-defense
+rntcursos|DeathClick|https://js13kgames.com/entries/deathclick
+rntcursos|SpaceShip 13k|https://js13kgames.com/entries/spaceship-13k
+robertocapuano|Spacing Guild|https://js13kgames.com/entries/spacing-guild
+robertocapuano|The High Cost Of Life|https://js13kgames.com/entries/the-high-cost-of-life
+robinlamb|Never Found|https://js13kgames.com/entries/never-found
+robinlamb|Sillies From Space|https://js13kgames.com/entries/sillies-from-space
+roblouie|13th Floor|https://js13kgames.com/2024/games/13th-floor
+roblouie|Charon Jr.|https://js13kgames.com/entries/charon-jr
+roblouie|Max Damage: Crisis Mode|https://js13kgames.com/entries/max-damage-crisis-mode
+roblouie|Upyri|https://js13kgames.com/2023/games/upyri
+robmurrer|Frog Jumper|https://js13kgames.com/entries/frog-jumper
+robomatix|Click the four element|https://js13kgames.com/entries/click-the-four-element
+robotspacefish|Kill.exe Not Found|https://js13kgames.com/entries/killexe-not-found
+rodolfoghi|Car block 404|https://js13kgames.com/entries/car-block-404
+roedesh|Lost Vision|https://js13kgames.com/entries/lost-vision
+rohin-dasari|Dr. Scoliosis, M.D.|https://js13kgames.com/entries/dr-scoliosis-md
+rohin-dasari|The Space Between Us|https://js13kgames.com/entries/the-space-between-us
+rojen11|Cindy's Nightmare|https://js13kgames.com/entries/cindys-nightmare
+rojen11|NILO|https://js13kgames.com/entries/nilo
+rojul|Projection|https://js13kgames.com/entries/projection
+romualdk|Labi|https://js13kgames.com/entries/labi
+romualdk|Triskai|https://js13kgames.com/2024/games/triskai-deka-phobia-card-game
+rosancoderian|DOWNLOAD!!!|https://js13kgames.com/entries/download
+rottencandy|Cryonics Inc|https://js13kgames.com/entries/cryonics-inc
+rottencandy|FOURFOLD|https://js13kgames.com/entries/fourfold
+rottencandy|Space refuel service|https://js13kgames.com/entries/space-refuel-service
+rottencandy|Xiicur Surviivors|https://js13kgames.com/2024/games/xiicur-surviivors
+royletron|Dungeon Advisor|https://js13kgames.com/entries/dungeon-advisor
+royyanbach|Domination|https://js13kgames.com/entries/domination
+rrafols|08800 Space Organizer|https://js13kgames.com/entries/08800-space-organizer
+rsinghal26|Click Me!|https://js13kgames.com/entries/click-me
+rskgames|Save the Lost Friend|https://js13kgames.com/entries/save-the-lost-friend
+ruanha|Planet|https://js13kgames.com/entries/planet-x
+ruerob|Reversed|https://js13kgames.com/entries/reversed
+runningdeveloper|Controls NOT FOUND|https://js13kgames.com/entries/controls-not-found
+runningdeveloper|Spacewalk|https://js13kgames.com/entries/spacewalk
+rvmook|Dutch Dredge|https://js13kgames.com/entries/dutch-dredge
+rwinright|Ninja Take Back|https://js13kgames.com/entries/ninja-take-back
+ryancat|Checkmate|https://js13kgames.com/entries/checkmate
+ryancat|Gem of truth|https://js13kgames.com/entries/gem-of-truth
+s-macke|Interplanetary Postal Service|https://js13kgames.com/entries/interplanetary-postal-service
+s2terminal|INSIDE THE RECT|https://js13kgames.com/entries/inside-the-rect
+sacerdev|Last Viking|https://js13kgames.com/2023/games/last-viking
+salc2|Cloudapocalypsis now: the learning of machines|https://js13kgames.com/entries/cloudapocalypsis-now-the-learning-of-machines
+salc2|back to rescue|https://js13kgames.com/entries/back-to-rescue
+salvan13|Backshot Tactics|https://js13kgames.com/entries/backshot-tactics
+salvan13|Kyabetsu|https://js13kgames.com/2024/games/kyabetsu
+salvan13|Labyrinth|https://js13kgames.com/entries/labyrinth
+salvan13|Spacefield League|https://js13kgames.com/entries/spacefield-league
+salvan13|breakaway|https://js13kgames.com/entries/breakaway
+sametgenc|Road to Pixel|https://js13kgames.com/entries/road-to-pixel
+sanjusunny|Veda's Run|https://js13kgames.com/entries/vedas-run
+sanojian|DEAD AGAIN|https://js13kgames.com/entries/dead-again
+sanojian|Mud Bowl Derby|https://js13kgames.com/entries/mud-bowl-derby
+sanojian|Wendol Village|https://js13kgames.com/2024/games/wendol-village
+santiHerranz|Battle commander|https://js13kgames.com/2023/games/battle-commander-middle-ages
+santiHerranz|Escape from Death Hole|https://js13kgames.com/entries/escape-from-death-hole
+santiHerranz|No Flight Zone 13|https://js13kgames.com/2024/games/no-flight-zone-13
+santiHerranz|Rocket Cargo|https://js13kgames.com/entries/rocket-cargo
+santiher|Tank wars: reversal|https://js13kgames.com/entries/tank-wars-reversal
+sarannity|Planty|https://js13kgames.com/entries/planty
+satanas|Pandemia|https://js13kgames.com/entries/pandemia
+satanas|Pariah|https://js13kgames.com/entries/pariah
+satanas|Please, die|https://js13kgames.com/entries/please-die
+satanas|Predestine|https://js13kgames.com/entries/predestine
+satanas|Prison Escape|https://js13kgames.com/entries/prison-escape
+schmidtec|BUBBLE ZUP|https://js13kgames.com/entries/bubble-zup
+scmx|Bee / B / 13|https://js13kgames.com/2024/games/bee-b-13
+scottheckel|At Sea|https://js13kgames.com/entries/at-sea
+scriptnull|Scribble|https://js13kgames.com/entries/scribble
+scyq|404Block|https://js13kgames.com/entries/404block
+sdepold|404 Repetitions|https://js13kgames.com/entries/404-repetitions
+sdepold|Cubi|https://js13kgames.com/entries/cubi
+sdepold|Noegnud|https://js13kgames.com/entries/noegnud
+sdepold|Pixel Quest|https://js13kgames.com/entries/pixel-quest
+sdepold|Space Jelly|https://js13kgames.com/entries/space-jelly
+sdeseille|13 The Damned|https://js13kgames.com/2024/games/13-the-damned
+sebadorn|And then it was gone|https://js13kgames.com/entries/and-then-it-was-gone
+sebadorn|Cursed Elevator|https://js13kgames.com/2024/games/cursed-elevator
+sebadorn|Hel's Trial|https://js13kgames.com/entries/hels-trial
+sebadorn|How to send back…|https://js13kgames.com/entries/how-to-send-back
+sebadorn|Nestling Fears|https://js13kgames.com/entries/nestling-fears
+sebadorn|Risky Nav|https://js13kgames.com/entries/risky-nav
+sebadorn|The Treasure of the Nibelungs|https://js13kgames.com/2023/games/the-treasure-of-the-nibelungs
+sebariskode|REVERSE GRAVITY|https://js13kgames.com/entries/reverse-gravity
+secondary-smiles|Mold|https://js13kgames.com/entries/mold
+secretyouth|Earth Destroyer|https://js13kgames.com/entries/earth-destroyer
+seemerlin|JunoJS|https://js13kgames.com/entries/junojs
+seglabs-eu|BrainTrain404|https://js13kgames.com/entries/braintrain404
+sergiulucutar|Clone not found|https://js13kgames.com/entries/clone-not-found
+sergiulucutar|Lost in the Stars|https://js13kgames.com/entries/lost-in-the-stars
+serglider|Arithmetic Hunt|https://js13kgames.com/entries/arithmetic-hunt
+serglider|Bring The Number Back|https://js13kgames.com/entries/bring-the-number-back
+serglider|Game of Life: Fight To The Death|https://js13kgames.com/entries/game-of-life-fight-to-the-death
+serglider|Gip Desrever|https://js13kgames.com/entries/gip-desrever
+serglider|Glitched 15|https://js13kgames.com/entries/glitched-15
+serglider|Teapot Not Found Poker|https://js13kgames.com/entries/teapot-not-found-poker
+serpent7776|Back to life|https://js13kgames.com/entries/back-to-life
+serpent7776|Find the theme|https://js13kgames.com/entries/find-the-theme
+serpent7776|Lost in squares|https://js13kgames.com/entries/lost-in-squares
+serpent7776|Offlab|https://js13kgames.com/entries/offlab
+serpent7776|Totally usual offline dino runner|https://js13kgames.com/entries/totally-usual-offline-dino-runner
+sgq995|Run, Run... RUN!|https://js13kgames.com/entries/run-run-run
+sharmamohit123|Lost Battle|https://js13kgames.com/entries/lost-battle
+shashanktmk007|Alien War begins|https://js13kgames.com/entries/alien-war-begins
+shb9019|MegaFauna Not Found!|https://js13kgames.com/entries/megafauna-not-found
+shmartt|THE TERMINAL|https://js13kgames.com/2024/games/the-terminal
+shnikola|Powers Combined|https://js13kgames.com/entries/powers-combined
+shreyasminocha|WiFiHunt|https://js13kgames.com/entries/wifihunt
+shu1|rec|https://js13kgames.com/entries/rec-rec
+shucon|LOST BRICKS|https://js13kgames.com/entries/lost-bricks
+silverspectro|Dungeon Something|https://js13kgames.com/entries/dungeon-something
+sipmann|Back 2 Home|https://js13kgames.com/entries/back-2-home
+sirxemic|Beyonder|https://js13kgames.com/entries/beyonder
+sirxemic|Do Not Make 13|https://js13kgames.com/2024/games/do-not-make-13
+sirxemic|Galaxies|https://js13kgames.com/entries/galaxies
+sirxemic|Offline Paradise|https://js13kgames.com/entries/offline-paradise
+sirxemic|SenTetrox|https://js13kgames.com/entries/sentetrox
+sirxemic|Symmetry Not Found|https://js13kgames.com/entries/symmetry-not-found
+sjthompson|Alchemist's Nightmare|https://js13kgames.com/entries/alchemists-nightmare
+sjthompson|Hammerhead|https://js13kgames.com/entries/hammerhead
+skanejohan|Turrets and Trebuchets|https://js13kgames.com/2023/games/turrets-and-trebuchets
+skanejohan|track 404|https://js13kgames.com/entries/track-404
+skeetmtp|UXU|https://js13kgames.com/entries/uxu
+skyatmoon|13th century 2048|https://js13kgames.com/2023/games/13th-century-2048
+skyatmoon|The Demons 13 Floors|https://js13kgames.com/2024/games/the-demons-13-floors
+slacktracer|Nika|https://js13kgames.com/entries/nika
+slashman|ArcherFire: Duet of Aces|https://js13kgames.com/entries/archerfire-duet-of-aces
+slashman|Backpack Monsters|https://js13kgames.com/entries/backpack-monsters
+slashman|Distant Friends|https://js13kgames.com/entries/distant-friends
+slashman|Lost in Asterion|https://js13kgames.com/entries/lost-in-asterion
+slashman|TenderGotchi|https://js13kgames.com/entries/tendergotchi
+slashman|The First Horde|https://js13kgames.com/2023/games/the-first-horde
+sleepycrow|offl1n3|https://js13kgames.com/entries/offl1n3
+sm2502|Cosmic Asteroid Catcher|https://js13kgames.com/entries/cosmic-asteroid-catcher
+smartcatproject|CATCH IT|https://js13kgames.com/entries/catch-it
+smartcatproject|SHELTERcats|https://js13kgames.com/entries/sheltercats
+smiley405|One Punch 1000 Demons|https://js13kgames.com/entries/one-punch-1000-demons
+smiley405|mastermind|https://js13kgames.com/entries/mastermind
+softvar|Bridge The Gap|https://js13kgames.com/entries/bridge-the-gap
+softvar|Dont Risk Your Life|https://js13kgames.com/entries/dont-risk-your-life
+softvar|Save The Forest|https://js13kgames.com/entries/save-the-forest
+soloschenko-grigoriy|Death at the Door|https://js13kgames.com/entries/death-at-the-door
+son-link|13th Century Siege|https://js13kgames.com/2023/games/13th-century-siege
+sorskoot|Back to Space|https://js13kgames.com/entries/back-to-space
+sorskoot|Castle Defender VR|https://js13kgames.com/2023/games/castle-defender-vr
+sorskoot|Deathkeeper|https://js13kgames.com/entries/deathkeeper
+sorskoot|HAUN13D HOTEL|https://js13kgames.com/2024/games/haun13d-hotel
+sorskoot|Keep'em 404|https://js13kgames.com/entries/keepem-404
+sorskoot|Lasergrid|https://js13kgames.com/entries/lasergrid
+sorskoot|Spacewrecked|https://js13kgames.com/entries/spacewrecked
+sorskoot|Storage Space 13|https://js13kgames.com/entries/storage-space-13
+sorskoot|orbizoid|https://js13kgames.com/entries/orbizoid
+sosodev|Textual Enlightenment|https://js13kgames.com/entries/textual-enlightenment
+southerton81|Grow Back|https://js13kgames.com/entries/grow-back
+sparsh789|Lost|https://js13kgames.com/entries/lost-between-slides
+spmurrayzzz|Elemental Vanguard|https://js13kgames.com/entries/elemental-vanguard
+spmurrayzzz|Glitch Wizard|https://js13kgames.com/entries/glitch-wizard
+spmurrayzzz|Juan vs. The Trump|https://js13kgames.com/entries/juan-vs-the-trump
+sqlsherpa|Back to the Nest|https://js13kgames.com/entries/back-to-the-nest
+srmcgann|All is not lost.|https://js13kgames.com/entries/all-is-not-lost
+srmcgann|Drunken Cornhole|https://js13kgames.com/2024/games/drunken-cornhole
+srmcgann|TRON 2.0|https://js13kgames.com/2024/games/tron-20
+stackshub|Find All Pages|https://js13kgames.com/entries/find-all-pages
+starzonmyarmz|ONOFF|https://js13kgames.com/entries/onoff
+stasm|Millennials|https://js13kgames.com/2024/games/millennials
+stefanforsberg|Finding Paige|https://js13kgames.com/entries/finding-paige
+stefanforsberg|It adds up|https://js13kgames.com/2024/games/it-adds-up
+stefanforsberg|VÅiD|https://js13kgames.com/entries/vaid
+steve1000|Outaluq|https://js13kgames.com/entries/outaluq
+stevespectre|All Systems Offline|https://js13kgames.com/entries/all-systems-offline
+stone-joe|Space Janitor|https://js13kgames.com/entries/space-janitor
+stpettersens|Unlucky Blackjack|https://js13kgames.com/entries/unlucky-blackjack
+straker|Audio Dash|https://js13kgames.com/entries/audio-dash
+straker|Necromancer Colony Sim|https://js13kgames.com/2023/games/necromancer-colony-sim
+straker|Reverse TD|https://js13kgames.com/entries/reverse-td
+straker|Spaceship Repair Factory|https://js13kgames.com/entries/spaceship-repair-factory
+straker|Terraform|https://js13kgames.com/entries/terraform
+straker|The Encroaching Darkness|https://js13kgames.com/2024/games/the-encroaching-darkness
+streetalchemist|The Forest|https://js13kgames.com/entries/the-forest
+stuckie|astro|https://js13kgames.com/entries/astro-link
+studiouniverse|EYESORE!|https://js13kgames.com/entries/eyesore
+sumasamurai|TimeRush|https://js13kgames.com/2023/games/timerush
+sundarsudharsan|Lost in Space|https://js13kgames.com/entries/lost-in-space-the-journey-to-home
+suntemple|Element Puzzle|https://js13kgames.com/entries/element-puzzle
+supereggbert|Johnny Smiter III|https://js13kgames.com/entries/johnny-smiter-iii
+supereggbert|Johnny Smiter: 13th Knight|https://js13kgames.com/entries/johnny-smiter-13th-knight
+supereggbert|Johnny Smiter: Episode Zero|https://js13kgames.com/entries/johnny-smiter-episode-zero
+supereggbert|The Elemental Quest|https://js13kgames.com/entries/the-elemental-quest
+superman2211|Space Arena|https://js13kgames.com/entries/space-arena
+superman2211|Survivors|https://js13kgames.com/entries/survivors
+superman2211|cube 13|https://js13kgames.com/2024/games/cube-13
+supra08|Dueling Spells|https://js13kgames.com/entries/dueling-spells
+surana-mudit|LOST AMONG DOTS|https://js13kgames.com/entries/lost-among-dots
+surbhi-mahajan|Keep|https://js13kgames.com/entries/keep-alive
+susannepeng|Snap Crack|https://js13kgames.com/entries/snap-crack
+svidgen|Shh|https://js13kgames.com/entries/shh-psst-aliens-ce
+svidgen|Shooty Ship 13k|https://js13kgames.com/entries/shooty-ship-13k
+svntax|Curvilinear|https://js13kgames.com/entries/curvilinear
+svntax|Hookshot Fishing|https://js13kgames.com/entries/hookshot-fishing
+svntax|Necromancer's Dungeon|https://js13kgames.com/entries/necromancers-dungeon
+swashvirus|404 F1|https://js13kgames.com/entries/404-f1-race-monochrome
+swashvirus|404 FlappingBird|https://js13kgames.com/entries/404-flappingbird
+swashvirus|404 Snake Monochrome|https://js13kgames.com/entries/404-snake-monochrome
+swashvirus|Tetris monochrome|https://js13kgames.com/entries/tetris-monochrome
+swashvirus|Trench Fisher|https://js13kgames.com/2023/games/trench-fisher
+swashvirus|firedrone|https://js13kgames.com/entries/firedrone
+swashvirus|watchmyback|https://js13kgames.com/entries/watchmyback
+sydneyindependentinnovators|Evade The Glitch|https://js13kgames.com/entries/evade-the-glitch
+sz-piotr|Alien Millionaire|https://js13kgames.com/entries/alien-millionaire
+sz-piotr|Cycles|https://js13kgames.com/entries/cycles
+sz1521|Predecessors|https://js13kgames.com/2023/games/predecessors
+szahn|Coffee Chaser|https://js13kgames.com/entries/coffee-chaser
+t4khosu|Book of Death|https://js13kgames.com/entries/book-of-death
+t4khosu|Cathar|https://js13kgames.com/2023/games/cathar
+t4khosu|Stay Safe|https://js13kgames.com/entries/stay-safe
+takinaze|Horizontal Timing|https://js13kgames.com/entries/horizontal-timing
+talltyler|Take the network offline!|https://js13kgames.com/entries/take-the-network-offline
+tannernetwork|Elements Craft|https://js13kgames.com/entries/elements-craft
+tannernetwork|RE*ER*ED|https://js13kgames.com/entries/reered
+tanyuan|Metamorphosis|https://js13kgames.com/entries/metamorphosis
+taras42|Offline Champion|https://js13kgames.com/entries/offline-champion
+tatjam|AI, Begone!|https://js13kgames.com/entries/ai-begone
+teddychen1251|Divine Wind|https://js13kgames.com/2023/games/divine-wind
+temporalriftgame13k|Temporal Rift|https://js13kgames.com/entries/temporal-rift
+thbrown|13 Squared|https://js13kgames.com/2024/games/13-squared
+thbrown|Spaceship Resurrection|https://js13kgames.com/entries/spaceship-resurrection
+thcopeland|King LongLegs|https://js13kgames.com/2024/games/king-longlegs
+theWorkingPrototype|brokenSpace|https://js13kgames.com/entries/brokenspace
+thedart76|Gear Of War|https://js13kgames.com/entries/gear-of-war
+thiagorb|Death Tournament|https://js13kgames.com/entries/death-tournament
+thiagorb|Duelo|https://js13kgames.com/2023/games/duelo
+thiagorb|Legacy of Space Travelers|https://js13kgames.com/entries/legacy-of-space-travelers
+thiagorb|Llama Adventure|https://js13kgames.com/entries/llama-adventure
+thiagorb|Space Jump|https://js13kgames.com/entries/space-jump
+thiagorb|TIME PONG|https://js13kgames.com/entries/time-pong
+thiagorb|Tower Defense|https://js13kgames.com/entries/tower-defense
+thiagorb|robots.txt|https://js13kgames.com/entries/robotstxt
+thomastruelsen|I just wanna warp home|https://js13kgames.com/entries/i-just-wanna-warp-home
+timohausmann|Mörsermann|https://js13kgames.com/entries/morsermann
+timohausmann|Trapventure|https://js13kgames.com/entries/trapventure
+tkjantti|13th Guy|https://js13kgames.com/2024/games/13th-guy
+tkjantti|Ghost Mode|https://js13kgames.com/entries/ghost-mode
+tkjantti|Green vs Parking Space|https://js13kgames.com/entries/green-vs-parking-space
+tkjantti|The Waffle|https://js13kgames.com/entries/the-waffle
+tkjantti|They Follow|https://js13kgames.com/entries/they-follow
+tkjantti|Troposphere|https://js13kgames.com/entries/troposphere
+tomaszbujnicki|Arkanoid 404|https://js13kgames.com/entries/arkanoid-404
+tomkallen|Divine Descent|https://js13kgames.com/entries/divine-descent
+tonetheman|13k solitaire|https://js13kgames.com/entries/13k-solitaire
+towc|Elements Out|https://js13kgames.com/entries/elements-out
+towc|Flappy Box|https://js13kgames.com/entries/flappy-box
+towc|Loud Maze|https://js13kgames.com/entries/loud-maze
+towc|glitch maze|https://js13kgames.com/entries/glitch-maze
+toxazol|Internal Error|https://js13kgames.com/entries/internal-error
+trezy|Not Found|https://js13kgames.com/entries/not-found
+tricsi|Bouncing Button|https://js13kgames.com/entries/bouncing-button
+tricsi|Death Rider|https://js13kgames.com/entries/death-rider
+tricsi|Elementary|https://js13kgames.com/entries/elementary
+tricsi|FALL BACK HERO|https://js13kgames.com/entries/fall-back-hero
+tricsi|Lost on Stranger Terra|https://js13kgames.com/entries/lost-on-stranger-terra
+tricsi|OFFICE 404!|https://js13kgames.com/entries/office-404
+tricsi|PAPERTRON|https://js13kgames.com/entries/papertron
+tricsi|Poker Dice 13|https://js13kgames.com/entries/poker-dice-13
+tricsi|SPACECRAFT|https://js13kgames.com/entries/spacecraft
+tricsi|Superstitious Story|https://js13kgames.com/2024/games/superstitious-story
+tricsi|Theo's Escape|https://js13kgames.com/entries/theos-escape
+triplelog|13 Geese Defending Rome|https://js13kgames.com/2023/games/13-geese-defending-rome
+triskaideka013|Triskaideka|https://js13kgames.com/2024/games/triskaideka-cats-elevator-caper
+tristanphease|Corrupted Packets|https://js13kgames.com/entries/corrupted-packets
+tristanphease|Doors|https://js13kgames.com/entries/doors
+tulustul|The Wandering Wraith|https://js13kgames.com/entries/the-wandering-wraith
+tuomomakela|Little Element Game|https://js13kgames.com/entries/little-element-game
+tyler6699|Fort Knight|https://js13kgames.com/2023/games/fort-knight
+tyler6699|In To Net Cafe|https://js13kgames.com/entries/in-to-net-cafe
+tyler6699|Quick Wins|https://js13kgames.com/entries/quick-wins
+tyler6699|Soul Jumper|https://js13kgames.com/entries/soul-jumper
+tyler6699|Space Kitty|https://js13kgames.com/entries/space-kitty
+tyler6699|The Fear Factory|https://js13kgames.com/2024/games/the-fear-factory
+unknown|404: Search For The Missing Pages|https://js13kgames.com/entries/404-search-for-the-missing-pages
+unknown|A.W.E.S.O.M.E|https://js13kgames.com/entries/awesome
+unknown|Ah Kin Glitch|https://js13kgames.com/entries/ah-kin-glitch
+unknown|Cave Explorer|https://js13kgames.com/entries/cave-explorer
+unknown|Dark Light|https://js13kgames.com/entries/dark-light
+unknown|Grim Reaper in Hell|https://js13kgames.com/entries/grim-reaper-in-hell
+unknown|Hoop|https://js13kgames.com/entries/hoop
+unknown|Lost Square|https://js13kgames.com/entries/lost-square
+unknown|Lucky 13|https://js13kgames.com/entries/lucky-13
+unknown|Rice or die|https://js13kgames.com/2023/games/rice-or-die
+unknown|Shot Before Death|https://js13kgames.com/entries/shot-before-death
+unknown|Spastic|https://js13kgames.com/entries/spastic
+unknown|Subsystem Twenty|https://js13kgames.com/entries/subsystem-twenty
+unknown|Triska Reloaded|https://triska.js13kgames.com
+unknown|buggytar|https://js13kgames.com/entries/buggytar
+unknown|unknown|http://js13kgames.com
+upisfree|DEATH DEATH DEATH|https://js13kgames.com/entries/death-death-death
+urhprimozic|Deserter|https://js13kgames.com/entries/deserter
+usumerican|Small Mahjong|https://js13kgames.com/2024/games/small-mahjong
+vaneenige|Server Rider VR|https://js13kgames.com/entries/server-rider-vr
+vaneenige|Zero Distraction|https://js13kgames.com/entries/zero-distraction
+vasuman|bhb|https://js13kgames.com/entries/bhb
+vedanshbhartia|VR Racing|https://js13kgames.com/entries/vr-racing
+vemi-games|Escape From Trece|https://js13kgames.com/2024/games/escape-from-trece
+venam|Reverse Parking|https://js13kgames.com/entries/reverse-parking
+venam|The Water Tap Game|https://js13kgames.com/entries/the-water-tap-game
+veronika324|Tide of the templars|https://js13kgames.com/2023/games/tide-of-the-templars
+verybomb|Soul Surf|https://js13kgames.com/entries/soul-surf
+veu|Castle Climb|https://js13kgames.com/entries/castle-climb
+veu|Pirates of the Glitchy Sea|https://js13kgames.com/entries/pirates-of-the-glitchy-sea
+veu|Under the Crypt|https://js13kgames.com/entries/under-the-crypt
+veu|You Are Lost|https://js13kgames.com/entries/you-are-lost
+vicksonzero|Adopt|https://js13kgames.com/entries/adopt-a-fire
+vicksonzero|Night|https://js13kgames.com/2024/games/night-at-hotel-13
+vicksonzero|Rogue|https://js13kgames.com/entries/rogue-hoarder
+vicksonzero|Spectral|https://js13kgames.com/entries/spectral-shooter
+vik-13|Be The Wind!|https://js13kgames.com/entries/be-the-wind
+vik-13|Fruit rev.|https://js13kgames.com/entries/fruit-rev
+vik-13|Mars: Short Adventure|https://js13kgames.com/entries/mars-short-adventure
+vik-13|Mauja|https://js13kgames.com/entries/mauja
+vik-13|Triangle Man: Escape|https://js13kgames.com/entries/triangle-man-escape
+vik-13|Triangle: Back To Home|https://js13kgames.com/entries/triangle-back-to-home
+vik-13|[Hoverla]|https://js13kgames.com/entries/hoverla
+vik-13|lightless|https://js13kgames.com/entries/lightless
+vikerman|Voxel Shooter|https://js13kgames.com/entries/voxel-shooter
+viljami|404 Race|https://js13kgames.com/entries/404-race
+viljami|Entitled|https://js13kgames.com/2023/games/entitled
+viljami|Mai|https://js13kgames.com/2024/games/mai
+vishwaspaikra007|Pattern Unlocked|https://js13kgames.com/entries/pattern-unlocked
+vivianeasley|Claw & Order|https://js13kgames.com/entries/claw-order
+vivianeasley|Miles to Mend|https://js13kgames.com/2024/games/miles-to-mend
+vivianeasley|Of All Trades|https://js13kgames.com/2023/games/of-all-trades
+vivianeasley|Tir|https://js13kgames.com/entries/tir
+vkhusnulina|Off Land|https://js13kgames.com/entries/off-land
+vlequang|Short Circuit|https://js13kgames.com/entries/short-circuit
+vonloxx|Back To The Stars|https://js13kgames.com/entries/back-to-the-stars
+vonloxx|Barry In Space|https://js13kgames.com/entries/barry-in-space
+vonloxx|Barry The Bird|https://js13kgames.com/entries/barry-the-bird
+vonloxx|Blind Fear|https://js13kgames.com/2024/games/blind-fear
+vonloxx|PULSE|https://js13kgames.com/entries/pulse
+w84death|Tribes Life|https://js13kgames.com/entries/tribes-life
+walsh9|yoctoPets|https://js13kgames.com/entries/yoctopets
+wandah-code|13 A.D.|https://js13kgames.com/entries/13-ad
+wemyss|Lost Caves|https://js13kgames.com/entries/lost-caves
+westim|Road to Roam|https://js13kgames.com/2023/games/road-to-roam
+wesz|Optical Elusion|https://js13kgames.com/entries/optical-elusion
+wil92|Azetz|https://js13kgames.com/entries/azetz
+willgittens|Starlink 13kb Game|https://js13kgames.com/entries/starlink-13kb-game
+willhbr|Lost Fleet|https://js13kgames.com/entries/lost-fleet
+willhbr|Off the Grid|https://js13kgames.com/entries/off-the-grid
+williac0374|Space Menace|https://js13kgames.com/entries/space-menace
+williamw520|Digicrush|https://js13kgames.com/entries/digicrush
+wisekrakr|Don't Shoot Back|https://js13kgames.com/entries/dont-shoot-back
+wiserim|Petty kingdoms|https://js13kgames.com/2023/games/petty-kingdoms
+wiserim|Thirteen|https://js13kgames.com/2024/games/thirteen
+wololoa|Baby, please! Come back home|https://js13kgames.com/entries/baby-please-come-back-home
+wololoa|DECK 13|https://js13kgames.com/2024/games/deck-13
+wololoa|Feast Night|https://js13kgames.com/2023/games/feast-night
+woodcox|Scrammbl|https://js13kgames.com/2024/games/scrammbl
+woshilapin|Vendredi|https://js13kgames.com/entries/vendredi
+x-labz|Duel of Elements|https://js13kgames.com/entries/duel-of-elements
+x-labz|Wrecked Sailors|https://js13kgames.com/entries/wrecked-sailors
+xem|10 years of game golfing|https://js13kgames.com/entries/10-years-of-game-golfing
+xem|26 Games in 1|https://js13kgames.com/entries/26-games-in-1
+xem|AlcheMixer|https://js13kgames.com/entries/alchemixer
+xem|Back on Track (mania)|https://js13kgames.com/entries/back-on-track-mania
+xem|Castle 🏰 Escape (2023)|https://js13kgames.com/2023/games/castle-escape-2023
+xem|EMOJIPHOBIA|https://js13kgames.com/2024/games/emojiphobia
+xem|GREAT PLUMBER 65|https://js13kgames.com/2024/games/great-plumber-65
+xem|GeoQuiz|https://js13kgames.com/entries/geoquiz
+xem|Geoquiz 2|https://js13kgames.com/entries/geoquiz-2
+xem|LOSSST|https://js13kgames.com/entries/lossst
+xem|Man on Wire|https://js13kgames.com/entries/man-on-wire
+xem|O HIII BAD SKATEPARK|https://js13kgames.com/2024/games/o-hiii-bad-skatepark
+xem|PUZZLATORY|https://js13kgames.com/entries/puzzlatory
+xem|Quintessence|https://js13kgames.com/entries/quintessence
+xem|Super Chrono Portal Maker|https://js13kgames.com/entries/super-chrono-portal-maker
+xem|Track not found?!|https://js13kgames.com/entries/track-not-found
+xem|envelope|https://js13kgames.com/entries/envelope
+xenohunter|Glitch Rabbit|https://js13kgames.com/entries/glitch-rabbit
+xenohunter|Runes vs Stuff|https://js13kgames.com/entries/runes-vs-stuff
+yalovemos|Ghosts'n Vamps'n Skulls|https://js13kgames.com/entries/ghostsn-vampsn-skulls
+yalovemos|Spaceship Escort|https://js13kgames.com/entries/spaceship-escort
+yemezzoar|Way Home|https://js13kgames.com/entries/way-home
+yeonjuan|Back Attacker|https://js13kgames.com/entries/back-attacker
+yjchess|The Saga of Temujin|https://js13kgames.com/2023/games/the-saga-of-temujin
+yourpalal|Please Play Again|https://js13kgames.com/entries/please-play-again
+yudhik11|Lost In Colors|https://js13kgames.com/entries/lost-in-colors
+yurufus|Hotspot Lovers|https://js13kgames.com/entries/hotspot-lovers
+zac-garby|data_center|https://js13kgames.com/entries/datacenter
+zacharymarshal|Dragoom|https://js13kgames.com/2023/games/dragoom
+zacharymarshal|The Sixth Prime|https://js13kgames.com/2024/games/the-sixth-prime
+zacharymarshal|wor|https://js13kgames.com/2023/games/wor
+zackurben|Knights Quest|https://js13kgames.com/entries/knights-quest
+zackurben|Network Hell|https://js13kgames.com/entries/network-hell
+zackurben|Tube Masters|https://js13kgames.com/entries/tube-masters
+zalan24|Paperback|https://js13kgames.com/entries/paperback
+zbysheck|Don't look back|https://js13kgames.com/entries/dont-look-back
+zendrael|Lost in Jungle|https://js13kgames.com/entries/lost-in-jungle
+zhc1289|Protect The Base|https://js13kgames.com/entries/protect-the-base
+zlash|Deathwish|https://js13kgames.com/entries/deathwish
+zlash|Escape from Planet XIII|https://js13kgames.com/2024/games/escape-from-planet-xiii
+zlash|Kukulkan|https://js13kgames.com/2023/games/kukulkan
+zlash|Numerical Error|https://js13kgames.com/entries/numerical-error
+zlash|They will NOT FOUND me|https://js13kgames.com/entries/they-will-not-found-me
+zmertens|parlez13k|https://js13kgames.com/entries/parlez13k
+znedacemuli|spaceChad|https://js13kgames.com/entries/spacechad
+zoan37|Revenge of the Necromancer|https://js13kgames.com/entries/revenge-of-the-necromancer
+zoli8000|Fluffline|https://js13kgames.com/entries/fluffline
+zpchavez|Slime'n Says|https://js13kgames.com/entries/slimen-says
+zpchavez|Splat Paddlers|https://js13kgames.com/entries/splat-paddlers
+zsumair|Winkie|https://js13kgames.com/entries/winkie-lost-in-space
+zxch3n|Go Back To Space|https://js13kgames.com/entries/go-back-to-space
+zzz6519003|6174|https://js13kgames.com/2024/games/6174
+`;
+
+const output = document.getElementById("output");
+const authors = {};
+
+data.trim().split("\n").forEach(line => {
+  const [author, title, url] = line.split("|");
+  if (!authors[author]) authors[author] = [];
+  authors[author].push({ title, url });
+});
+
+Object.entries(authors).forEach(([author, games]) => {
+  const container = document.createElement("div");
+  container.className = "owner";
+
+  const authorLink = document.createElement("a");
+  authorLink.href = `https://github.com/${author}`;
+  authorLink.textContent = author;
+  authorLink.target = "_blank";
+  authorLink.style.fontWeight = "bold";
+
+  container.appendChild(authorLink);
+  container.appendChild(document.createElement("br"));
+
+  games.forEach(({ title, url }) => {
+    const gameLink = document.createElement("a");
+    gameLink.href = url;
+    gameLink.textContent = title;
+    gameLink.target = "_blank";
+    container.appendChild(gameLink);
+    container.appendChild(document.createElement("br"));
+  });
+
+  output.appendChild(container);
+});
+</script>
+
+</body>
+</html>
