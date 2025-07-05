@@ -3,12 +3,40 @@
 <head>
   <title>js13k games</title>
   <style>
-    body { font-family: sans-serif; line-height: 1.5; padding: 1em; }
-    .owner { margin-bottom: 1em; }
-    .repos a { display: inline-block; margin: 0.2em 0; text-decoration: none; }
+    body {
+      font-family: sans-serif;
+      line-height: 1.5;
+      padding: 1em;
+    }
+    .owner {
+      margin-bottom: 1em;
+    }
+    .repos a {
+      display: inline-block;
+      margin: 0.2em 0;
+      text-decoration: none;
+    }
+    textarea {
+      width: 100%;
+      margin-top: 2em;
+      font-family: monospace;
+    }
+    button {
+      margin-top: 0.5em;
+    }
+    pre#query-output {
+      background: #f0f0f0;
+      padding: 0.5em;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
+
+<textarea id="jsbox" rows="5"></textarea>
+<br>
+<button onclick="run()">Query</button>
+<pre id="query-output"></pre>
 
 <div id="output"></div>
 
@@ -2332,6 +2360,35 @@ Object.entries(authors).forEach(([author, games]) => {
 
   output.appendChild(container);
 });
+
+
+
+
+
+
+
+document.getElementById("jsbox").value =
+  "Object.entries(authors)\n" +
+  "  .sort((a, b) => b[1].length - a[1].length)\n" +
+  "  .slice(0, 10)\n" +
+  "  .map(([author, games], i) => (i + 1) + '. ' + author + ' - ' + games.length + ' game' + (games.length !== 1 ? 's' : ''))\n" +
+  "  .join('\\n')";
+
+
+
+
+function run() {
+  const code = document.getElementById('jsbox').value;
+  const out = document.getElementById('query-output');
+  try {
+    const result = eval(code);
+    out.textContent = typeof result === 'string'
+      ? result
+      : JSON.stringify(result, null, 2);
+  } catch (e) {
+    out.textContent = 'Error: ' + e;
+  }
+}
 </script>
 
 </body>
