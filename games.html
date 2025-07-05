@@ -29,15 +29,24 @@
       padding: 0.5em;
       white-space: pre-wrap;
     }
+    #filter {
+      margin-left: 0.5em;
+    }
   </style>
 </head>
 <body>
 
+<!-- Console Query Box -->
 <textarea id="jsbox" rows="5"></textarea>
 <br>
 <button onclick="run()">Query</button>
 <pre id="query-output"></pre>
 
+<!-- Filter Box -->
+<label for="filter">Filter:</label>
+<input id="filter" type="text">
+
+<!-- Game List -->
 <div id="output"></div>
 
 <script>
@@ -2361,12 +2370,7 @@ Object.entries(authors).forEach(([author, games]) => {
   output.appendChild(container);
 });
 
-
-
-
-
-
-
+// Pre-fill query
 document.getElementById("jsbox").value =
   "Object.entries(authors)\n" +
   "  .sort((a, b) => b[1].length - a[1].length)\n" +
@@ -2374,9 +2378,7 @@ document.getElementById("jsbox").value =
   "  .map(([author, games], i) => (i + 1) + '. ' + author + ' - ' + games.length + ' game' + (games.length !== 1 ? 's' : ''))\n" +
   "  .join('\\n')";
 
-
-
-
+// Query button behavior
 function run() {
   const code = document.getElementById('jsbox').value;
   const out = document.getElementById('query-output');
@@ -2389,6 +2391,19 @@ function run() {
     out.textContent = 'Error: ' + e;
   }
 }
+
+// Live filter behavior
+document.getElementById("filter").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  document.querySelectorAll(".owner").forEach(owner => {
+    const author = owner.querySelector("a").textContent.toLowerCase();
+    const titles = Array.from(owner.querySelectorAll("a + br ~ a"))
+      .map(link => link.textContent.toLowerCase());
+    const matchesAuthor = author.includes(query);
+    const matchesGame = titles.some(title => title.includes(query));
+    owner.style.display = (matchesAuthor || matchesGame) ? "" : "none";
+  });
+});
 </script>
 
 </body>
