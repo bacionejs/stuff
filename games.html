@@ -81,28 +81,25 @@ Object.entries(authors).forEach(([author, games]) => {
   const container = document.createElement("div");
   container.className = "owner";
 
-
-
-
-
-
-
-let authorLink;
-if (author.trim().toLowerCase() === "unknown" || author.trim() === "" || author.trim() === "(unknown)") {
-  authorLink = document.createElement("span");
+  let authorLink = document.createElement("a");
   authorLink.textContent = author;
-} else {
-  authorLink = document.createElement("a");
-  authorLink.href = `https://github.com/${author}`;
-  authorLink.textContent = author;
-  authorLink.target = "_blank";
   authorLink.style.fontWeight = "bold";
-}
-container.appendChild(authorLink);
-container.appendChild(document.createElement("br"));
 
+  if (
+    author.trim().toLowerCase() === "unknown" ||
+    author.trim() === "" ||
+    author.trim() === "(unknown)"
+  ) {
+    authorLink.href = "#";
+    authorLink.style.color = "gray";
+    authorLink.style.pointerEvents = "none";
+  } else {
+    authorLink.href = `https://github.com/${author}`;
+    authorLink.target = "_blank";
+  }
 
-
+  container.appendChild(authorLink);
+  container.appendChild(document.createElement("br"));
 
   games.forEach(({ title, url }) => {
     const gameLink = document.createElement("a");
