@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>js13k games</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      line-height: 1.5;
-      padding: 1em;
-    }
-    .owner {
-      margin-bottom: 1em;
-    }
-    .repos a {
-      display: inline-block;
-      margin: 0.2em 0;
-      text-decoration: none;
-    }
-    textarea {
-      width: 100%;
-      margin-top: 2em;
-      font-family: monospace;
-    }
-    button {
-      margin-top: 0.5em;
-    }
-    pre#query-output {
-      background: #f0f0f0;
-      padding: 0.5em;
-      white-space: pre-wrap;
-    }
-    #filter {
-      margin-left: 0.5em;
-    }
-  </style>
+<title>js13k games</title>
+<style>
+body {
+  font-family: sans-serif;
+  line-height: 1.5;
+  padding: 1em;
+}
+.owner {
+  margin-bottom: 1em;
+}
+.repos a {
+  display: inline-block;
+  margin: 0.2em 0;
+  text-decoration: none;
+}
+textarea {
+  width: 100%;
+  margin-top: 2em;
+  font-family: monospace;
+}
+button {
+  margin-top: 0.5em;
+}
+pre#query-output {
+  background: #f0f0f0;
+  padding: 0.5em;
+  white-space: pre-wrap;
+}
+#filter {
+  margin-left: 0.5em;
+}
+#topBtn {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  display: none;
+  z-index: 1000;
+}
+</style>
 </head>
 <body>
+
+
+
+
+
+
+<!-- Scroll to Top Button -->
+<button id="topBtn" onclick="scrollToTop()" title="Scroll to top">Top</button>
 
 <!-- Console Query Box -->
 <textarea id="jsbox" rows="5"></textarea>
@@ -135,6 +150,23 @@ document.getElementById("filter").addEventListener("input", function () {
     owner.style.display = (matchesAuthor || matchesGame) ? "" : "none";
   });
 });
+
+
+
+
+
+
+const topBtn = document.getElementById("topBtn");
+window.addEventListener("scroll", () => {
+  topBtn.style.display = window.scrollY > 200 ? "block" : "none";
+});
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
+
 
 function getdata(){
 return `
