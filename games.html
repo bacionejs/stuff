@@ -50,7 +50,80 @@
 <div id="output"></div>
 
 <script>
-const data = `
+
+const data = getdata();
+
+const output = document.getElementById("output");
+const authors = {};
+
+data.trim().split("\n").forEach(line => {
+  const [author, title, url] = line.split("|");
+  if (!authors[author]) authors[author] = [];
+  authors[author].push({ title, url });
+});
+
+Object.entries(authors).forEach(([author, games]) => {
+  const container = document.createElement("div");
+  container.className = "owner";
+
+  const authorLink = document.createElement("a");
+  authorLink.href = `https://github.com/${author}`;
+  authorLink.textContent = author;
+  authorLink.target = "_blank";
+  authorLink.style.fontWeight = "bold";
+
+  container.appendChild(authorLink);
+  container.appendChild(document.createElement("br"));
+
+  games.forEach(({ title, url }) => {
+    const gameLink = document.createElement("a");
+    gameLink.href = url;
+    gameLink.textContent = title;
+    gameLink.target = "_blank";
+    container.appendChild(gameLink);
+    container.appendChild(document.createElement("br"));
+  });
+
+  output.appendChild(container);
+});
+
+// Pre-fill query
+document.getElementById("jsbox").value =
+  "Object.entries(authors)\n" +
+  "  .sort((a, b) => b[1].length - a[1].length)\n" +
+  "  .slice(0, 10)\n" +
+  "  .map(([author, games], i) => (i + 1) + '. ' + author + ' - ' + games.length + ' game' + (games.length !== 1 ? 's' : ''))\n" +
+  "  .join('\\n')";
+
+// Query button behavior
+function run() {
+  const code = document.getElementById('jsbox').value;
+  const out = document.getElementById('query-output');
+  try {
+    const result = eval(code);
+    out.textContent = typeof result === 'string'
+      ? result
+      : JSON.stringify(result, null, 2);
+  } catch (e) {
+    out.textContent = 'Error: ' + e;
+  }
+}
+
+// Live filter behavior
+document.getElementById("filter").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  document.querySelectorAll(".owner").forEach(owner => {
+    const author = owner.querySelector("a").textContent.toLowerCase();
+    const titles = Array.from(owner.querySelectorAll("a + br ~ a"))
+      .map(link => link.textContent.toLowerCase());
+    const matchesAuthor = author.includes(query);
+    const matchesGame = titles.some(title => title.includes(query));
+    owner.style.display = (matchesAuthor || matchesGame) ? "" : "none";
+  });
+});
+
+function getdata(){
+return `
 0ctothorp|Grim Reaper Dies Too|https://js13kgames.com/entries/grim-reaper-dies-too
 0ctothorp|The Last Tower|https://js13kgames.com/2023/games/the-last-tower
 0r0b0r0|Isometric Fish|https://js13kgames.com/entries/isometric-fish-eye-fractal-flight-simulator
@@ -2215,7 +2288,6 @@ unknown|Spastic|https://js13kgames.com/entries/spastic
 unknown|Subsystem Twenty|https://js13kgames.com/entries/subsystem-twenty
 unknown|Triska Reloaded|https://triska.js13kgames.com
 unknown|buggytar|https://js13kgames.com/entries/buggytar
-unknown|unknown|http://js13kgames.com
 upisfree|DEATH DEATH DEATH|https://js13kgames.com/entries/death-death-death
 urhprimozic|Deserter|https://js13kgames.com/entries/deserter
 usumerican|Small Mahjong|https://js13kgames.com/2024/games/small-mahjong
@@ -2335,75 +2407,8 @@ zsumair|Winkie|https://js13kgames.com/entries/winkie-lost-in-space
 zxch3n|Go Back To Space|https://js13kgames.com/entries/go-back-to-space
 zzz6519003|6174|https://js13kgames.com/2024/games/6174
 `;
-
-const output = document.getElementById("output");
-const authors = {};
-
-data.trim().split("\n").forEach(line => {
-  const [author, title, url] = line.split("|");
-  if (!authors[author]) authors[author] = [];
-  authors[author].push({ title, url });
-});
-
-Object.entries(authors).forEach(([author, games]) => {
-  const container = document.createElement("div");
-  container.className = "owner";
-
-  const authorLink = document.createElement("a");
-  authorLink.href = `https://github.com/${author}`;
-  authorLink.textContent = author;
-  authorLink.target = "_blank";
-  authorLink.style.fontWeight = "bold";
-
-  container.appendChild(authorLink);
-  container.appendChild(document.createElement("br"));
-
-  games.forEach(({ title, url }) => {
-    const gameLink = document.createElement("a");
-    gameLink.href = url;
-    gameLink.textContent = title;
-    gameLink.target = "_blank";
-    container.appendChild(gameLink);
-    container.appendChild(document.createElement("br"));
-  });
-
-  output.appendChild(container);
-});
-
-// Pre-fill query
-document.getElementById("jsbox").value =
-  "Object.entries(authors)\n" +
-  "  .sort((a, b) => b[1].length - a[1].length)\n" +
-  "  .slice(0, 10)\n" +
-  "  .map(([author, games], i) => (i + 1) + '. ' + author + ' - ' + games.length + ' game' + (games.length !== 1 ? 's' : ''))\n" +
-  "  .join('\\n')";
-
-// Query button behavior
-function run() {
-  const code = document.getElementById('jsbox').value;
-  const out = document.getElementById('query-output');
-  try {
-    const result = eval(code);
-    out.textContent = typeof result === 'string'
-      ? result
-      : JSON.stringify(result, null, 2);
-  } catch (e) {
-    out.textContent = 'Error: ' + e;
-  }
 }
 
-// Live filter behavior
-document.getElementById("filter").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  document.querySelectorAll(".owner").forEach(owner => {
-    const author = owner.querySelector("a").textContent.toLowerCase();
-    const titles = Array.from(owner.querySelectorAll("a + br ~ a"))
-      .map(link => link.textContent.toLowerCase());
-    const matchesAuthor = author.includes(query);
-    const matchesGame = titles.some(title => title.includes(query));
-    owner.style.display = (matchesAuthor || matchesGame) ? "" : "none";
-  });
-});
 </script>
 
 </body>
