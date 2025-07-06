@@ -74,7 +74,7 @@ const queries = {
     const github = game.html_url || "";
     if (!groups[author]) groups[author] = [];
     groups[author].push(
-      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${name}\`
+      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${game.created_at?.substring(0, 4)} \${name}\`
     );
   });
   return Object.entries(groups)
