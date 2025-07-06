@@ -39,12 +39,11 @@
 
 <!-- Query Picker -->
 <label for="queryList">Query:</label>
-<select id="queryList">
+<select id="queryList" onchange="loadAndRun()">
   <option value="groupByAuthor">Group by author</option>
   <option value="groupByYear">Group by year</option>
   <option value="countByYear">Count by year</option>
 </select>
-<button onclick="loadQuery()">Load Query</button>
 <button onclick="run()">Run</button>
 
 <!-- Query Box -->
@@ -148,8 +147,7 @@ fetch("games.json")
   .then(res => res.json())
   .then(json => {
     data = json;
-    loadQuery();
-    run();
+    loadAndRun();
   });
 
 function loadQuery() {
@@ -177,6 +175,11 @@ function run() {
   } catch (e) {
     out.innerText = "Error: " + e.message;
   }
+}
+
+function loadAndRun() {
+  loadQuery();
+  run();
 }
 
 function applyFilter() {
