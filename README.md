@@ -77,7 +77,7 @@ Each repository is logged with fields like:
 
 2. **Run the script**:
    ```bash
-   node games/games.mjs
+   node games.mjs
    ```
 
 3. The output will be saved to `games.json`.
