@@ -41,7 +41,6 @@
 <label for="queryList">Query:</label>
 <select id="queryList">
   <option value="groupByAuthor">Group by author</option>
-  <option value="year2024">All 2024 games</option>
   <option value="groupByYear">Group by year</option>
   <option value="countByYear">Count by year</option>
 </select>
@@ -86,34 +85,9 @@ const queries = {
   return Object.entries(groups)
     .sort((a, b) => b[1].length - a[1].length)
     .map(([author, games]) =>
-      \`<div><strong>\${author} (\${games.length} games)</strong><br>\` +
+      \`<div><b>\${author} (\${games.length} games)</b><br>\` +
       games.map(g => "&nbsp;&nbsp;" + g).join("<br>") +
       "</div>"
-    )
-    .join("");
-})()
-`.trim(),
-
-  year2024: `
-(() => {
-  const games = [];
-  data.forEach(game => {
-    const desc = game.description || "";
-    const match = desc.match(/^(.+?) - .*?(\\d{4}).*?by\\s+@?([a-zA-Z0-9_-]+)/i);
-    if (match) {
-      const title = match[1];
-      const year = match[2];
-      const author = match[3];
-      const play = game.homepage || "";
-      const github = game.html_url || "";
-      if (year === "2024") {
-        games.push({ title, author, play, github });
-      }
-    }
-  });
-  return \`<h2>2024 (\${games.length} games)</h2>\` + games
-    .map(g =>
-      \`<div><strong>\${g.title}</strong> by \${g.author} <a href="\${g.play}" target="_blank">play</a> <a href="\${g.github}" target="_blank">github</a></div>\`
     )
     .join("");
 })()
@@ -138,7 +112,7 @@ const queries = {
   return Object.entries(groups)
     .sort((a, b) => Number(b[0]) - Number(a[0]))
     .map(([year, games]) =>
-      \`<div><strong>\${year} (\${games.length} games)</strong><br>\` +
+      \`<div><b>\${year} (\${games.length} games)</b><br>\` +
       games.map(g => "&nbsp;&nbsp;" + g).join("<br>") +
       "</div>"
     )
@@ -165,7 +139,7 @@ const queries = {
     .forEach(([year, count]) => {
       lines.push(\`\${year}: \${count}\`);
     });
-  return total+" games in "+lines.length+" magical years \\u{1F389}\\n"+lines.join("\\n");
+  return "\\n<b>"+total+" games in "+lines.length+" magical years \\u{1F389}</b>\\n\\n"+lines.join("\\n");
 })()
 `.trim()
 };
