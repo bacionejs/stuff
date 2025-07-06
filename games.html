@@ -136,7 +136,7 @@ const queries = {
     }
   });
   return Object.entries(groups)
-    .sort((a, b) => Number(b[0]) - Number(a[0])) // Sort years descending
+    .sort((a, b) => Number(b[0]) - Number(a[0]))
     .map(([year, games]) =>
       \`<div><strong>\${year} (\${games.length} game\${games.length !== 1 ? "s" : ""})</strong><br>\` +
       games.map(g => "&nbsp;&nbsp;" + g).join("<br>") +
@@ -149,18 +149,23 @@ const queries = {
   countByYear: `
 (() => {
   const counts = {};
+  let total = 0;
   data.forEach(game => {
     const desc = game.description || "";
     const match = desc.match(/^(.+?) - .*?(\\d{4}).*?by\\s+@?([a-zA-Z0-9_-]+)/i);
     if (match) {
       const year = match[2];
       counts[year] = (counts[year] || 0) + 1;
+      total++;
     }
   });
-  return Object.entries(counts)
-    .sort((a, b) => b[0] - a[0]) // Sort by year descending
-    .map(([year, count]) => \`\${year}: \${count} game\${count !== 1 ? 's' : ''}\`)
-    .join("\\n");
+  const lines = [\`Total: \${total} game\${total !== 1 ? 's' : ''}\`];
+  Object.entries(counts)
+    .sort((a, b) => b[0] - a[0])
+    .forEach(([year, count]) => {
+      lines.push(\`\${year}: \${count} game\${count !== 1 ? 's' : ''}\`);
+    });
+  return lines.join("\\n");
 })()
 `.trim()
 };
@@ -184,7 +189,13 @@ function run() {
   try {
     const result = eval(code);
     if (typeof result === "string") {
-      out.innerHTML = result.includes("<") ? result : result.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\\n/g,"<br>");
+      out.innerHTML = result.includes("<")
+        ? result
+        : result
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\\n/g, "<br>");
     } else {
       out.innerHTML = result;
     }
@@ -197,18 +208,12 @@ function run() {
 function applyFilter() {
   const query = document.getElementById("filterInput").value.toLowerCase();
   const blocks = document.querySelectorAll("#query-output > div, #query-output > h2");
-  let show = false;
   blocks.forEach(block => {
-    if (block.tagName === "H2") {
-      show = false;
-      block.style.display = "none";
-    } else {
-      const text = block.textContent.toLowerCase();
-      const match = text.includes(query);
-      block.style.display = match ? "" : "none";
-      if (match && block.previousElementSibling?.tagName === "H2") {
-        block.previousElementSibling.style.display = "";
-      }
+    const text = block.textContent.toLowerCase();
+    const match = text.includes(query);
+    block.style.display = match ? "" : "none";
+    if (match && block.previousElementSibling?.tagName === "H2") {
+      block.previousElementSibling.style.display = "";
     }
   });
 }
