@@ -159,6 +159,9 @@ function run() {
 }
 
 function loadAndRun() {
+  const mode = document.getElementById("queryList").value;
+  document.getElementById("filterBox").style.display =
+    mode === "groupByYear" ? "none" : "";
   run();
 }
 
