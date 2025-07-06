@@ -38,7 +38,6 @@
 <select id="queryList" onchange="loadAndRun()">
   <option value="groupByAuthor">Group by author</option>
   <option value="groupByYear">Group by year</option>
-  <option value="all">Group by none (flat)</option>
   <option value="countByYear">Count by year</option>
 </select>
 
@@ -111,37 +110,6 @@ const queries = {
     .join("");
 })()
 `.trim(),
-
-
-
-
-
-
-all: `
-(() => {
-  return data
-    .map(game => {
-      const desc = game.description || "";
-      const match = desc.match(/^(.+?) - .*?(\\d{4}).*?by\\s+@?([a-zA-Z0-9_-]+)/i);
-      if (!match) return "";
-      const [_, title, year, author] = match;
-      const play = game.homepage || "";
-      const github = game.html_url || "";
-      return \`\${year} \${title} by \${author} <a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a>\`;
-    })
-    .filter(Boolean)
-    .sort((a, b) => {
-      const yearA = parseInt(a.slice(0, 4));
-      const yearB = parseInt(b.slice(0, 4));
-      return yearB - yearA;
-    })
-    .map(line => \`<div>\${line}</div>\`)
-    .join("");
-})()
-`.trim(),
-
-
-
 
   countByYear: `
 (() => {
