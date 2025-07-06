@@ -105,6 +105,7 @@ const queries = {
         break;
       }
     }
+    if (year === "????" && matches.length) year = matches[0][1];
 
     const play = game.homepage;
     const github = game.html_url || "";
@@ -142,6 +143,7 @@ const queries = {
         break;
       }
     }
+    if (!year && matches.length) year = matches[0][1];
     if (!year) return;
 
     const play = game.homepage;
@@ -182,6 +184,7 @@ const queries = {
         break;
       }
     }
+    if (!year && matches.length) year = matches[0][1];
     if (!year) return;
 
     counts[year] = (counts[year] || 0) + 1;
