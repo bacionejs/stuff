@@ -56,21 +56,28 @@
 <script>
 let data = [];
 
+
+
+
+
+
+
 const queries = {
 
   groupByAuthor: `
 (() => {
   const groups = {};
   data.forEach(game => {
+    if (!game.homepage) return; // skip if no homepage
     const desc = game.description || "";
     const parts = desc.split(/\\bby\\b/i);
-    if (parts.length < 2) return; // skip if there's no "by"
+    if (parts.length < 2) return;
     const afterLastBy = parts[parts.length - 1];
     const match = afterLastBy.match(/@?([a-zA-Z0-9_-]+)/);
-    if (!match) return; // skip if no author match
+    if (!match) return;
     const author = match[1];
     const name = game.name || "(untitled)";
-    const play = game.homepage || "";
+    const play = game.homepage;
     const github = game.html_url || "";
     if (!groups[author]) groups[author] = [];
     groups[author].push(
@@ -92,11 +99,12 @@ const queries = {
 (() => {
   const groups = {};
   data.forEach(game => {
+    if (!game.homepage) return; // skip if no homepage
     const year = game.created_at?.substring(0, 4);
     if (!year) return;
     const name = game.name || "(untitled)";
     const desc = game.description || "(no description)";
-    const play = game.homepage || "";
+    const play = game.homepage;
     const github = game.html_url || "";
     if (!groups[year]) groups[year] = [];
     groups[year].push(
@@ -119,6 +127,7 @@ const queries = {
   const counts = {};
   let total = 0;
   data.forEach(game => {
+    if (!game.homepage) return; // skip if no homepage
     const year = game.created_at?.substring(0, 4);
     if (!year) return;
     counts[year] = (counts[year] || 0) + 1;
@@ -134,6 +143,10 @@ const queries = {
 })()
 `.trim()
 };
+
+
+
+
 
 fetch("games.json")
   .then(res => res.json())
