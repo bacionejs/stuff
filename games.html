@@ -127,9 +127,15 @@ all: `
       const [_, title, year, author] = match;
       const play = game.homepage || "";
       const github = game.html_url || "";
-      return \`<div>\${title} (\${year}) by \${author} <a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a></div>\`;
+      return \`\${year} \${title} by \${author} <a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a>\`;
     })
     .filter(Boolean)
+    .sort((a, b) => {
+      const yearA = parseInt(a.slice(0, 4));
+      const yearB = parseInt(b.slice(0, 4));
+      return yearB - yearA;
+    })
+    .map(line => \`<div>\${line}</div>\`)
     .join("");
 })()
 `.trim(),
