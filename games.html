@@ -151,18 +151,7 @@ function run() {
   const code = loadQuery();
   const out = document.getElementById("query-output");
   try {
-    const result = eval(code);
-    if (typeof result === "string") {
-      out.innerHTML = result.includes("<")
-        ? result
-        : result
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/\\n/g, "<br>");
-    } else {
-      out.innerHTML = result;
-    }
+    out.innerHTML = eval(code);
     applyFilter();
   } catch (e) {
     out.innerText = "Error: " + e.message;
