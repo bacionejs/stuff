@@ -9,11 +9,6 @@
       line-height: 1.4;
       font-size: 10px;
     }
-    textarea {
-      width: 100%;
-      font-family: monospace;
-      font-size: 10px;
-    }
     button, select {
       margin-top: 0.5em;
       margin-right: 0.5em;
@@ -33,10 +28,11 @@
       display: none;
       z-index: 999;
     }
+    #filterBox { margin-top: 1em; }
   </style>
 </head>
 <body>
-
+<h2>JS13K Games Viewer</h2>
 <!-- Query Picker -->
 <label for="queryList">Query:</label>
 <select id="queryList" onchange="loadAndRun()">
@@ -44,10 +40,6 @@
   <option value="groupByYear">Group by year</option>
   <option value="countByYear">Count by year</option>
 </select>
-<button onclick="run()">Run</button>
-
-<!-- Query Box -->
-<textarea id="jsbox" rows="8"></textarea>
 
 <!-- Filter Box -->
 <div id="filterBox">
@@ -152,11 +144,11 @@ fetch("games.json")
 
 function loadQuery() {
   const key = document.getElementById("queryList").value;
-  document.getElementById("jsbox").value = queries[key];
+  return queries[key];
 }
 
 function run() {
-  const code = document.getElementById("jsbox").value;
+  const code = loadQuery();
   const out = document.getElementById("query-output");
   try {
     const result = eval(code);
@@ -178,7 +170,6 @@ function run() {
 }
 
 function loadAndRun() {
-  loadQuery();
   run();
 }
 
