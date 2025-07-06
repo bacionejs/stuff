@@ -61,17 +61,16 @@ const queries = {
 (() => {
   const groups = {};
   data.forEach(game => {
-    const desc = game.description || "";
-    const match = desc.match(/^(.+?) - .*?(\\d{4}).*?by\\s+@?([a-zA-Z0-9_-]+)/i);
-    if (match) {
-      const [_, title, year, author] = match;
-      if (!groups[author]) groups[author] = [];
-      const play = game.homepage || "";
-      const github = game.html_url || "";
-      groups[author].push(
-        \` <a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${title} (\${year})\`
-      );
-    }
+    const author = (game.description?.match(/by\\s+@?([a-zA-Z0-9_-]+)/i) || [])[1];
+    if (!author) return;
+    const title = game.name || "Untitled";
+    const year = game.created_at?.substring(0, 4) || "Unknown";
+    const play = game.homepage || "";
+    const github = game.html_url || "";
+    if (!groups[author]) groups[author] = [];
+    groups[author].push(
+      \` <a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${title} (\${year})\`
+    );
   });
   return Object.entries(groups)
     .sort((a, b) => b[1].length - a[1].length)
@@ -88,17 +87,16 @@ const queries = {
 (() => {
   const groups = {};
   data.forEach(game => {
-    const desc = game.description || "";
-    const match = desc.match(/^(.+?) - .*?(\\d{4}).*?by\\s+@?([a-zA-Z0-9_-]+)/i);
-    if (match) {
-      const [_, title, year, author] = match;
-      const play = game.homepage || "";
-      const github = game.html_url || "";
-      if (!groups[year]) groups[year] = [];
-      groups[year].push(
-        \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a> \${title} by \${author}\`
-      );
-    }
+    const year = game.created_at?.substring(0, 4);
+    if (!year) return;
+    const title = game.name || "Untitled";
+    const author = (game.description?.match(/by\\s+@?([a-zA-Z0-9_-]+)/i) || [])[1] || "Unknown";
+    const play = game.homepage || "";
+    const github = game.html_url || "";
+    if (!groups[year]) groups[year] = [];
+    groups[year].push(
+      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a> \${title} by \${author}\`
+    );
   });
   return Object.entries(groups)
     .sort((a, b) => Number(b[0]) - Number(a[0]))
@@ -116,13 +114,10 @@ const queries = {
   const counts = {};
   let total = 0;
   data.forEach(game => {
-    const desc = game.description || "";
-    const match = desc.match(/^(.+?) - .*?(\\d{4}).*?by\\s+@?([a-zA-Z0-9_-]+)/i);
-    if (match) {
-      const year = match[2];
-      counts[year] = (counts[year] || 0) + 1;
-      total++;
-    }
+    const year = game.created_at?.substring(0, 4);
+    if (!year) return;
+    counts[year] = (counts[year] || 0) + 1;
+    total++;
   });
   const lines = [];
   Object.entries(counts)
