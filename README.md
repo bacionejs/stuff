@@ -18,9 +18,6 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 ### 💡 Notes
 
-- The viewer uses a regular expression to extract title, year, and author from each game's `description`.
-- Entries without a standard format may not appear.
-- No build tools or external dependencies — just plain HTML and JavaScript.
 - ⚠️ The viewer relies on a fragile regular expression to extract game metadata from `description` fields. If the format isn't consistent (`Title - Year by Author`), the game will be skipped.
 
 The pattern used is:
