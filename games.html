@@ -69,17 +69,28 @@ const queries = {
   const groups = {};
   data.forEach(game => {
     if (!game.homepage) return; // skip if no homepage
-    const desc = game.description || "";
-    const parts = desc.split(/\\bby\\b/i);
     let author;
-    if (parts.length > 1){
-      const afterLastBy = parts[parts.length - 1];
-      const match = afterLastBy.match(/@?([a-zA-Z0-9_-]+)/);
-      if (!match) return;
-      author = match[1];
-    }else{
-      author="unknown";
+
+    // Try to extract from parent
+    if (game.parent && game.parent.includes("/")) {
+      author = game.parent.split("/")[0];
     }
+
+    // If no parent-based author, fall back to description parsing
+    if (!author) {
+      const desc = game.description || "";
+      const parts = desc.split(/\\bby\\b/i);
+      if (parts.length > 1) {
+        const afterLastBy = parts[parts.length - 1];
+        const match = afterLastBy.match(/@?([a-zA-Z0-9_-]+)/);
+        if (match) {
+          author = match[1];
+        }
+      }
+    }
+
+    if (!author) author = "unknown";
+
     const name = game.name || "(untitled)";
     const play = game.homepage;
     const github = game.html_url || "";
