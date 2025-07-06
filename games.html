@@ -86,7 +86,7 @@ const queries = {
   return Object.entries(groups)
     .sort((a, b) => b[1].length - a[1].length)
     .map(([author, games]) =>
-      \`<div><strong>\${author} (\${games.length} game\${games.length !== 1 ? "s" : ""})</strong><br>\` +
+      \`<div><strong>\${author} (\${games.length} games)</strong><br>\` +
       games.map(g => "&nbsp;&nbsp;" + g).join("<br>") +
       "</div>"
     )
@@ -111,7 +111,7 @@ const queries = {
       }
     }
   });
-  return \`<h2>2024 (\${games.length} game\${games.length !== 1 ? "s" : ""})</h2>\` + games
+  return \`<h2>2024 (\${games.length} games)</h2>\` + games
     .map(g =>
       \`<div><strong>\${g.title}</strong> by \${g.author} <a href="\${g.play}" target="_blank">play</a> <a href="\${g.github}" target="_blank">github</a></div>\`
     )
@@ -138,7 +138,7 @@ const queries = {
   return Object.entries(groups)
     .sort((a, b) => Number(b[0]) - Number(a[0]))
     .map(([year, games]) =>
-      \`<div><strong>\${year} (\${games.length} game\${games.length !== 1 ? "s" : ""})</strong><br>\` +
+      \`<div><strong>\${year} (\${games.length} games)</strong><br>\` +
       games.map(g => "&nbsp;&nbsp;" + g).join("<br>") +
       "</div>"
     )
@@ -159,13 +159,13 @@ const queries = {
       total++;
     }
   });
-  const lines = [\`Total: \${total} game\${total !== 1 ? 's' : ''}\`];
+  const lines = [];
   Object.entries(counts)
     .sort((a, b) => b[0] - a[0])
     .forEach(([year, count]) => {
-      lines.push(\`\${year}: \${count} game\${count !== 1 ? 's' : ''}\`);
+      lines.push(\`\${year}: \${count}\`);
     });
-  return lines.join("\\n");
+  return total+" games in "+lines.length+" magical years \\u{1F389}\\n"+lines.join("\\n");
 })()
 `.trim()
 };
