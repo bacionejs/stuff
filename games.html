@@ -62,21 +62,25 @@ let data = [];
 
 
 
+
+
+
+
+
+
 const queries = {
 
   groupByAuthor: `
 (() => {
   const groups = {};
   data.forEach(game => {
-    if (!game.homepage) return; // skip if no homepage
-    let author;
+    if (!game.homepage) return;
 
-    // Try to extract from parent
+    let author;
     if (game.parent && game.parent.includes("/")) {
       author = game.parent.split("/")[0];
     }
 
-    // If no parent-based author, fall back to description parsing
     if (!author) {
       const desc = game.description || "";
       const parts = desc.split(/\\bby\\b/i);
@@ -91,14 +95,26 @@ const queries = {
 
     if (!author) author = "unknown";
 
-    const name = game.name || "(untitled)";
+    const name = game.name || "";
+    const desc = game.description || "";
+    const matches = [...desc.matchAll(/\\b(20\\d{2})\\b/g)];
+    let year = "????";
+    for (const m of matches) {
+      if (!name.includes(m[1])) {
+        year = m[1];
+        break;
+      }
+    }
+
     const play = game.homepage;
     const github = game.html_url || "";
+    const title = name || "(untitled)";
     if (!groups[author]) groups[author] = [];
     groups[author].push(
-      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${game.created_at?.substring(0, 4)} \${name}\`
+      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${year} \${title}\`
     );
   });
+
   return Object.entries(groups)
     .sort((a, b) => b[1].length - a[1].length)
     .map(([author, games]) =>
@@ -114,18 +130,30 @@ const queries = {
 (() => {
   const groups = {};
   data.forEach(game => {
-    if (!game.homepage) return; // skip if no homepage
-    const year = game.created_at?.substring(0, 4);
+    if (!game.homepage) return;
+
+    const name = game.name || "";
+    const desc = game.description || "";
+    const matches = [...desc.matchAll(/\\b(20\\d{2})\\b/g)];
+    let year;
+    for (const m of matches) {
+      if (!name.includes(m[1])) {
+        year = m[1];
+        break;
+      }
+    }
     if (!year) return;
-    const name = game.name || "(untitled)";
-    const desc = game.description || "(no description)";
+
     const play = game.homepage;
     const github = game.html_url || "";
+    const title = name || "(untitled)";
+    const full = \`\${title} - \${desc}\`;
     if (!groups[year]) groups[year] = [];
     groups[year].push(
-      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a> \${name} - \${desc}\`
+      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a> \${full}\`
     );
   });
+
   return Object.entries(groups)
     .sort((a, b) => Number(b[0]) - Number(a[0]))
     .map(([year, games]) =>
@@ -142,22 +170,40 @@ const queries = {
   const counts = {};
   let total = 0;
   data.forEach(game => {
-    if (!game.homepage) return; // skip if no homepage
-    const year = game.created_at?.substring(0, 4);
+    if (!game.homepage) return;
+
+    const name = game.name || "";
+    const desc = game.description || "";
+    const matches = [...desc.matchAll(/\\b(20\\d{2})\\b/g)];
+    let year;
+    for (const m of matches) {
+      if (!name.includes(m[1])) {
+        year = m[1];
+        break;
+      }
+    }
     if (!year) return;
+
     counts[year] = (counts[year] || 0) + 1;
     total++;
   });
+
   const lines = [];
   Object.entries(counts)
     .sort((a, b) => b[0] - a[0])
     .forEach(([year, count]) => {
       lines.push(\`\${year}: \${count}\`);
     });
+
   return "\\n<b>"+total+" games in "+lines.length+" magical years \\u{1F389}</b>\\n\\n"+lines.join("\\n");
 })()
 `.trim()
+
 };
+
+
+
+
 
 
 
