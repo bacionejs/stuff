@@ -18,7 +18,7 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 ### 💡 Notes
 
-- ⚠️ The viewer relies on a fragile regular expression to extract game metadata from `description` fields. If the format isn't consistent (`Title - Year by Author`), the game will be skipped.
+⚠️ The viewer relies on a fragile regular expression to extract game metadata from `description` fields. If the format isn't consistent (`Title - Year by Author`), the game will be skipped. It also only grabs the **first author** if multiple are listed.
 
 The pattern used is:
 
@@ -29,7 +29,7 @@ The pattern used is:
 It matches:
 - `(.+?)` → the **game title**, before the first ` - `
 - `(\d{4})` → a **4-digit year**
-- `([a-zA-Z0-9_-]+)` → the **author**, after the word `by` (optionally prefixed with `@`)
+- `([a-zA-Z0-9_-]+)` → the **first author**, after the word `by` (optionally prefixed with `@`)
 
 ## 📦 Repository Scraper: `games.mjs`
 > ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe once a day during the August/September competition.
