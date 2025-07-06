@@ -57,19 +57,24 @@
 let data = [];
 
 const queries = {
+
   groupByAuthor: `
 (() => {
   const groups = {};
   data.forEach(game => {
-    const author = (game.description?.match(/by\\s+@?([a-zA-Z0-9_-]+)/i) || [])[1];
-    if (!author) return;
-    const title = game.name || "Untitled";
-    const year = game.created_at?.substring(0, 4) || "Unknown";
+    const desc = game.description || "";
+    const parts = desc.split(/\\bby\\b/i);
+    if (parts.length < 2) return; // skip if there's no "by"
+    const afterLastBy = parts[parts.length - 1];
+    const match = afterLastBy.match(/@?([a-zA-Z0-9_-]+)/);
+    if (!match) return; // skip if no author match
+    const author = match[1];
+    const name = game.name || "(untitled)";
     const play = game.homepage || "";
     const github = game.html_url || "";
     if (!groups[author]) groups[author] = [];
     groups[author].push(
-      \` <a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${title} (\${year})\`
+      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">source</a> \${name}\`
     );
   });
   return Object.entries(groups)
