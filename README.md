@@ -21,7 +21,7 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 The **year** comes from the GitHub `created_at` field.
 
 When displaying results:
-- The **"Group by Author"** query uses the `name` field as the game title and extracts the **first author name after the last occurrence of `by`** in the `description`...skipped if none.
+- The **"Group by Author"** query uses the GitHub `name` field as the game title and extracts the **first author name after the last occurrence of `by`** in the `description`...skipped if none.
 - The **"Group by Year"** query includes the full `description`, unchanged.
 
 The `parent` field in GitHub usually contains the original author's repository, because the entry was forked. However, it is **not reliable** for extracting author information. Repositories may be deleted, renamed, or made private after the competition, which causes the `parent` field to disappear or become inaccurate. To avoid missing or incorrect data, the viewer relies solely on the `description` field for author attribution.
