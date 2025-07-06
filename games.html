@@ -89,13 +89,13 @@ const queries = {
   data.forEach(game => {
     const year = game.created_at?.substring(0, 4);
     if (!year) return;
-    const title = game.name || "Untitled";
-    const author = (game.description?.match(/by\\s+@?([a-zA-Z0-9_-]+)/i) || [])[1] || "Unknown";
+    const name = game.name || "(untitled)";
+    const desc = game.description || "(no description)";
     const play = game.homepage || "";
     const github = game.html_url || "";
     if (!groups[year]) groups[year] = [];
     groups[year].push(
-      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a> \${title} by \${author}\`
+      \`<a href="\${play}" target="_blank">play</a> <a href="\${github}" target="_blank">github</a> \${name} - \${desc}\`
     );
   });
   return Object.entries(groups)
