@@ -24,7 +24,7 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 
 ## 📦 Repository Scraper: `games.mjs`
-> ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file.
+> ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...once a day during August/September competition.
 
 This script fetches metadata for all **public repositories** in the [js13kGames](https://github.com/js13kGames) GitHub organization and saves a simplified log (`games.json`) with just the essential fields.
 
