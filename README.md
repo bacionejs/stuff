@@ -18,18 +18,23 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 ### 💡 Notes
 
-⚠️ The viewer relies on a fragile regular expression to extract game metadata from `description` fields. If the format isn't consistent (`Title - Year by Author`), the game will be skipped. It also only grabs the **first author** if multiple are listed.
+The viewer pulls the **year** from the GitHub metadata field `created_at`, using the first four digits to determine the year of the entry.
+
+The **game title** is taken from the GitHub `name` field, which is consistent and does not require parsing.
+
+The **author** is extracted from the `description` field using a regular expression. If the format is inconsistent or missing, the author may be marked as `"Unknown"`. Only the **first author** is captured, even if multiple are listed.
 
 The pattern used is:
 
 ```js
-/^(.+?) - .*?(\d{4}).*?by\s+@?([a-zA-Z0-9_-]+)/i
+/by\s+@?([a-zA-Z0-9_-]+)/i
 ```
 
 It matches:
-- `(.+?)` → the **game title**, before the first ` - `
-- `(\d{4})` → a **4-digit year**
-- `([a-zA-Z0-9_-]+)` → the **first author**, after the word `by` (optionally prefixed with `@`)
+- The word `by` followed by one or more spaces
+- An optional `@` symbol
+
+The `parent` field in the GitHub metadata sometimes contains the original author's repository (if the entry was forked), but it is **not reliable** for extracting author information. Repositories may be deleted, renamed, or made private after the competition, which causes the `parent` field to disappear or become inaccurate. To avoid missing or incorrect data, the viewer relies solely on the `description` field for author attribution.
 
 ## 📦 Repository Scraper: `games.mjs`
 > ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe once a day during the August/September competition.
