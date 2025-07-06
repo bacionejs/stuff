@@ -23,7 +23,7 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 - The **Group by Year** query includes the full `description`.
 
-- All three queries need the **year**. It is the first year in the description that is not found in the name. The GitHub `created_at` field isn't accurate because some old games didn't get forked the year of their competition.
+- All three queries need the **year**. It is the first year in the description that is not found in the name. The GitHub `created_at` field isn't accurate because some old games got forked in the year of the cat.
 
 
 ## 📦 Repository Scraper: `games.mjs`
