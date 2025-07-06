@@ -19,19 +19,9 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 ### 💡 Notes
 
+- The **"Group by Author"** query uses the GitHub name field as the game `title` and extracts the **first author name after the last occurrence of `by`** in the description as the game `author`, otherwise categorized as *unknown*. There is a `parent` field but it is **not reliable** for extracting author information because participants might delete their repositories.
 
-
-When displaying results:
-- The **"Group by Author"** query uses the GitHub `name` field as the game title and extracts the **first author name after the last occurrence of `by`** in the `description`...skipped if none.
-- The **"Group by Year"** query includes the full `description`, unchanged.
-
-The **author** comes from the GitHub `description` field.
-
-There is a `parent` field but it is **not reliable** for extracting author information because participants might delete their repositories.
-
-The **year** comes from the GitHub `created_at` field.
-
-This is accurate because the **js13kGames competition organizer** creates a fork of each submitted repository during the competition period in **August and September**. The `created_at` value reflects the date that fork was made — not the date of the original repo — so it reliably indicates the correct competition year.
+- The **"Group by Year"** query includes the full `description`, unchanged. The **year** comes from the GitHub `created_at` field. This is accurate because the **js13kGames competition organizer** creates a fork of each submitted repository during the competition period in **August and September**. The `created_at` value reflects the date that fork was made — not the date of the original repo — so it reliably indicates the correct competition year.
 
 
 ## 📦 Repository Scraper: `games.mjs`
