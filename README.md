@@ -18,13 +18,15 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 
 ### 💡 Notes
 
-The viewer pulls the **year** from the GitHub metadata field `created_at`, using the first four digits to determine the year of the entry.
+The **year** comes from the GitHub `created_at` field.
 
 The **game title** is taken from the GitHub `name` field, which is consistent and does not require parsing.
 
-The **author** is extracted from the `description` field using a regular expression. If the format is inconsistent or missing, the author may be marked as `"Unknown"`. Only the **first author** is captured, even if multiple are listed.
+When displaying results:
+- The **"Group by Author"** query uses the `name` field as the game title and extracts the author's name from the `description` using a regular expression.
+- The **"Group by Year"** query includes the full `description`, unchanged.
 
-The pattern used is:
+In **"Group by Author"**, the author is extracted using the following pattern:
 
 ```js
 /by\s+@?([a-zA-Z0-9_-]+)/i
@@ -34,7 +36,9 @@ It matches:
 - The word `by` followed by one or more spaces
 - An optional `@` symbol
 
-The `parent` field in the GitHub metadata sometimes contains the original author's repository (if the entry was forked), but it is **not reliable** for extracting author information. Repositories may be deleted, renamed, or made private after the competition, which causes the `parent` field to disappear or become inaccurate. To avoid missing or incorrect data, the viewer relies solely on the `description` field for author attribution.
+If the format is inconsistent or missing, the author may be marked as `"Unknown"`. Only the **first author** is captured, even if multiple are listed.
+
+The `parent` field in GitHub usually contains the original author's repository, because the entry was forked. However, it is **not reliable** for extracting author information. Repositories may be deleted, renamed, or made private after the competition, which causes the `parent` field to disappear or become inaccurate. To avoid missing or incorrect data, the viewer relies solely on the `description` field for author attribution.
 
 ## 📦 Repository Scraper: `games.mjs`
 > ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe once a day during the August/September competition.
