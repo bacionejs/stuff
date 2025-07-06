@@ -1,15 +1,5 @@
 [
-  {
-    "name": "js13kgames.com-legacy",
-    "full_name": "js13kGames/js13kgames.com-legacy",
-    "owner": "js13kGames",
-    "description": "The source of the js13kgames.com website",
-    "homepage": "http://js13kgames.com",
-    "created_at": "2014-07-04T08:19:03Z",
-    "size": 11639,
-    "html_url": "https://github.com/js13kGames/js13kgames.com-legacy",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "space-journey",
     "full_name": "js13kGames/space-journey",
@@ -43,19 +33,7 @@
     "html_url": "https://github.com/js13kGames/wandermaze",
     "organization": "js13kGames"
   },
-  {
-    "name": "js-game-server",
-    "full_name": "js13kGames/js-game-server",
-    "owner": "js13kGames",
-    "description": "Sandboxed JavaScript Game Server",
-    "homepage": "http://js13kGames.github.io/js-game-server",
-    "created_at": "2014-09-05T13:51:05Z",
-    "size": 331,
-    "html_url": "https://github.com/js13kGames/js-game-server",
-    "parent": "aurium/js-game-server",
-    "source": "aurium/js-game-server",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "elements-craft",
     "full_name": "js13kGames/elements-craft",
@@ -1614,17 +1592,7 @@
     "source": "justgage/jarl",
     "organization": "js13kGames"
   },
-  {
-    "name": "resources",
-    "full_name": "js13kGames/resources",
-    "owner": "js13kGames",
-    "description": "Tools, assets and tutorials for creating small web games.",
-    "homepage": "https://js13kgames.com/resources",
-    "created_at": "2015-08-11T08:38:17Z",
-    "size": 704,
-    "html_url": "https://github.com/js13kGames/resources",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "wheelements",
     "full_name": "js13kGames/wheelements",
@@ -3674,19 +3642,7 @@
     "source": "codegolf/mug-gniwech",
     "organization": "js13kGames"
   },
-  {
-    "name": "js13kserver",
-    "full_name": "js13kGames/js13kserver",
-    "owner": "js13kGames",
-    "description": "js13kGames Server category files and rules",
-    "homepage": "",
-    "created_at": "2016-07-18T10:59:24Z",
-    "size": 251,
-    "html_url": "https://github.com/js13kGames/js13kserver",
-    "parent": "tricsi/js13kserver",
-    "source": "tricsi/js13kserver",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "mage-2016",
     "full_name": "js13kGames/mage-2016",
@@ -11854,28 +11810,8 @@
     "html_url": "https://github.com/js13kGames/kilo",
     "organization": "js13kGames"
   },
-  {
-    "name": "entry",
-    "full_name": "js13kGames/entry",
-    "owner": "js13kGames",
-    "description": "Open a pull request in this repository to submit your entry",
-    "homepage": "https://github.com/js13kGames/bot/blob/master/doc/how-to-submit.md#how-to-submit",
-    "created_at": "2019-07-23T09:53:45Z",
-    "size": 64,
-    "html_url": "https://github.com/js13kGames/entry",
-    "organization": "js13kGames"
-  },
-  {
-    "name": "bot",
-    "full_name": "js13kGames/bot",
-    "owner": "js13kGames",
-    "description": "js13kGames automatic submission validation",
-    "homepage": "https://js13kgames.github.io/bot/demo-xhr.html",
-    "created_at": "2019-07-23T09:53:22Z",
-    "size": 842,
-    "html_url": "https://github.com/js13kGames/bot",
-    "organization": "js13kGames"
-  },
+
+
   {
     "name": "backout",
     "full_name": "js13kGames/backout",
@@ -17188,17 +17124,7 @@
     "source": "McFunkypants/tangletruck",
     "organization": "js13kGames"
   },
-  {
-    "name": "js13kgames.com",
-    "full_name": "js13kGames/js13kgames.com",
-    "owner": "js13kGames",
-    "description": "New website.",
-    "homepage": "https://js13kgames.com",
-    "created_at": "2020-11-25T13:43:47Z",
-    "size": 24442,
-    "html_url": "https://github.com/js13kGames/js13kgames.com",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "fyranollfyra",
     "full_name": "js13kGames/fyranollfyra",
@@ -20032,17 +19958,7 @@
     "source": "AD-Edge/SubSpace-Zero",
     "organization": "js13kGames"
   },
-  {
-    "name": "js13kBreakouts",
-    "full_name": "js13kGames/js13kBreakouts",
-    "owner": "js13kGames",
-    "description": "Example Breakout games using small libraries/engines/templates for the js13kGames competition.",
-    "homepage": "https://breakouts.js13kgames.com",
-    "created_at": "2022-07-19T12:53:29Z",
-    "size": 1034,
-    "html_url": "https://github.com/js13kGames/js13kBreakouts",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "10-years-of-game-golfing",
     "full_name": "js13kGames/10-years-of-game-golfing",
@@ -24998,28 +24914,8 @@
     "html_url": "https://github.com/js13kGames/pong",
     "organization": "js13kGames"
   },
-  {
-    "name": "web",
-    "full_name": "js13kGames/web",
-    "owner": "js13kGames",
-    "description": "Top secret public project.",
-    "homepage": "https://dev.js13kgames.com",
-    "created_at": "2022-10-14T22:18:43Z",
-    "size": 150,
-    "html_url": "https://github.com/js13kGames/web",
-    "organization": "js13kGames"
-  },
-  {
-    "name": "community",
-    "full_name": "js13kGames/community",
-    "owner": "js13kGames",
-    "description": "Community discussions and RFCs for changes to the competition and its supporting systems.",
-    "homepage": "",
-    "created_at": "2022-10-15T12:04:14Z",
-    "size": 3,
-    "html_url": "https://github.com/js13kGames/community",
-    "organization": "js13kGames"
-  },
+
+
   {
     "name": "the-terror-of-mongolia",
     "full_name": "js13kGames/the-terror-of-mongolia",
@@ -25033,17 +24929,7 @@
     "source": "jacklehamster/khan-js13k",
     "organization": "js13kGames"
   },
-  {
-    "name": "blog",
-    "full_name": "js13kGames/blog",
-    "owner": "js13kGames",
-    "description": null,
-    "homepage": null,
-    "created_at": "2022-10-15T16:29:36Z",
-    "size": 17596,
-    "html_url": "https://github.com/js13kGames/blog",
-    "organization": "js13kGames"
-  },
+
   {
     "name": "robin-hood",
     "full_name": "js13kGames/robin-hood",
