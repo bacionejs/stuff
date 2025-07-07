@@ -60,7 +60,7 @@ function extractAuthor(game){
 if(game.parent&&game.parent.includes("/"))return game.parent.split("/")[0];
 const parts=game.description.split(/\bby\b/i);
 if(parts.length>1){
-  const match=parts[parts.length-1].match(/@?([a-zA-Z0-9_-]+)/);
+  const match=parts[parts.length-1].match(/\b(\S+)/);
   if(match)return match[1];
 }
 return "unknown";
@@ -245,7 +245,7 @@ const key=queryList.value;
 output.innerHTML="";
 try{
   output.append(queries[key]());
-  applyFilter();
+  if(filterBox.style.display!=="none")applyFilter();
 }catch(e){
   output.textContent="Error: "+e.message;
 }
