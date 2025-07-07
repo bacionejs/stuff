@@ -12,7 +12,7 @@ This is a **browser-based viewer** for exploring the contents of `games.json` (g
 - Offers three built-in queries:
   - **Group by Author** – Shows all games organized by contributor
   - **Group by Year** – Groups games by release year
-  - **Count by Year** – Shows a count of games per year
+  - **Count by Year** – Shows a count of games per year, with clickable links to drill down into either view (by year or by author)
 - Includes a **filter box** to search within results in real time
 - Adds a **scroll-to-top button** for easy navigation on long pages
 
