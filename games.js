@@ -111,17 +111,17 @@ Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,gam
     el("br")
   ]);
   games.forEach(g=>{
-    div.append(
-      el("span",{},[
-        "\u00A0\u00A0",
-        el("a",{href:g.play,target:"_blank"},["play"]),
-        " ",
-        el("a",{href:g.github,target:"_blank"},["source"]),
-        " "+g.year+" "+g.title
-      ]),
-      el("br")
-    );
-  });
+  div.append(
+    el("span",{},[
+      "\u00A0\u00A0",
+      el("a",{href:g.play,target:"_blank"},["play"]),
+      " ",
+      el("a",{href:g.github,target:"_blank"},["source"]),
+      " "+g.year+" "+g.title
+    ]),
+    el("br")
+  );
+});
   frag.append(div);
 });
 return frag;
@@ -151,17 +151,20 @@ Object.entries(groups).sort((a,b)=>Number(b[0])-Number(a[0])).forEach(([year,gam
     el("br")
   ]);
   games.forEach(g=>{
-    div.append(
-      el("span",{},[
-        "\u00A0\u00A0",
-        el("a",{href:g.play,target:"_blank"},["play"]),
-        " ",
-        el("a",{href:g.github,target:"_blank"},["github"]),
-        " "+g.full
-      ]),
-      el("br")
-    );
-  });
+  const [title, ...rest] = g.full.split(" - ");
+  const description = rest.join(" - ");
+  div.append(
+    el("span",{},[
+      "\u00A0\u00A0",
+      el("a",{href:g.play,target:"_blank"},["play"]),
+      " ",
+      el("a",{href:g.github,target:"_blank"},["github"]),
+      " "+title+" - ",
+      el("i",{},[description])
+    ]),
+    el("br")
+  );
+});
   frag.append(div);
 });
 return frag;
