@@ -1,44 +1,114 @@
-//===SetTitleDynamically===
 document.title="js13k Games Viewer";
 
-//===StyleInjection===
-const style=document.createElement("style");
-style.textContent=`
-body{
-font-family:sans-serif;
-padding:1em;
-line-height:1.4;
-font-size:10px;
-}
-button,select{
-margin-top:0.5em;
-margin-right:0.5em;
-}
-#query-output{
-white-space:pre-wrap;
-margin-top:1em;
-}
-a{
-text-decoration:none;
-color:blue;
-}
-#topBtn{
-position:fixed;
-bottom:1em;
-right:1em;
-display:none;
-z-index:999;
-}
-#filterBox{
-margin-top:1em;
-}`;
-document.head.appendChild(style);
+document.head.appendChild(document.createElement("style")).textContent=`
+  body{padding:1em;line-height:1.4;font-size:10px;}
+  button,div,select{margin:1em;}
+  a{text-decoration:none;color:blue;}
+`;
 
-//===ElementCreator===
+let data=[];
+
+let queries={
+
+groupByAuthor(yearFilter){
+let groups={};
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;let {year,play,github,title}=m;
+  if(yearFilter&&year!==yearFilter)return;
+  let author=extractauthor(game);
+  if(!groups[author])groups[author]=[];
+  groups[author].push({year,play,github,title});
+});
+let frag=document.createDocumentFragment();
+Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
+  games.sort((a,b)=>(b.year)-(a.year));
+  let div=el("div",{},[el("b",{},[author+" ("+games.length+" games)"]),el("br")]);
+  games.forEach(g=>{div.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));});
+  frag.append(div);
+});
+return frag;
+},
+
+groupByYear(yearFilter){
+let groups={};
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;let {year,play,github,title}=m;
+  if(yearFilter&&year!==yearFilter)return;
+  if(!groups[year])groups[year]=[];
+  groups[year].push({play,github,full:title+" - "+game.description});
+});
+let frag=document.createDocumentFragment();
+Object.entries(groups).sort((a,b)=>(b[0])-(a[0])).forEach(([year,games])=>{
+  let div=el("div",{},[el("b",{},[year+" ("+games.length+" games)"]),el("br")]);
+  games.forEach(g=>{div.append(el("span",{},[...links(g)," "+g.full]),el("br"));});
+  frag.append(div);
+});
+return frag;
+},
+
+countByYear(){
+let counts={};
+let total=0;
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;let {year}=m;
+  counts[year]=(counts[year]||0)+1;
+  total++;
+});
+let frag=el("div");
+frag.append(el("div",{},[el("b",{},[total+" games in "+Object.keys(counts).length+" magical years \u{1F389}"])]));
+Object.entries(counts).sort((a,b)=>b[0]-a[0]).forEach(([y,c])=>{
+  frag.append(
+  el("span",{},[
+    el("a",{href:"#",on:{click:e=>{e.preventDefault();query.value="groupByYear";run(y);}}},["year"]),
+    " ",
+    el("a",{href:"#",on:{click:e=>{e.preventDefault();query.value="groupByAuthor";run(y);}}},["author"]),
+    " "+y+": "+c
+  ]),
+  el("br")
+);
+});
+return frag;
+}
+
+};
+
+function links(g){return [el("a",{href:g.play},["play"])," ",el("a",{href:g.github},["source"])]}
+
+function extractauthor(game){
+if(game.parent&&game.parent.includes("/"))
+  return game.parent.split("/")[0];
+let parts=game.description.split(/\bby\b/i);
+if(parts.length>1){
+  let match=parts[parts.length-1].match(/@?([^\s.,!?]+)/);
+  if(match)return match[1];
+}
+return "unknown";
+}
+
+function minimum(game){
+let play=game.homepage;
+let github=game.html_url;
+if(!play)return null;
+return{
+year:extractyear(game),
+play,
+github,
+title:game.name
+};
+}
+
+function extractyear(game){
+let matches=[...game.description.matchAll(/\b(20\d{2})\b/g)];
+for(let m of matches)if(!game.name.includes(m[1]))return m[1];
+if(matches.length)return matches[0][1];
+return game.created_at.slice(0,4);
+}
+
 function el(tag,props={},children=[]){
-const e=document.createElement(tag);
-for(const [k,v] of Object.entries(props)){
-  if(k==="on")for(const [ev,fn] of Object.entries(v))e.addEventListener(ev,fn);
+let e=document.createElement(tag);
+if(tag==="a"&&!("target" in props))e.target="_blank";
+for(let [k,v] of Object.entries(props)){
+  if(k==="on")for(let [ev,fn] of Object.entries(v))e.addEventListener(ev,fn);
   else if(k==="style")Object.assign(e.style,v);
   else e[k]=v;
 }
@@ -46,236 +116,58 @@ children.forEach(c=>e.append(typeof c==="string"?document.createTextNode(c):c));
 return e;
 }
 
-//===DataandMetadata===
-const data=[];
-
-function extractYear(game){
-const matches=[...game.description.matchAll(/\b(20\d{2})\b/g)];
-for(const m of matches)if(!game.name.includes(m[1]))return m[1];
-if(matches.length)return matches[0][1];
-return game.created_at.slice(0,4);
-}
-
-function extractAuthor(game){
-if(game.parent && game.parent.includes("/"))
-  return game.parent.split("/")[0];
-const parts = game.description.split(/\bby\b/i);
-if(parts.length > 1){
-  const match = parts[parts.length - 1].match(/@?([^\s.,!?]+)/);
-  if(match) return match[1];
-}
-return "unknown";
-}
-
-function minimum(game){
-const play=game.homepage;
-const github=game.html_url;
-if(!play||!github)return null;
-return{
-year:extractYear(game),
-play,
-github,
-title:game.name
-};
-}
-
-
-
-
-//===QueryFunctions===
-const queries={
-
-
-
-
-
-
-
-
-
-
-
-groupByAuthor(){
-const groups={};
-data.forEach(game=>{
-  const m=minimum(game); if(!m)return; const {year,play,github,title}=m;
-  const author=extractAuthor(game);
-  if(!groups[author])groups[author]=[];
-  groups[author].push({year,play,github,title});
-});
-const frag=document.createDocumentFragment();
-Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
-  games.sort((a,b)=>Number(b.year)-Number(a.year));
-  const div=el("div",{},[
-    el("b",{},[author+" ("+games.length+" games)"]),
-    el("br")
-  ]);
-  games.forEach(g=>{
-  div.append(
-    el("span",{},[
-      "\u00A0\u00A0",
-      el("a",{href:g.play,target:"_blank"},["play"]),
-      " ",
-      el("a",{href:g.github,target:"_blank"},["source"]),
-      " "+g.year+" "+g.title
-    ]),
-    el("br")
-  );
-});
-  frag.append(div);
-});
-return frag;
-},
-
-
-
-
-
-
-
-
-
-
-
-groupByYear(){
-const groups={};
-data.forEach(game=>{
-  const m=minimum(game); if(!m)return; const {year,play,github,title}=m;
-  if(!groups[year])groups[year]=[];
-  groups[year].push({play,github,full:title+" - "+game.description});
-});
-const frag=document.createDocumentFragment();
-Object.entries(groups).sort((a,b)=>Number(b[0])-Number(a[0])).forEach(([year,games])=>{
-  const div=el("div",{},[
-    el("b",{},[year+" ("+games.length+" games)"]),
-    el("br")
-  ]);
-  games.forEach(g=>{
-  const [title, ...rest] = g.full.split(" - ");
-  const description = rest.join(" - ");
-  div.append(
-    el("span",{},[
-      "\u00A0\u00A0",
-      el("a",{href:g.play,target:"_blank"},["play"]),
-      " ",
-      el("a",{href:g.github,target:"_blank"},["github"]),
-      " "+title+" - ",
-      el("i",{},[description])
-    ]),
-    el("br")
-  );
-});
-  frag.append(div);
-});
-return frag;
-},
-
-
-
-
-
-
-
-
-
-
-
-countByYear(){
-const counts={};
-let total=0;
-data.forEach(game=>{
-  const m=minimum(game); if(!m)return; const {year,play,github,title}=m;
-  counts[year]=(counts[year]||0)+1;
-  total++;
-});
-const lines=Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([y,c])=>y+": "+c);
-return el("pre",{},[
-  "\n",
-  el("b",{},[total+" games in "+lines.length+" magical years \u{1F389}"]),
-  "\n\n",
-  lines.join("\n")
-]);
-}
-
-
-
-
-
-
-
-
-
-
-};
-
-//===DOMElements===
-const output=el("div",{id:"query-output"});
-const filterInput=el("input",{
-id:"filterInput",
-type:"text",
-on:{input:applyFilter}
-});
-const filterBox=el("div",{id:"filterBox"},[
-el("label",{htmlFor:"filterInput"},["Filter:"]),
-filterInput
-]);
-const queryList=el("select",{
-id:"queryList",
-on:{change:loadAndRun}
-},[
-el("option",{value:"groupByAuthor"},["Group by author"]),
-el("option",{value:"groupByYear"},["Group by year"]),
-el("option",{value:"countByYear"},["Count by year"])
-]);
-const topBtn=el("button",{
-id:"topBtn",
-textContent:"Top",
-on:{click:()=>scrollTo({top:0,behavior:"smooth"})}
-});
-
-//===MountEverything===
-document.body.append(
-el("h2",{},["JS13K Games Viewer"]),
-el("label",{htmlFor:"queryList"},["Query:"]),
-queryList,
-filterBox,
-output,
-topBtn
-);
-
-//===Behavior===
-function run(){
-const key=queryList.value;
+function run(yearFilter){
+let key=query.value;
 output.innerHTML="";
+let isDetail=(key!=="countByYear"&&yearFilter);
+backButton.style.display=isDetail?"":"none";
+query.style.display=isDetail?"none":"";
+filter.style.display=(key==="groupByAuthor"&&!yearFilter)?"":"none";
 try{
-  output.append(queries[key]());
-  if(filterBox.style.display!=="none")applyFilter();
+  output.append(queries[key](yearFilter));
+  if(filter.style.display!=="none")applyfilter();
 }catch(e){
   output.textContent="Error: "+e.message;
 }
 }
 
-function loadAndRun(){
-filterBox.style.display=queryList.value!=="groupByAuthor"?"none":"";
-run();
+function applyfilter(){
+let query=filter.value.toLowerCase();
+output.querySelectorAll("div").forEach(block=>{block.style.display=block.textContent.toLowerCase().includes(query)?"":"none";});
 }
 
-function applyFilter(){
-const query=filterInput.value.toLowerCase();
-const blocks=output.querySelectorAll("div");
-blocks.forEach(block=>{
-  block.style.display=block.textContent.toLowerCase().includes(query)?"":"none";
-});
-}
+let initialQuery="groupByAuthor";
+let initialYear=null;
 
-addEventListener("scroll",()=>{
-topBtn.style.display=scrollY>200?"block":"none";
+let output=el("div");
+let filter=el("input",{type:"text",placeholder:"Filter",style:{display:"none"},on:{input:applyfilter}});
+let query=el("select",{on:{change:()=>run()}},[
+  el("option",{value:"groupByAuthor"},["Group by author"]),
+  el("option",{value:"groupByYear"},["Group by year"]),
+  el("option",{value:"countByYear"},["Count by year"])
+]);
+query.value=initialQuery;
+
+let btn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
+
+let backButton=el("button",{
+textContent:"Back",
+style:{display:"none"},
+on:{click:()=>{query.value="countByYear";run();}}
 });
 
-//===LoadData===
+document.body.append(
+el("h2",{},["JS13K Games Viewer"]),
+query,
+filter,
+backButton,
+output,
+btn
+);
+
 fetch("games.json")
 .then(res=>res.json())
 .then(json=>{
   data.push(...json);
-  loadAndRun();
+  run(initialYear);
 });
