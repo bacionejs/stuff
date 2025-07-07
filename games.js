@@ -252,7 +252,7 @@ try{
 }
 
 function loadAndRun(){
-filterBox.style.display=queryList.value==="groupByYear"?"none":"";
+filterBox.style.display=queryList.value!=="groupByAuthor"?"none":"";
 run();
 }
 
