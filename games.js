@@ -60,7 +60,7 @@ function extractAuthor(game){
 if(game.parent&&game.parent.includes("/"))return game.parent.split("/")[0];
 const parts=game.description.split(/\bby\b/i);
 if(parts.length>1){
-  const match=parts[parts.length-1].match(/\b(\S+)/);
+  const match=parts[parts.length-1].match(/\b([^\s.,!?]+)/);
   if(match)return match[1];
 }
 return "unknown";
