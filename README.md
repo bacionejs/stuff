@@ -3,11 +3,63 @@
 
 A collection of tools and experiments.
 
-- [🎮 Game Explorer – JS13K Game Explorer](#game-explorer)
 - [🔍 Thinky – JS13k Code Explorer](#thinky)
+- [🎮 Game Explorer – JS13K Game Explorer](#game-explorer)
 
 ---
 
+
+
+
+# Thinky
+
+👉 **[Open Thinky](https://bacionejs.github.io/stuff/thinky.html)**
+
+## Purpose  
+Thinky is a query tool for searching the source code of the [js13kgames](https://js13kgames.com) 2012-2024 competitions.
+
+As of 2024, there are 2276 parsable game repositories by 1234 authors, and of the relevant code, there are 35,000 files and 329,875 tokens (14mb).
+
+---
+
+## 💡 Features
+
+- 🔍 **Live filtering** of tokens as you type.
+- 🧠 **Case-aware search** (preserves meaning of uppercase input).
+- 📦 **Compact index** format (`thinky.json`) for fast loading.
+- 📁 **Click-to-open** any matched repo on GitHub.
+- 🚫 **Removes junk like base64 blobs** to keep token index clean.
+
+---
+
+## 🚀 How to Use
+
+1. Open `thinky.html` in your browser.
+2. Start typing a token prefix into the filter box.
+3. Matching tokens and repositories will appear instantly.
+4. Click any repository name to view it on GitHub.
+
+---
+
+## 🛠️ How the Extraction Script Works (`extract.js`)
+The `extract.js` script builds the `thinky.json` index used by the frontend.
+> ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe at the end of each competition.
+
+### Steps:
+
+1. **Recursively walks** all local files belonging to repositories extracted from `https://github.com/js13kgames/`.
+2. For each file:
+   - Read its contents as text.
+   - Strip out **base64 blobs** and large encoded strings.
+   - Extract **clean tokens** (letters and underscores only, no numbers).
+   - Ignore all-caps constants like `DEBUG_MODE` or `CONFIG_ON`.
+3. Build a mapping of:
+   - Token → list of repository names using it.
+   - Repositories are de-duplicated and sorted.
+4. Save result to `thinky.json`
+
+---
+ 
 
 
 
@@ -118,56 +170,4 @@ Inside the script:
 - The `js13kGames` organization has **over 2,000 repositories**, and each one requires an individual API call.
 - You can typically run the full script **only once or twice per day** before hitting the daily limit.
 - Without a token, the unauthenticated limit is just **60 requests per hour**.
-
-# Thinky
-
-👉 **[Open Thinky](https://bacionejs.github.io/stuff/thinky.html)**
-
-## Purpose  
-Thinky is a query tool for analyzing the source code of the [js13kgames](https://js13kgames.com) 2012-2024 competitions.
-
-As of 2024, there are 2276 parsable game repositories by 1234 authors, and of the relevant code, there are 35,000 files and 329,875 tokens (14mb).
-
----
-
-## 💡 Features
-
-- 🔍 **Live filtering** of tokens as you type.
-- 🧠 **Case-aware search** (preserves meaning of uppercase input).
-- 📦 **Compact index** format (`thinky.json`) for fast loading.
-- 📁 **Click-to-open** any matched repo on GitHub.
-- 🚫 **Removes junk like base64 blobs** to keep token index clean.
-
----
-
-## 🚀 How to Use
-
-1. Open `thinky.html` in your browser.
-2. Start typing a token prefix into the filter box.
-3. Matching tokens and repositories will appear instantly.
-4. Click any repository name to view it on GitHub.
-
----
-
-## 🛠️ How the Extraction Script Works (`extract.js`)
-The `extract.js` script builds the `thinky.json` index used by the frontend.
-> ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe at the end of each competition.
-
-### Steps:
-
-1. **Recursively walks** all local files belonging to repositories extracted from `https://github.com/js13kgames/`.
-2. For each file:
-   - Read its contents as text.
-   - Strip out **base64 blobs** and large encoded strings.
-   - Extract **clean tokens** (letters and underscores only, no numbers).
-   - Ignore all-caps constants like `DEBUG_MODE` or `CONFIG_ON`.
-3. Build a mapping of:
-   - Token → list of repository names using it.
-   - Repositories are de-duplicated and sorted.
-4. Save result to `thinky.json`
-
----
- 
-
-
 
