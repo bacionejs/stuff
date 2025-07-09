@@ -10,13 +10,15 @@ span.repo{color:#669;cursor:pointer}
 #tokens{margin:0.5em 0;color:#555}`;document.head.appendChild(s)};
 const main=()=>{document.title='Thinky';style();
 const desc=e('div');
-desc.innerHTML=`Thinky is a query tool for searching the source code of the js13kgames competitions 2012-2024.
+desc.innerHTML=`Thinky searches code of the js13kgames competitions, all years: 
+<span id="gamecount"></span>
 <a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
 const i=e('input',{placeholder:'FILTER'}),tlist=e('div',{id:'tokens'}),ul=e('ul');
 document.body.append(desc,i,tlist,ul);
 let tokens={},repos=[];
 fetch("thinky.json").then(r=>r.json()).then(data=>{
   repos=data.repos;
+  document.getElementById("gamecount").textContent = repos.length + " games.";
   for(const [t,arr] of data.tokens)tokens[t]=arr;
   ul.onclick=e=>{
     const s=e.target;
