@@ -1,0 +1,38 @@
+<html>
+<script>
+const e=(t,p)=>{const x=document.createElement(t);if(p)for(const[k,v]of Object.entries(p))x[k]=v;return x};
+const style=()=>{const s=e('style');s.textContent=`
+body{font-family:sans-serif;padding:1em}
+input{width:100%;padding:0.5em;font-size:1.2em}
+ul{list-style:none;padding:0;margin:0}
+li{padding:0.2em 0}
+span.repo{color:#669;cursor:pointer}
+#tokens{margin:0.5em 0;color:#555}`;document.head.appendChild(s)};
+const main=()=>{style();const i=e('input',{placeholder:'FILTER'}),tlist=e('div',{id:'tokens'}),ul=e('ul');document.body.append(i,tlist,ul);
+let tokens={},repos=[];
+fetch("thinky.json").then(r=>r.json()).then(data=>{
+  repos=data.repos;
+  for(const [t,arr] of data.tokens)tokens[t]=arr;
+  ul.onclick=e=>{
+    const s=e.target;
+    if(s.className==='repo')window.open('https://github.com/js13kgames/'+s.textContent,'_blank');
+  };
+  i.oninput=()=>{
+    const f=i.value;if(!f){tlist.textContent='';ul.textContent='';return;}
+    const sensitive=/[A-Z]/.test(f);
+    const matchedTokens=[],matchedRepos=new Set();
+    for(const t in tokens){
+      const match=sensitive?t.startsWith(f):t.toLowerCase().startsWith(f.toLowerCase());
+      if(match){matchedTokens.push(t);for(const n of tokens[t])matchedRepos.add(n)}
+    }
+    tlist.textContent=matchedTokens.join(' ');
+    ul.textContent='';
+    [...matchedRepos].sort((a,b)=>a-b).forEach(n=>{
+      const name=repos[n]||`[${n}]`,li=e('li'),span=e('span',{textContent:name,className:'repo'});
+      li.appendChild(span);ul.appendChild(li);
+    });
+  };
+});};
+onload=main;
+</script>
+</html>
