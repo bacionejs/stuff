@@ -2,13 +2,18 @@
 <script>
 const e=(t,p)=>{const x=document.createElement(t);if(p)for(const[k,v]of Object.entries(p))x[k]=v;return x};
 const style=()=>{const s=e('style');s.textContent=`
-body{font-family:sans-serif;padding:1em}
-input{width:100%;padding:0.5em;font-size:1.2em}
+body{font-size:10;padding:1em}
+input{width:100%;}
 ul{list-style:none;padding:0;margin:0}
 li{padding:0.2em 0}
 span.repo{color:#669;cursor:pointer}
 #tokens{margin:0.5em 0;color:#555}`;document.head.appendChild(s)};
-const main=()=>{style();const i=e('input',{placeholder:'FILTER'}),tlist=e('div',{id:'tokens'}),ul=e('ul');document.body.append(i,tlist,ul);
+const main=()=>{document.title='Thinky';style();
+const desc=e('div');
+desc.innerHTML=`Thinky is a query tool for searching the source code of the js13kgames competitions 2012-2024.
+<a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
+const i=e('input',{placeholder:'FILTER'}),tlist=e('div',{id:'tokens'}),ul=e('ul');
+document.body.append(desc,i,tlist,ul);
 let tokens={},repos=[];
 fetch("thinky.json").then(r=>r.json()).then(data=>{
   repos=data.repos;
