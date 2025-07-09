@@ -48,14 +48,11 @@ return frag;
 
 countByYear(){
 let counts={};
-let total=0;
 data.forEach(game=>{
   let m=minimum(game);if(!m)return;let {year}=m;
   counts[year]=(counts[year]||0)+1;
-  total++;
 });
 let frag=el("div");
-frag.append(el("div",{},[el("b",{},[total+" games in "+Object.keys(counts).length+" magical years \u{1F389}"])]));
 Object.entries(counts).sort((a,b)=>b[0]-a[0]).forEach(([y,c])=>{
   frag.append(
   el("span",{},[
@@ -120,7 +117,7 @@ function run(yearFilter){
 let key=query.value;
 output.innerHTML="";
 let isDetail=(key!=="countByYear"&&yearFilter);
-backButton.style.display=isDetail?"":"none";
+backbtn.style.display=isDetail?"":"none";
 query.style.display=isDetail?"none":"";
 filter.style.display=(key==="groupByAuthor"&&!yearFilter)?"":"none";
 try{
@@ -148,21 +145,25 @@ let query=el("select",{on:{change:()=>run()}},[
 ]);
 query.value=initialQuery;
 
-let btn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
+let topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
 
-let backButton=el("button",{
+let backbtn=el("button",{
 textContent:"Back",
 style:{display:"none"},
 on:{click:()=>{query.value="countByYear";run();}}
 });
 
+const title=el("h2",{},["JS13K Games Viewer"]);
+const stats=el("div"); // container for stats
+
 document.body.append(
-el("h2",{},["JS13K Games Viewer"]),
-query,
-filter,
-backButton,
-output,
-btn
+  title,
+  stats,
+  query,
+  filter,
+  backbtn,
+  output,
+  topbtn
 );
 
 fetch("games.json")
@@ -170,4 +171,20 @@ fetch("games.json")
 .then(json=>{
   data.push(...json);
   run(initialYear);
+
+  // Populate stats (authors, games, years)
+  let authors=new Set(),years=new Set();
+  let total=0;
+  data.forEach(game=>{
+    let m=minimum(game);if(!m)return;
+    total++;
+    authors.add(extractauthor(game));
+    years.add(m.year);
+  });
+  stats.innerHTML="";
+  stats.append(
+    el("span",{},["Years: "+years.size])," ",
+    el("span",{},["Authors: "+authors.size])," ",
+    el("span",{},["Games: "+total])
+  );
 });
