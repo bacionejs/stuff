@@ -1,45 +1,56 @@
 <html>
 <script>
-const e=(t,p)=>{const x=document.createElement(t);if(p)for(const[k,v]of Object.entries(p))x[k]=v;return x};
-const style=()=>{const s=e('style');s.textContent=`
-body{font-size:10;padding:1em}
-input{width:100%;}
+const e = (t, p) => {const x = document.createElement(t); if (p) for (const [k, v] of Object.entries(p)) x[k] = v; return x};
+const style = () => {
+  const s = e('style');
+  s.textContent = `
+body{font-size:10px;padding:1em}
 ul{list-style:none;padding:0;margin:0}
 li{padding:0.2em 0}
 span.repo{color:#669;cursor:pointer}
-#tokens{margin:0.5em 0;color:#555}`;document.head.appendChild(s)};
-const main=()=>{document.title='Thinky';style();
-const desc=e('div');
-desc.innerHTML=`Thinky searches code of the js13kgames competitions: 
+#tokens{margin:0.5em 0;color:#555}
+#filterwrap{display:flex;align-items:center;gap:1em}
+#counts{color:#888;font-size:0.9em}`;
+  document.head.appendChild(s)
+};
+const main = () => {
+document.title = 'Thinky'; style();
+const desc = e('div');
+desc.innerHTML = `Thinky searches code of the js13kgames competitions: 
 <span id="gamecount"></span>
 <a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
-const i=e('input',{placeholder:'FILTER'}),tlist=e('div',{id:'tokens'}),ul=e('ul');
-document.body.append(desc,i,tlist,ul);
-let tokens={},repos=[];
-fetch("thinky.json").then(r=>r.json()).then(data=>{
-  repos=data.repos;
+const i = e('input', {placeholder: 'FILTER'}), counts = e('span', {id: 'counts'}), wrap = e('div', {id: 'filterwrap'});
+wrap.append(i, counts);
+const tlist = e('div', {id: 'tokens'}), ul = e('ul');
+document.body.append(desc, wrap, tlist, ul);
+let tokens = {}, repos = [];
+fetch("thinky.json").then(r => r.json()).then(data => {
+  repos = data.repos;
   document.getElementById("gamecount").textContent = repos.length + " games.";
-  for(const [t,arr] of data.tokens)tokens[t]=arr;
-  ul.onclick=e=>{
-    const s=e.target;
-    if(s.className==='repo')window.open('https://github.com/js13kgames/'+s.textContent,'_blank');
+  for (const [t, arr] of data.tokens) tokens[t] = arr;
+  ul.onclick = e => {
+    const s = e.target;
+    if (s.className === 'repo') window.open('https://github.com/js13kgames/' + s.textContent, '_blank');
   };
-  i.oninput=()=>{
-    const f=i.value;if(!f){tlist.textContent='';ul.textContent='';return;}
-    const sensitive=/[A-Z]/.test(f);
-    const matchedTokens=[],matchedRepos=new Set();
-    for(const t in tokens){
-      const match=sensitive?t.startsWith(f):t.toLowerCase().startsWith(f.toLowerCase());
-      if(match){matchedTokens.push(t);for(const n of tokens[t])matchedRepos.add(n)}
+  i.oninput = () => {
+    const f = i.value; if (!f) {tlist.textContent = ''; ul.textContent = ''; counts.textContent = ''; return;}
+    const sensitive = /[A-Z]/.test(f);
+    const matchedTokens = [], matchedRepos = new Set();
+    for (const t in tokens) {
+      const match = sensitive ? t.startsWith(f) : t.toLowerCase().startsWith(f.toLowerCase());
+      if (match) {matchedTokens.push(t); for (const n of tokens[t]) matchedRepos.add(n)}
     }
-    tlist.textContent=matchedTokens.join(' ');
-    ul.textContent='';
-    [...matchedRepos].sort((a,b)=>a-b).forEach(n=>{
-      const name=repos[n]||`[${n}]`,li=e('li'),span=e('span',{textContent:name,className:'repo'});
-      li.appendChild(span);ul.appendChild(li);
+    counts.textContent = matchedTokens.length + " tokens, " + matchedRepos.size + " repos";
+    tlist.textContent = matchedTokens.join(' ');
+    ul.textContent = '';
+    [...matchedRepos].sort((a, b) => a - b).forEach(n => {
+      const name = repos[n] || `[${n}]`, li = e('li'), span = e('span', {textContent: name, className: 'repo'});
+      li.appendChild(span); ul.appendChild(li);
     });
   };
-});};
-onload=main;
+});
+};
+onload = main;
 </script>
+
 </html>
