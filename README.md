@@ -16,9 +16,8 @@ A collection of tools and experiments.
 👉 **[Open Thinky](https://bacionejs.github.io/stuff/thinky.html)**
 
 ## Purpose  
-Thinky is a query tool for searching the source code of the [js13kgames](https://js13kgames.com) 2012-2024 competitions.
 
-As of 2024, there are 2276 parsable game repositories by 1234 authors, and of the relevant code, there are 35,000 files and 329,875 tokens (14mb).
+Thinky searches code of the [js13kgames](https://js13kgames.com) competitions
 
 ---
 
