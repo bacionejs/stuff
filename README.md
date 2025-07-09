@@ -39,25 +39,6 @@ Thinky searches code of the [js13kgames](https://js13kgames.com) competitions
 4. Click any repository name to view it on GitHub.
 
 ---
-
-## 🛠️ How the Extraction Script Works (`extract.js`)
-The `extract.js` script builds the `thinky.json` index used by the frontend.
-> ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe at the end of each competition.
-
-### Steps:
-
-1. **Recursively walks** all local files belonging to repositories extracted from `https://github.com/js13kgames/`.
-2. For each file:
-   - Read its contents as text.
-   - Strip out **base64 blobs** and large encoded strings.
-   - Extract **clean tokens** (letters and underscores only, no numbers).
-   - Ignore all-caps constants like `DEBUG_MODE` or `CONFIG_ON`.
-3. Build a mapping of:
-   - Token → list of repository names using it.
-   - Repositories are de-duplicated and sorted.
-4. Save result to `thinky.json`
-
----
  
 
 
