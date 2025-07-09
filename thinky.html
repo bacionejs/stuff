@@ -16,8 +16,7 @@ span.repo{color:#669;cursor:pointer}
 const main = () => {
 document.title = 'Thinky'; style();
 const desc = e('div');
-desc.innerHTML = `Thinky searches code of the js13kgames competitions: 
-<span id="gamecount"></span>
+desc.innerHTML = `Find <b>who</b> uses <b>what</b>, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.  
 <a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
 const filter = e('input', {
   placeholder: 'Loading data...',
@@ -29,7 +28,6 @@ document.body.append(desc, filter, counts, tlist, ul);
 let tokens = {}, repos = [];
 fetch("thinky.json").then(r => r.json()).then(data => {
   repos = data.repos;
-  document.getElementById("gamecount").textContent = repos.length + " games.";
   for (const [t, arr] of data.tokens) tokens[t] = arr;
   ul.onclick = e => {
     const s = e.target;
