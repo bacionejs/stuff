@@ -9,8 +9,8 @@ ul{list-style:none;padding:0;}
 li{padding:0.2em 0}
 span.repo{color:#669;cursor:pointer}
 #tokens{margin:1em 0 1em 0;color:#555;font-size:5px;height:100px; overflow:auto; resize:none;}
-#filter{display:flex;align-items:center;gap:1em}
-#counts{color:green;font-size:0.9em;margin:1em 0 1em 0}`;
+#filter{}
+#counts{color:green;font-size:0.9em;margin:1em 0 1em 1em}`;
   document.head.appendChild(s)
 };
 const main = () => {
@@ -25,7 +25,7 @@ const filter = e('input', {
 }, {id: 'filter'});
 const counts = e('span', {id: 'counts'});
 const tlist = e('div', {id: 'tokens'}), ul = e('ul');
-document.body.append(desc, filter, tlist, counts, ul);
+document.body.append(desc, filter, counts, tlist, ul);
 let tokens = {}, repos = [];
 fetch("thinky.json").then(r => r.json()).then(data => {
   repos = data.repos;
