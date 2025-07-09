@@ -19,7 +19,11 @@ const desc = e('div');
 desc.innerHTML = `Thinky searches code of the js13kgames competitions: 
 <span id="gamecount"></span>
 <a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
-const filter = e('input', {placeholder: 'FILTER'}, {id: 'filter'}), counts = e('span', {id: 'counts'});
+const filter = e('input', {
+  placeholder: 'Loading data...',
+  disabled: true
+}, {id: 'filter'});
+const counts = e('span', {id: 'counts'});
 const tlist = e('div', {id: 'tokens'}), ul = e('ul');
 document.body.append(desc, filter, tlist, counts, ul);
 let tokens = {}, repos = [];
@@ -31,6 +35,8 @@ fetch("thinky.json").then(r => r.json()).then(data => {
     const s = e.target;
     if (s.className === 'repo') window.open('https://github.com/js13kgames/' + s.textContent, '_blank');
   };
+  filter.disabled = false;
+  filter.placeholder = 'FILTER';
   filter.oninput = () => {
     const f = filter.value; if (!f) {tlist.textContent = ''; ul.textContent = ''; counts.textContent = ''; return;}
     const sensitive = /[A-Z]/.test(f);
@@ -51,5 +57,4 @@ fetch("thinky.json").then(r => r.json()).then(data => {
 };
 onload = main;
 </script>
-
 </html>
