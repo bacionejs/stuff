@@ -5,12 +5,12 @@ const style = () => {
   const s = e('style');
   s.textContent = `
 body{font-size:10px;padding:1em}
-ul{list-style:none;padding:0;margin:0}
+ul{list-style:none;padding:0;}
 li{padding:0.2em 0}
 span.repo{color:#669;cursor:pointer}
-#tokens{margin:0.5em 0;color:#555;font-size:5px;height:100px; overflow:auto; resize:none;}
-#filterwrap{display:flex;align-items:center;gap:1em}
-#counts{color:#888;font-size:0.9em}`;
+#tokens{margin:1em 0 1em 0;color:#555;font-size:5px;height:100px; overflow:auto; resize:none;}
+#filter{display:flex;align-items:center;gap:1em}
+#counts{color:#888;font-size:0.9em;margin:1em 0 1em 0}`;
   document.head.appendChild(s)
 };
 const main = () => {
@@ -19,10 +19,9 @@ const desc = e('div');
 desc.innerHTML = `Thinky searches code of the js13kgames competitions: 
 <span id="gamecount"></span>
 <a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
-const i = e('input', {placeholder: 'FILTER'}), counts = e('span', {id: 'counts'}), wrap = e('div', {id: 'filterwrap'});
-wrap.append(i, counts);
+const filter = e('input', {placeholder: 'FILTER'}, {id: 'filter'}), counts = e('span', {id: 'counts'});
 const tlist = e('div', {id: 'tokens'}), ul = e('ul');
-document.body.append(desc, wrap, tlist, ul);
+document.body.append(desc, filter, tlist, counts, ul);
 let tokens = {}, repos = [];
 fetch("thinky.json").then(r => r.json()).then(data => {
   repos = data.repos;
@@ -32,8 +31,8 @@ fetch("thinky.json").then(r => r.json()).then(data => {
     const s = e.target;
     if (s.className === 'repo') window.open('https://github.com/js13kgames/' + s.textContent, '_blank');
   };
-  i.oninput = () => {
-    const f = i.value; if (!f) {tlist.textContent = ''; ul.textContent = ''; counts.textContent = ''; return;}
+  filter.oninput = () => {
+    const f = filter.value; if (!f) {tlist.textContent = ''; ul.textContent = ''; counts.textContent = ''; return;}
     const sensitive = /[A-Z]/.test(f);
     const matchedTokens = [], matchedRepos = new Set();
     for (const t in tokens) {
