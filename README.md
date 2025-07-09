@@ -3,8 +3,8 @@
 
 A collection of tools and experiments.
 
+- [🎮 Game Explorer – JS13K Game Explorer](#game-explorer)
 - [🔍 Thinky – JS13k Code Explorer](#thinky)
-- [🎮 Game Explorer – JS13K Game Explorer](#game-viewer)
 
 ---
 
