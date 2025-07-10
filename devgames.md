@@ -1,8 +1,22 @@
-## 📦 Repository Scraper: `games.mjs`
-> ⚠️ **Warning:** These are not usage instructions — this is just how I generate the JSON file...maybe once a day during the August/September competition.
 
-This script fetches metadata for all **public repositories** in the [js13kGames](https://github.com/js13kGames) GitHub organization and saves a simplified log (`games.json`) with just the essential fields.
 
+> ⚠️ **Warning:** These are dev notes, not usage instructions.
+
+# Games Explorer
+
+Shows games *grouped by author*, *grouped by date*, *count by year*.
+
+
+- The **Group by Author** query uses `parent` as the author, if available, otherwise extracts the word after the last occurrence of *by* in the `description`, otherwise categorized as *unknown*. The parent field is not reliable for extracting author information because participants might delete their repositories.
+
+- The **Group by Year** query includes the full `description`.
+
+- All three queries need the **year**. It is the first year in the `description` that is not found in the name, unless there are no other, otherwise it uses `created_at`, which isn't accurate because some old games got forked in the year of the cat.
+
+
+
+
+This script fetches metadata for js13k Games and saves `games.json` with just the essential fields.
 
 
 
