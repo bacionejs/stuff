@@ -50,7 +50,7 @@ download() {
   fi
 }
 export -f download
-cat repos.txt | xargs -n 1 -P 10 -I{} bash -c 'download "$@"' _ {}
+jq -r '.[] | select(.name) | .name' games.json | xargs -n 1 -P 10 -I{} bash -c 'download "$@"' _ {}
 ```
 
 ```bash
