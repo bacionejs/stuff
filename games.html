@@ -1,6 +1,6 @@
 <script>
 onload=()=>{
-document.title="js13k Games Viewer";
+document.title="Games Explorer";
 
 document.head.appendChild(document.createElement("style")).textContent=`
   body{padding:1em;line-height:1.4;font-size:10px;}
@@ -155,11 +155,11 @@ style:{display:"none"},
 on:{click:()=>{query.value="countByYear";run();}}
 });
 
-const title=el("h2",{},["JS13K Games Viewer"]);
+//const title=el("h2",{},["JS13K Games Viewer"]);
 const stats=el("div"); // container for stats
 
 document.body.append(
-  title,
+//  title,
   stats,
   query,
   filter,
@@ -184,11 +184,17 @@ fetch("games.json")
     years.add(m.year);
   });
   stats.innerHTML="";
-  stats.append(
-    el("span",{},["Years: "+years.size])," ",
-    el("span",{},["Authors: "+authors.size])," ",
-    el("span",{},["Games: "+total])
-  );
+stats.append(
+  document.createTextNode("Shows "),
+  el("b", {}, ["group by author"]), document.createTextNode(", "),
+  el("b", {}, ["group by date"]), document.createTextNode(", "),
+  el("b", {}, ["count by year."]), document.createTextNode(" "),
+  el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank" }, ["README"]),
+  el("br"),
+  el("span", {}, ["Years: " + years.size]), document.createTextNode(" "),
+  el("span", {}, ["Authors: " + authors.size]), document.createTextNode(" "),
+  el("span", {}, ["Games: " + total])
+);
 });
 
 };
