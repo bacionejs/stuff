@@ -31,43 +31,57 @@ const OUTPUT_FILE = "games.json"
 const LIMIT = 0
 const MAX_PARALLEL = 10
 
+const EXCLUDED_NAMES = new Set([
+  "js13kgames.com",
+  "js13kgames.com-legacy",
+  "js13kserver",
+  "js-game-server",
+  "games",
+  "resources",
+  "entry",
+  "bot",
+  "web",
+  "community",
+  "blog",
+  "js13kBreakouts",
+  "Chain-Reaction"
+])
+
 let repoData = []
 
 function writeLog() {
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(repoData, null, 2), "utf8")
 }
 
+
+
+
+
+
 function selectRepoFields(repo) {
   return {
     name: repo.name,
-    full_name: repo.full_name,
-    owner: repo.owner?.login,
     description: repo.description,
     homepage: repo.homepage,
     created_at: repo.created_at,
-    size: repo.size,
     html_url: repo.html_url,
-    parent: repo.parent?.full_name,
-    source: repo.source?.full_name,
-    organization: repo.organization?.login
+    parent: repo.parent?.full_name
   }
 }
 
+
+
+
 async function getRepos() {
-  if (LIMIT > 0) {
-    const res = await octokit.repos.listForOrg({
-      org: "js13kGames",
-      type: "public",
-      per_page: LIMIT
-    })
-    return res.data.slice(0, LIMIT)
-  } else {
-    return await octokit.paginate(octokit.repos.listForOrg, {
-      org: "js13kGames",
-      type: "public",
-      per_page: 100
-    })
+  const options = {
+    org: "js13kGames",
+    type: "public",
+    per_page: LIMIT > 0 ? LIMIT : 100
   }
+  const allRepos = LIMIT > 0
+    ? (await octokit.repos.listForOrg(options)).data.slice(0, LIMIT)
+    : await octokit.paginate(octokit.repos.listForOrg, options)
+  return allRepos.filter(repo => !EXCLUDED_NAMES.has(repo.name))
 }
 
 async function processRepo(i, repo) {
@@ -89,7 +103,7 @@ async function buildLog() {
   console.log("⏱️ GitHub Rate Limit:", rate.data.rate)
   console.log("⏳ Resets at:", new Date(rate.data.rate.reset * 1000).toLocaleString())
   const repos = await getRepos()
-  console.log("📦 Total repos fetched:", repos.length)
+  console.log("📦 Total repos fetched (after exclusions):", repos.length)
   const limit = pLimit(MAX_PARALLEL)
   const tasks = repos.map((repo, i) => limit(() => processRepo(i, repo)))
   await Promise.all(tasks)
@@ -98,7 +112,6 @@ async function buildLog() {
 }
 
 buildLog()
-
 ```
 
 
