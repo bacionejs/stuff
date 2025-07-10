@@ -20,11 +20,10 @@ Thinky searches code of the js13kgames competitions. It is designed mainly for n
 
 # Game Explorer
 
-Shows js13k games *grouped by author* or release year, includes a count of games per year with clickable drill-downs, supports real-time filtering, and adds a scroll-to-top button for easier navigation.
+Shows games *grouped by author*, *group by date*, *countincludes a count of games per year with clickable drill-downs, supports real-time filtering.
 
 👉 **[Open the Viewer](https://bacionejs.github.io/stuff/games.html)**
 
-## 💡 Notes
 
 - The **Group by Author** query uses `parent` as the author, if available, otherwise extracts the word after the last occurrence of *by* in the `description`, otherwise categorized as *unknown*. The parent field is not reliable for extracting author information because participants might delete their repositories.
 
