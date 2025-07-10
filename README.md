@@ -1,10 +1,8 @@
 
-# Stuff
-
 A collection of tools.
 
 
-## Thinky
+### Thinky
 
 Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
 
@@ -14,7 +12,7 @@ Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc
 ---
 
 
-## Games Explorer
+### Games Explorer
 
 Shows games *grouped by author*, *grouped by date*, *count by year*.
 
