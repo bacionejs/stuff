@@ -1,4 +1,5 @@
 <script>
+onload=()=>{
 document.title="js13k Games Viewer";
 
 document.head.appendChild(document.createElement("style")).textContent=`
@@ -189,4 +190,6 @@ fetch("games.json")
     el("span",{},["Games: "+total])
   );
 });
+
+};
 </script>
