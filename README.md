@@ -12,7 +12,7 @@ A collection of tools and experiments.
 
 Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
 
-Thinky searches code of the js13kgames competitions. It is designed mainly for newbies who are looking for examples of using various techniques. For example, you go to js13kgames resource page and you see the Sonant music library and decide that it might fit your needs, but you don't know where to find examples of the devs using it. That is where Thinky comes in, just type `sonant` into the filter and click on a listed repository.
+Thinky searches code of the js13kgames competitions. It is designed mainly for newbies who are looking for examples code. For example, you go to js13kgames resource page and you see the Sonant music library and decide that it might fit your needs, but you don't know where to find examples. That is where Thinky comes in, just type `sonant` into the filter and click on a listed repository.
 
 ---
 
