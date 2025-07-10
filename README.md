@@ -18,9 +18,9 @@ Thinky searches code of the js13kgames competitions. It is designed mainly for n
 
 
 
-# Game Explorer
+# Games Explorer
 
-Shows games *grouped by author*, *group by date*, *countincludes a count of games per year with clickable drill-downs, supports real-time filtering.
+Shows games *grouped by author*, *grouped by date*, *count by year*.
 
 👉 **[Open the Viewer](https://bacionejs.github.io/stuff/games.html)**
 
