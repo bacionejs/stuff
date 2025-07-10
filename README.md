@@ -11,7 +11,7 @@ Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc
 
 ### Games Explorer
 
-Shows *group by author*, *group by date* and *count by year*.
+Views: *group by author*, *group by date*, *group by author* and *count by year*.
 
 👉 **[Open](https://bacionejs.github.io/stuff/games.html)**
 
