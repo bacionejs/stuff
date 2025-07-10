@@ -1,7 +1,4 @@
 
-A collection of tools.
-
-
 ### Thinky
 
 Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
