@@ -1,12 +1,11 @@
-# Dev Notes for Thinky (`devthinky.md`)
+> ⚠️ **Warning:** These are dev notes, not usage instructions.
 
-⚠️ **Warning:** This is not a guide or set of instructions.  
-This document is a retrospective on how the Thinky app was built — how repositories were downloaded, filtered, tokenized, and indexed for exploration.
+# Thinky
 
----
+Find who uses what, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
+
 
 ## 🧩 Overview of the Four Files
-
 
 
 The result of this process is a compact file, `thinky.json`, which is then used by `Thinky.html` to drive the search UI.
@@ -21,9 +20,6 @@ Unzips each archive and removes all files except `.js`, `.ts`, `.html`, and `.ht
 
 **`extract.js` + `worker.js`**  
 Scans all remaining code files, removes encoded data, extracts tokens (alphanumeric and underscore), and maps each token to the repos where it appears.
-
-
-
 
 
 
