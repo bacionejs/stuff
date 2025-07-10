@@ -1,28 +1,24 @@
 
 # Stuff
 
-A collection of tools and experiments.
+A collection of tools.
 
 
-# Thinky
-
-👉 **[Open Thinky](https://bacionejs.github.io/stuff/thinky.html)**
-
-## Purpose  
+## Thinky
 
 Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
 
+👉 **[Open](https://bacionejs.github.io/stuff/thinky.html)**  
 
 
 ---
 
 
-
-# Games Explorer
+## Games Explorer
 
 Shows games *grouped by author*, *grouped by date*, *count by year*.
 
-👉 **[Open the Viewer](https://bacionejs.github.io/stuff/games.html)**
+👉 **[Open](https://bacionejs.github.io/stuff/games.html)**
 
 
 
