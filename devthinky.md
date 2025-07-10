@@ -2,7 +2,7 @@
 
 # Thinky
 
-Find who uses what, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
+Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
 
 
 ## 🧩 Overview of the Four Files
