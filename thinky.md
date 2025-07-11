@@ -1,6 +1,6 @@
 > ⚠️ **Warning:** These are dev notes, not usage instructions.
 
-Generates a JSON snapshot, updated periodically, enabling a dynamic interface without relying on a live backend.
+A script generates a JSON snapshot, periodically, enabling a dynamic interface without relying on a live backend.
 
 ### Extracts:
 
