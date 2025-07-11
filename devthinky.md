@@ -13,7 +13,6 @@ The result of this process is a compact json file, which is then used to drive t
 - alphanumeric/underscore tokens
 
 ```js
-// thinky.mjs
 import { mkdirSync, existsSync, rmSync, readdirSync, readFileSync, writeFileSync, statSync } from "fs";
 import { exec } from "child_process";
 import { Octokit } from "@octokit/rest";
