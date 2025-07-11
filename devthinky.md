@@ -22,166 +22,179 @@ Downloads GitHub repositories ZIP archives and removes all files except `.js`, `
 Scans all remaining code files, removes encoded data, extracts tokens (alphanumeric and underscore), and maps each token to the repos where it appears.
 
 ```js
-import { mkdirSync, existsSync, rmSync } from "fs";
-import { exec } from "child_process";
-import { Octokit } from "@octokit/rest";
-import pLimit from "p-limit";
-import { promisify } from "util";
+const checkModules = async () => {
+  try {
+    const fs = await import("fs");
+    const cp = await import("child_process");
+    const { Octokit } = await import("@octokit/rest");
+    const pLimit = await import("p-limit");
+    const { promisify } = await import("util");
 
-const GITHUB_ORG = "js13kGames";
-const ZIP_DIR = "zips";
-const UNZIP_DIR = "unzipped";
-const MAX_PARALLEL = 10;
-
-const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN || undefined,
-});
-
-const EXCLUDED = new Set([
-  "js13kgames.com",
-  "js13kgames.com-legacy",
-  "js13kserver",
-  "js-game-server",
-  "games",
-  "resources",
-  "entry",
-  "bot",
-  "web",
-  "community",
-  "blog",
-  "js13kBreakouts",
-  "Chain-Reaction",
-]);
-
-const run = promisify(exec);
-
-const failedDownloads = [];
-const failedUnzips = [];
-const skippedDownloadNames = [];
-const skippedUnzipNames = [];
-let skippedDownloads = 0;
-let skippedUnzips = 0;
-
-const startTime = Date.now();
-
-const getRate = async () => {
-  const { data } = await octokit.rateLimit.get();
-  const { limit, used, remaining, reset } = data.rate;
-  return { limit, used, remaining, reset };
+    return {
+      mkdirSync: fs.mkdirSync,
+      existsSync: fs.existsSync,
+      rmSync: fs.rmSync,
+      exec: cp.exec,
+      Octokit,
+      pLimit: pLimit.default, // p-limit exports as default
+      promisify
+    };
+  } catch (e) {
+    console.error("❌ Required node modules are missing.");
+    console.error("👉 Run this to install them:\n   npm install @octokit/rest p-limit");
+    process.exit(1);
+  }
 };
 
-const getAllRepos = async () => {
-  const options = {
-    org: GITHUB_ORG,
-    type: "public",
-    per_page: 100,
+const start = async () => {
+  const {
+    mkdirSync, existsSync, rmSync, exec,
+    Octokit, pLimit, promisify
+  } = await checkModules();
+
+  const GITHUB_ORG = "js13kGames";
+  const ZIP_DIR = "zips";
+  const UNZIP_DIR = "unzipped";
+  const MAX_PARALLEL = 10;
+
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN || undefined,
+  });
+
+  const EXCLUDED = new Set([
+    "js13kgames.com", "js13kgames.com-legacy", "js13kserver", "js-game-server", "games",
+    "resources", "entry", "bot", "web", "community", "blog", "js13kBreakouts", "Chain-Reaction"
+  ]);
+
+  const run = promisify(exec);
+  const failedDownloads = [];
+  const failedUnzips = [];
+  const skippedDownloadNames = [];
+  const skippedUnzipNames = [];
+  let skippedDownloads = 0;
+  let skippedUnzips = 0;
+  const startTime = Date.now();
+
+  const getRate = async () => {
+    const { data } = await octokit.rateLimit.get();
+    const { limit, used, remaining, reset } = data.rate;
+    return { limit, used, remaining, reset };
   };
-  const repos = await octokit.paginate(octokit.repos.listForOrg, options);
-  return repos.filter(r => !r.fork && !EXCLUDED.has(r.name));
+
+  const getAllRepos = async () => {
+    const options = {
+      org: GITHUB_ORG,
+      type: "public",
+      per_page: 100,
+    };
+    const repos = await octokit.paginate(octokit.repos.listForOrg, options);
+    return repos.filter(r => !r.fork && !EXCLUDED.has(r.name));
+  };
+
+  const downloadZip = async (repoName) => {
+    const outPath = `${ZIP_DIR}/${repoName}.zip`;
+    if (existsSync(outPath)) {
+      console.log(`⚠️ Skipping download: ${repoName}`);
+      skippedDownloads++;
+      skippedDownloadNames.push(repoName);
+      return;
+    }
+    console.log(`⬇️ Downloading ${repoName}...`);
+    const mainUrl = `https://github.com/${GITHUB_ORG}/${repoName}/archive/refs/heads/main.zip`;
+    const masterUrl = `https://github.com/${GITHUB_ORG}/${repoName}/archive/refs/heads/master.zip`;
+    const cmd = `curl -sfL "${mainUrl}" -o "${outPath}" || curl -sfL "${masterUrl}" -o "${outPath}"`;
+
+    try {
+      await run(cmd);
+      console.log(`✅ Downloaded: ${repoName}`);
+    } catch {
+      console.warn(`❌ Failed to download: ${repoName}`);
+      rmSync(outPath, { force: true });
+      failedDownloads.push(repoName);
+    }
+  };
+
+  const unzipRepo = async (repoName) => {
+    const zipPath = `${ZIP_DIR}/${repoName}.zip`;
+    const outDir = `${UNZIP_DIR}/${repoName}`;
+    if (!existsSync(zipPath)) return;
+    if (existsSync(outDir)) {
+      console.log(`⚠️ Skipping unzip: ${repoName}`);
+      skippedUnzips++;
+      skippedUnzipNames.push(repoName);
+      return;
+    }
+
+    console.log(`📂 Unzipping ${repoName}...`);
+    mkdirSync(outDir, { recursive: true });
+
+    const cmd = `unzip -q "${zipPath}" -d "${outDir}"`;
+    try {
+      await run(cmd);
+      await run(`find "${outDir}" -type f ! -iname '*.js' ! -iname '*.ts' ! -iname '*.html' ! -iname '*.htm' -delete`);
+      console.log(`✅ Unzipped: ${repoName}`);
+    } catch {
+      console.warn(`❌ Failed to unzip: ${repoName}`);
+      rmSync(outDir, { recursive: true, force: true });
+      failedUnzips.push(repoName);
+    }
+  };
+
+  const printSummary = async (reposCount = 0, rateBefore = null, rateAfter = null, partial = false) => {
+    const elapsedSec = Math.round((Date.now() - startTime) / 1000);
+    if (!rateAfter && rateBefore) rateAfter = await getRate();
+
+    console.log(partial ? "\n📊 Partial Summary:" : "\n📊 Summary:");
+    if (reposCount) console.log(`✔️ Total fetched:      ${reposCount}`);
+    console.log(`⚠️ Skipped downloads: ${skippedDownloads}`);
+    if (skippedDownloadNames.length) console.log("   ↳", skippedDownloadNames.join(", "));
+    console.log(`⚠️ Skipped unzips:    ${skippedUnzips}`);
+    if (skippedUnzipNames.length) console.log("   ↳", skippedUnzipNames.join(", "));
+    console.log(`❌ Failed downloads:  ${failedDownloads.length}`);
+    if (failedDownloads.length) console.log("   ↳", failedDownloads.join(", "));
+    console.log(`❌ Failed unzips:     ${failedUnzips.length}`);
+    if (failedUnzips.length) console.log("   ↳", failedUnzips.join(", "));
+    console.log(`⏱️ Time elapsed:      ${elapsedSec} seconds`);
+    if (rateBefore && rateAfter) {
+      console.log(`🔢 API calls used:    ${rateAfter.used - rateBefore.used}`);
+      console.log(`🔢 Remaining:         ${rateAfter.remaining} / ${rateAfter.limit}`);
+      console.log(`🔁 Resets at:         ${new Date(rateAfter.reset * 1000).toLocaleString()}`);
+    }
+    if (!partial) console.log("🎉 Done!");
+  };
+
+  const main = async ({ limit = 0 } = {}) => {
+    const rateBefore = await getRate();
+
+    mkdirSync(ZIP_DIR, { recursive: true });
+    mkdirSync(UNZIP_DIR, { recursive: true });
+
+    let repos = await getAllRepos();
+    console.log(`📦 Total repos fetched: ${repos.length}`);
+    if (limit > 0) repos = repos.slice(0, limit);
+
+    const limitConcurrency = pLimit(MAX_PARALLEL);
+
+    await Promise.all(repos.map(r => limitConcurrency(() => downloadZip(r.name))));
+    await Promise.all(repos.map(r => limitConcurrency(() => unzipRepo(r.name))));
+
+    const rateAfter = await getRate();
+    await printSummary(repos.length, rateBefore, rateAfter);
+  };
+
+  process.on("SIGINT", async () => {
+    console.log("\n🛑 Interrupted with Ctrl+C");
+    await printSummary(0, null, null, true);
+    process.exit(130);
+  });
+
+  main().catch(err => {
+    console.error("❌ Unhandled error:", err);
+    process.exit(1);
+  });
 };
 
-const downloadZip = async (repoName) => {
-  const outPath = `${ZIP_DIR}/${repoName}.zip`;
-  if (existsSync(outPath)) {
-    console.log(`⚠️ Skipping download: ${repoName}`);
-    skippedDownloads++;
-    skippedDownloadNames.push(repoName);
-    return;
-  }
-
-  console.log(`⬇️ Downloading ${repoName}...`);
-  const mainUrl = `https://github.com/${GITHUB_ORG}/${repoName}/archive/refs/heads/main.zip`;
-  const masterUrl = `https://github.com/${GITHUB_ORG}/${repoName}/archive/refs/heads/master.zip`;
-  const cmd = `curl -sfL "${mainUrl}" -o "${outPath}" || curl -sfL "${masterUrl}" -o "${outPath}"`;
-
-  try {
-    await run(cmd);
-    console.log(`✅ Downloaded: ${repoName}`);
-  } catch {
-    console.warn(`❌ Failed to download: ${repoName}`);
-    rmSync(outPath, { force: true });
-    failedDownloads.push(repoName);
-  }
-};
-
-const unzipRepo = async (repoName) => {
-  const zipPath = `${ZIP_DIR}/${repoName}.zip`;
-  const outDir = `${UNZIP_DIR}/${repoName}`;
-  if (!existsSync(zipPath)) return;
-  if (existsSync(outDir)) {
-    console.log(`⚠️ Skipping unzip: ${repoName}`);
-    skippedUnzips++;
-    skippedUnzipNames.push(repoName);
-    return;
-  }
-
-  console.log(`📂 Unzipping ${repoName}...`);
-  mkdirSync(outDir, { recursive: true });
-
-  const cmd = `unzip -q "${zipPath}" -d "${outDir}"`;
-  try {
-    await run(cmd);
-    await run(`find "${outDir}" -type f ! -iname '*.js' ! -iname '*.ts' ! -iname '*.html' ! -iname '*.htm' -delete`);
-    console.log(`✅ Unzipped: ${repoName}`);
-  } catch {
-    console.warn(`❌ Failed to unzip: ${repoName}`);
-    rmSync(outDir, { recursive: true, force: true });
-    failedUnzips.push(repoName);
-  }
-};
-
-const printSummary = async (reposCount = 0, rateBefore = null, rateAfter = null, partial = false) => {
-  const elapsedSec = Math.round((Date.now() - startTime) / 1000);
-  if (!rateAfter && rateBefore) rateAfter = await getRate();
-
-  console.log(partial ? "\n📊 Partial Summary:" : "\n📊 Summary:");
-  if (reposCount) console.log(`✔️ Total fetched:      ${reposCount}`);
-  console.log(`⚠️ Skipped downloads: ${skippedDownloads}`);
-  if (skippedDownloadNames.length) console.log("   ↳", skippedDownloadNames.join(", "));
-  console.log(`⚠️ Skipped unzips:    ${skippedUnzips}`);
-  if (skippedUnzipNames.length) console.log("   ↳", skippedUnzipNames.join(", "));
-  console.log(`❌ Failed downloads:  ${failedDownloads.length}`);
-  if (failedDownloads.length) console.log("   ↳", failedDownloads.join(", "));
-  console.log(`❌ Failed unzips:     ${failedUnzips.length}`);
-  if (failedUnzips.length) console.log("   ↳", failedUnzips.join(", "));
-  console.log(`⏱️ Time elapsed:      ${elapsedSec} seconds`);
-  if (rateBefore && rateAfter) {
-    console.log(`🔢 API calls used:    ${rateAfter.used - rateBefore.used}`);
-    console.log(`🔢 Remaining:         ${rateAfter.remaining} / ${rateAfter.limit}`);
-    console.log(`🔁 Resets at:         ${new Date(rateAfter.reset * 1000).toLocaleString()}`);
-  }
-  if (!partial) console.log("🎉 Done!");
-};
-
-const main = async ({ limit = 0 } = {}) => {
-  const rateBefore = await getRate();
-
-  mkdirSync(ZIP_DIR, { recursive: true });
-  mkdirSync(UNZIP_DIR, { recursive: true });
-
-  let repos = await getAllRepos();
-  console.log(`📦 Total repos fetched: ${repos.length}`);
-  if (limit > 0) repos = repos.slice(0, limit);
-
-  const limitConcurrency = pLimit(MAX_PARALLEL);
-
-  await Promise.all(repos.map(r => limitConcurrency(() => downloadZip(r.name))));
-  await Promise.all(repos.map(r => limitConcurrency(() => unzipRepo(r.name))));
-
-  const rateAfter = await getRate();
-  await printSummary(repos.length, rateBefore, rateAfter);
-};
-
-process.on("SIGINT", async () => {
-  console.log("\n🛑 Interrupted with Ctrl+C");
-  await printSummary(0, null, null, true);
-  process.exit(130);
-});
-
-main().catch(err => {
-  console.error("❌ Unhandled error:", err);
-  process.exit(1);
-});
+start();
 ```
 
 ```js
