@@ -23,9 +23,9 @@ Year:
 - first year in the `description` that not found in the name, unless there are no other
 - otherwise `created_at`
 
-The `parent` field isn't reliable because participants might delete their repositories.
+The `parent` field is unreliable because participants might delete their repositories.
 
-The `created_at` field isn't reliable because some games got forked in the year of the cat.
+The `created_at` field is unreliable because some games got forked in the year of the cat.
 
 ```js
 import { Octokit } from "@octokit/rest"
