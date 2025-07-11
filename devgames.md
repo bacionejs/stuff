@@ -1,30 +1,31 @@
-
-
 > ⚠️ **Warning:** These are dev notes, not usage instructions.
-
-# Games Explorer
-
-Shows *group by author*, *group by year*, *count by author*, *count by year*.
-
-
-- The **Group by Author** query uses `parent` as the author, if available, otherwise extracts the word after the last occurrence of *by* in the `description`, otherwise categorized as *unknown*. The parent field is not reliable for extracting author information because participants might delete their repositories.
-
-- The **Group by Year** query includes the full `description`.
-
-- All queries need the **year**. It is the first year in the `description` that is not found in the name, unless there are no other, otherwise it uses `created_at`, which isn't accurate because some old games got forked in the year of the cat.
-
-
-
-
 
 ## 🧩 Overview of the generation process
 
-
-
 The data is a static JSON snapshot generated offline and updated periodically, enabling a dynamic interface without relying on a live backend.
 
-The result of this process is a compact file, `games.json`, which is then used by `games.html` to drive the search UI.
+The result of this process is a compact json file, which is then used to drive the UI.
 
+### Extracts:
+
+Game: `name` (same as `html_url` slug)
+
+Play: `homepage`
+
+Source: `html_url`
+
+Author: 
+- repo `parent`
+- or first word after last occurrence of *by* in the `description`
+- otherwise *unknown*.
+
+Year:
+- first year in the `description` that not found in the name, unless there are no other
+- otherwise `created_at`
+
+The `parent` field isn't reliable because participants might delete their repositories.
+
+The `created_at` field isn't reliable because some games got forked in the year of the cat.
 
 ```js
 import { Octokit } from "@octokit/rest"
@@ -58,11 +59,6 @@ function writeLog() {
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(repoData, null, 2), "utf8")
 }
 
-
-
-
-
-
 function selectRepoFields(repo) {
   return {
     name: repo.name,
@@ -73,9 +69,6 @@ function selectRepoFields(repo) {
     parent: repo.parent?.full_name
   }
 }
-
-
-
 
 async function getRepos() {
   const options = {
@@ -117,8 +110,5 @@ async function buildLog() {
 }
 
 buildLog()
+
 ```
-
-
-
-
