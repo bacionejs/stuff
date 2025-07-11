@@ -1,25 +1,16 @@
 > ⚠️ **Warning:** These are dev notes, not usage instructions.
 
-# Thinky
-
-Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
-
-
 ## 🧩 Overview of the generation process
-
-
 
 The data is a static JSON snapshot generated offline and updated periodically, enabling a dynamic interface without relying on a live backend.
 
-The result of this process is a compact file, `thinky.json`, which is then used by `Thinky.html` to drive the search UI.
+The result of this process is a compact json file, which is then used to drive the UI.
 
+### Extracts:
 
-
-**`getrepos.mjs`**  
-Downloads GitHub repositories ZIP archives and removes all files except `.js`, `.ts`, `.html`, and `.htm`.
-
-**`extract.js` + `worker.js`**  
-Scans all remaining code files, removes encoded data, extracts tokens (alphanumeric and underscore), and maps each token to the repos where it appears.
+- `.js`, `.ts`, `.html`, and `.htm`.
+- Non-encoded data
+- alphanumeric/underscore tokens
 
 ```js
 const checkModules = async () => {
