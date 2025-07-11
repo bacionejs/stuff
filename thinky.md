@@ -1,10 +1,6 @@
 > ⚠️ **Warning:** These are dev notes, not usage instructions.
 
-## 🧩 Overview of the generation process
-
-The data is a static JSON snapshot generated offline and updated periodically, enabling a dynamic interface without relying on a live backend.
-
-The result of this process is a compact json file, which is then used to drive the UI.
+Generates a JSON snapshot, updated periodically, enabling a dynamic interface without relying on a live backend.
 
 ### Extracts:
 
