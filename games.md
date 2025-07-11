@@ -16,7 +16,7 @@ Author:
 - otherwise *unknown*.
 
 Year:
-- first year in the `description` that not found in the name, unless there are no other
+- first year in the `description` not found in the name, unless there are no other
 - otherwise `created_at`
 
 The `parent` field is unreliable because participants might delete their repositories.
