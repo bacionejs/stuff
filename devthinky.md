@@ -13,7 +13,7 @@ The result of this process is a compact file, `thinky.json`, which is then used 
 
 
 **`getzip.sh`**  
-Downloads GitHub repositories listed in `repos.txt` as ZIP archives.
+Downloads GitHub repositories listed in `games.json` as ZIP archives.
 
 **`unzipall.sh`**  
 Unzips each archive and removes all files except `.js`, `.ts`, `.html`, and `.htm`.
