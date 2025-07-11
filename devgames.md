@@ -11,7 +11,7 @@ Shows *group by author*, *group by year*, *count by author*, *count by year*.
 
 - The **Group by Year** query includes the full `description`.
 
-- All three queries need the **year**. It is the first year in the `description` that is not found in the name, unless there are no other, otherwise it uses `created_at`, which isn't accurate because some old games got forked in the year of the cat.
+- All queries need the **year**. It is the first year in the `description` that is not found in the name, unless there are no other, otherwise it uses `created_at`, which isn't accurate because some old games got forked in the year of the cat.
 
 
 
