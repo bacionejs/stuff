@@ -1,7 +1,7 @@
 
 ### Thinky
 
-Find *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
+Find: *who* uses *what*, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.
 
 👉 **[Open](https://bacionejs.github.io/stuff/thinky.html)**  
 
