@@ -4,7 +4,7 @@
 
 # Games Explorer
 
-Shows *group by author*, *group by date*, *count by year*.
+Shows *group by author*, *group by year*, *count by author*, *count by year*.
 
 
 - The **Group by Author** query uses `parent` as the author, if available, otherwise extracts the word after the last occurrence of *by* in the `description`, otherwise categorized as *unknown*. The parent field is not reliable for extracting author information because participants might delete their repositories.
