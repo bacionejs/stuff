@@ -100,7 +100,23 @@ data.forEach(game=>{
   let author=extractauthor(game);
   counts[author]=(counts[author]||0)+1;
 });
+
+let summaryCounts={};
+Object.values(counts).forEach(count=>{
+  summaryCounts[count]=(summaryCounts[count]||0)+1;
+});
+
 let frag=el("div");
+
+// Add summary at the top
+frag.append(el("b",{},["Summary repos:devs"]),el("br"));
+Object.entries(summaryCounts).sort((a,b)=>b[0]-a[0]).forEach(([repos,devs])=>{
+  frag.append(el("span",{},[repos+": "+devs]),el("br"));
+});
+
+frag.append(el("br")); // spacing
+
+// List each author with link
 Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([author,count])=>{
   frag.append(
     el("span",{},[
@@ -115,6 +131,7 @@ Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([author,count])=>{
     el("br")
   );
 });
+
 return frag;
 }
 
