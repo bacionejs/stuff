@@ -16,9 +16,14 @@ Shows *group by author*, *group by year*, *count by author*, *count by year*.
 
 
 
-This script fetches metadata for js13k Games and saves `games.json` with just the essential fields.
+
+## 🧩 Overview of the generation process
 
 
+
+The data is a static JSON snapshot generated offline and updated periodically, enabling a dynamic interface without relying on a live backend.
+
+The result of this process is a compact file, `games.json`, which is then used by `games.html` to drive the search UI.
 
 
 ```js
