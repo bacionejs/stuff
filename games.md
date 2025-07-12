@@ -13,7 +13,7 @@ Source: `html_url`
 Author: 
 - repo `parent`
 - or first word after last occurrence of *by* in the `description`
-- otherwise *unknown*.
+- otherwise first `contributor`.
 
 Year:
 - first year in the `description` not found in the name, unless there are no other
@@ -83,12 +83,44 @@ async function processRepo(i, repo) {
     const { data: full } = await octokit.repos.get({
       owner: repo.owner.login,
       repo: repo.name
-    })
-    const entry = selectRepoFields(full)
-    repoData.push(entry)
-    console.log(`✅ ${i + 1}: ${entry.full_name}`)
+    });
+
+    const entry = selectRepoFields(full);
+
+    let author = "unknown";
+
+    // Try to extract author from parent
+    if (entry.parent && entry.parent.includes("/")) {
+      author = entry.parent.split("/")[0];
+    } else if (entry.description) {
+      // Try to extract from description
+      let parts = entry.description.split(/\bby\b/i);
+      if (parts.length > 1) {
+        let match = parts[parts.length - 1].match(/@?([^\s.,!?]+)/);
+        if (match) {
+          author = match[1];
+        }
+      }
+    }
+
+    // Fallback: fetch contributors ONLY if still unknown
+    if (author === "unknown") {
+      const { data: contributors } = await octokit.repos.listContributors({
+        owner: repo.owner.login,
+        repo: repo.name,
+        per_page: 1
+      });
+      if (contributors.length > 0) {
+        author = contributors[0].login;
+      }
+    }
+
+    entry.author = author;
+    repoData.push(entry);
+
+    console.log(`✅ ${i + 1}: ${repo.name} by ${entry.author}`);
   } catch (err) {
-    console.warn(`⚠️ Error on ${repo.name}: ${err.message}`)
+    console.warn(`⚠️ Error on ${repo.name}: ${err.message}`);
   }
 }
 
@@ -106,5 +138,4 @@ async function buildLog() {
 }
 
 buildLog()
-
 ```

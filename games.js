@@ -1,0 +1,283 @@
+onload=()=>{
+document.title="Games Explorer";
+
+document.head.appendChild(document.createElement("style")).textContent=`
+  body{padding:1em;line-height:1.4;font-size:10px;}
+  button,div,select{margin:1em;}
+  a{text-decoration:none;color:blue;}
+`;
+
+let data=[];
+let previousQuery=null;
+
+let queries={
+
+groupByAuthor(filter){
+let groups={};
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;
+  let {year,play,github,title}=m;
+//  let author=extractauthor(game);
+  let author=game.author;
+  if(filter){
+    if(filter.match(/^\d{4}$/)) {
+      if(year !== filter) return;
+    } else {
+      if(author !== filter) return;
+    }
+  }
+  if(!groups[author]) groups[author]=[];
+  groups[author].push({year,play,github,title});
+});
+let frag=document.createDocumentFragment();
+Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
+  games.sort((a,b)=>b.year-a.year);
+  let div=el("div",{},[el("b",{},[author+" ("+games.length+" games)"]),el("br")]);
+  games.forEach(g=>{
+    div.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));
+  });
+  frag.append(div);
+});
+return frag;
+},
+
+groupByYear(yearFilter){
+let groups={};
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;
+  let {year,play,github,title}=m;
+  if(yearFilter && year !== yearFilter) return;
+  if(!groups[year]) groups[year]=[];
+  groups[year].push({play,github,full:title+" - "+game.description});
+});
+let frag=document.createDocumentFragment();
+Object.entries(groups).sort((a,b)=>b[0]-a[0]).forEach(([year,games])=>{
+  let div=el("div",{},[el("b",{},[year+" ("+games.length+" games)"]),el("br")]);
+  games.forEach(g=>{
+    div.append(el("span",{},[...links(g)," "+g.full]),el("br"));
+  });
+  frag.append(div);
+});
+return frag;
+},
+
+countByYear(){
+let counts={};
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;
+  let {year}=m;
+  counts[year]=(counts[year]||0)+1;
+});
+let frag=el("div");
+Object.entries(counts).sort((a,b)=>b[0]-a[0]).forEach(([y,c])=>{
+  frag.append(
+    el("span",{},[
+      el("a",{href:"#",on:{click:e=>{
+        e.preventDefault();
+        previousQuery="countByYear";
+        query.value="groupByYear";
+        run(y);
+      }}},["year"]),
+      " ",
+      el("a",{href:"#",on:{click:e=>{
+        e.preventDefault();
+        previousQuery="countByYear";
+        query.value="groupByAuthor";
+        run(y);
+      }}},["author"]),
+      " "+y+": "+c
+    ]),
+    el("br")
+  );
+});
+return frag;
+},
+
+countByAuthor(){
+let counts={};
+data.forEach(game=>{
+  let m=minimum(game);if(!m)return;
+//  let author=extractauthor(game);
+  let author=game.author;
+  counts[author]=(counts[author]||0)+1;
+});
+
+let summaryCounts={};
+Object.values(counts).forEach(count=>{
+  summaryCounts[count]=(summaryCounts[count]||0)+1;
+});
+
+let frag=el("div");
+
+// Add summary at the top
+frag.append(el("b",{},["Summary repos:devs"]),el("br"));
+Object.entries(summaryCounts).sort((a,b)=>b[0]-a[0]).forEach(([repos,devs])=>{
+  frag.append(el("span",{},[repos+": "+devs]),el("br"));
+});
+
+frag.append(el("br")); // spacing
+
+// List each author with link
+Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([author,count])=>{
+  frag.append(
+    el("span",{},[
+      count+": ",
+      el("a",{href:"#",on:{click:e=>{
+        e.preventDefault();
+        previousQuery="countByAuthor";
+        query.value="groupByAuthor";
+        run(author);
+      }}},[author])
+    ]),
+    el("br")
+  );
+});
+
+return frag;
+}
+
+};
+
+function links(g){return [el("a",{href:g.play},["play"])," ",el("a",{href:g.github},["source"])]}
+
+function extractauthor(game){
+if(game.parent&&game.parent.includes("/"))
+  return game.parent.split("/")[0];
+let parts=game.description.split(/\bby\b/i);
+if(parts.length>1){
+  let match=parts[parts.length-1].match(/@?([^\s.,!?]+)/);
+  if(match)return match[1];
+}
+return "unknown";
+}
+
+function minimum(game){
+let play=game.homepage;
+let github=game.html_url;
+if(!play)return null;
+return{
+year:extractyear(game),
+play,
+github,
+title:game.name
+};
+}
+
+function extractyear(game){
+let matches=[...game.description.matchAll(/\b(20\d{2})\b/g)];
+for(let m of matches)if(!game.name.includes(m[1]))return m[1];
+if(matches.length)return matches[0][1];
+return game.created_at.slice(0,4);
+}
+
+function el(tag,props={},children=[]){
+let e=document.createElement(tag);
+if(tag==="a"&&!("target" in props))e.target="_blank";
+for(let [k,v] of Object.entries(props)){
+  if(k==="on")for(let [ev,fn] of Object.entries(v))e.addEventListener(ev,fn);
+  else if(k==="style")Object.assign(e.style,v);
+  else e[k]=v;
+}
+children.forEach(c=>e.append(typeof c==="string"?document.createTextNode(c):c));
+return e;
+}
+
+function run(filter){
+let key=query.value;
+output.innerHTML="";
+let isDetail=(key!=="countByYear" && key!=="countByAuthor" && filter);
+backbtn.style.display=isDetail ? "" : "none";
+query.style.display=isDetail ? "none" : "";
+filterbox.style.display=(key==="groupByAuthor" && !filter) ? "" : "none";
+try{
+  output.append(queries[key](filter));
+  if(filterbox.style.display!=="none")applyfilter();
+}catch(e){
+  output.textContent="Error: "+e.message;
+}
+}
+
+function applyfilter(){
+let q=filterbox.value.toLowerCase();
+output.querySelectorAll("div").forEach(block=>{
+  block.style.display=block.textContent.toLowerCase().includes(q)?"":"none";
+});
+}
+
+let output=el("div");
+let filterbox=el("input",{type:"text",placeholder:"Filter",style:{display:"none"},on:{input:applyfilter}});
+let query=el("select",{on:{change:()=>run()}},[
+  el("option",{value:"groupByAuthor"},["Group by author"]),
+  el("option",{value:"groupByYear"},["Group by year"]),
+  el("option",{value:"countByAuthor"},["Count by author"]),
+  el("option",{value:"countByYear"},["Count by year"]),
+]);
+let topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
+let backbtn=el("button",{
+textContent:"Back",
+style:{display:"none"},
+on:{click:()=>{
+  query.value = previousQuery || "countByYear";
+  run();
+}}
+});
+const stats=el("div");
+
+document.body.append(
+  stats,
+  query,
+  filterbox,
+  backbtn,
+  output,
+  topbtn
+);
+
+fetch("games.json")
+.then(res=>res.json())
+.then(json=>{
+  data.push(...json);
+  run();
+
+  let authors=new Set(),years=new Set();
+  let total=0;
+  data.forEach(game=>{
+    let m=minimum(game);if(!m)return;
+    total++;
+//    authors.add(extractauthor(game));
+    authors.add(game.author);
+    years.add(m.year);
+  });
+  stats.innerHTML="";
+
+
+
+
+
+
+
+
+
+let viewLabels = [];
+[...query.options].forEach(opt=>{
+  viewLabels.push(el("b", {}, [opt.textContent]));
+  viewLabels.push(document.createTextNode(", "));
+});
+viewLabels.pop(); // remove last comma
+
+stats.append(
+  document.createTextNode("Views: "),
+  ...viewLabels,
+  el("span", {}, [" - "]),
+  el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank" }, ["README"]),
+  el("br"),
+  el("span", {}, ["Years: " + years.size]), document.createTextNode(" "),
+  el("span", {}, ["Authors: " + authors.size]), document.createTextNode(" "),
+  el("span", {}, ["Games: " + total])
+);
+
+
+
+
+
+});
+};
