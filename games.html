@@ -251,7 +251,7 @@ let authorCountLabel=el("div",{style:{fontWeight:"bold",margin:"0.5em 0"}});
 let query=el("select",{on:{change:()=>run()}},[
   el("option",{value:"groupByAuthor"},["Group by author"]),
   el("option",{value:"groupByYear"},["Group by year"]),
-  el("option",{value:"countByAuthor"},["Count by author"]),
+//  el("option",{value:"countByAuthor"},["Count by author"]),
   el("option",{value:"countByYear"},["Count by year"]),
 ]);
 let topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
