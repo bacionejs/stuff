@@ -18,7 +18,8 @@ let groups={};
 data.forEach(game=>{
   let m=minimum(game);if(!m)return;
   let {year,play,github,title}=m;
-  let author=extractauthor(game);
+//  let author=extractauthor(game);
+  let author=game.author;
   if(filter){
     if(filter.match(/^\d{4}$/)) {
       if(year !== filter) return;
@@ -97,7 +98,8 @@ countByAuthor(){
 let counts={};
 data.forEach(game=>{
   let m=minimum(game);if(!m)return;
-  let author=extractauthor(game);
+//  let author=extractauthor(game);
+  let author=game.author;
   counts[author]=(counts[author]||0)+1;
 });
 
@@ -242,7 +244,8 @@ fetch("games.json")
   data.forEach(game=>{
     let m=minimum(game);if(!m)return;
     total++;
-    authors.add(extractauthor(game));
+//    authors.add(extractauthor(game));
+    authors.add(game.author);
     years.add(m.year);
   });
   stats.innerHTML="";
