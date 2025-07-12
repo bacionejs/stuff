@@ -188,8 +188,8 @@ collapseBox.style.display=showFilter ? "" : "none";
 try{
   output.append(queries[key](filter));
   if(showFilter) {
-    applyfilter();
     applyCollapse();
+    applyfilter();
   }
 }catch(e){
   output.textContent="Error: "+e.message;
@@ -197,8 +197,9 @@ try{
 }
 
 function applyfilter(){
-  let q=filterbox.value.toLowerCase();
-  output.querySelectorAll("div").forEach(block=>{
+  let q = filterbox.value.toLowerCase();
+  output.querySelectorAll("div > b").forEach(header => {
+    let block = header.parentElement;
     let visible = block.textContent.toLowerCase().includes(q);
     block.style.display = visible ? "" : "none";
   });
@@ -240,9 +241,6 @@ document.body.append(
   output,
   topbtn
 );
-
-
-
 
 fetch("games.json")
 .then(res=>res.json())
