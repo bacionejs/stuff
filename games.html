@@ -20,24 +20,11 @@ groupByAuthor(filter){
     let {year,play,github,title}=m;
     let desc=game.description||"";
     let matches=desc.match(/@[A-Za-z0-9_-]+/g);
-
-
-
-
-
-
-
-
-
-
-
     if(!matches || matches.length === 0){
       if(game.author) matches = [game.author];
       else matches = ["unknown"];
     }
-
-matches = matches.map(a => a.replace(/^@/, ""));
-
+    matches = matches.map(a => a.replace(/^@/, ""));
     matches.forEach(author=>{
       if(filter){
         if(filter.match(/^\d{4}$/)) {
@@ -54,21 +41,15 @@ matches = matches.map(a => a.replace(/^@/, ""));
   let frag=document.createDocumentFragment();
   Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
     games.sort((a,b)=>b.year-a.year);
-//    let div=el("div",{},[el("b",{},[author+" ("+games.length+" games)"]),el("br")]);
-
-
-
-
-
-let displayName = author.startsWith("@") ? author.slice(1) : author;
-let div=el("div",{},[el("b",{},[displayName+" ("+games.length+" games)"]),el("br")]);
-
-
-
-
+    let displayName = author.startsWith("@") ? author.slice(1) : author;
+    let div=el("div",{},[]);
+    let header=el("b",{},[displayName+" ("+games.length+" games)"]);
+    div.append(header, el("br"));
+    let container=el("div",{className:"gameList"});
     games.forEach(g=>{
-      div.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));
+      container.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));
     });
+    div.append(container);
     frag.append(div);
   });
 
@@ -131,27 +112,19 @@ countByAuthor(){
 let counts={};
 data.forEach(game=>{
   let m=minimum(game);if(!m)return;
-//  let author=extractauthor(game);
   let author=game.author;
   counts[author]=(counts[author]||0)+1;
 });
-
 let summaryCounts={};
 Object.values(counts).forEach(count=>{
   summaryCounts[count]=(summaryCounts[count]||0)+1;
 });
-
 let frag=el("div");
-
-// Add summary at the top
 frag.append(el("b",{},["Summary repos:devs"]),el("br"));
 Object.entries(summaryCounts).sort((a,b)=>b[0]-a[0]).forEach(([repos,devs])=>{
   frag.append(el("span",{},[repos+": "+devs]),el("br"));
 });
-
-frag.append(el("br")); // spacing
-
-// List each author with link
+frag.append(el("br"));
 Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([author,count])=>{
   frag.append(
     el("span",{},[
@@ -166,24 +139,12 @@ Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([author,count])=>{
     el("br")
   );
 });
-
 return frag;
 }
 
 };
 
 function links(g){return [el("a",{href:g.play},["play"])," ",el("a",{href:g.github},["source"])]}
-
-function extractauthor(game){
-if(game.parent&&game.parent.includes("/"))
-  return game.parent.split("/")[0];
-let parts=game.description.split(/\bby\b/i);
-if(parts.length>1){
-  let match=parts[parts.length-1].match(/@?([^\s.,!?]+)/);
-  if(match)return match[1];
-}
-return "unknown";
-}
 
 function minimum(game){
 let play=game.homepage;
@@ -222,48 +183,43 @@ output.innerHTML="";
 let isDetail=(key!=="countByYear" && key!=="countByAuthor" && filter);
 backbtn.style.display=isDetail ? "" : "none";
 query.style.display=isDetail ? "none" : "";
-filterbox.style.display=(key==="groupByAuthor" && !filter) ? "" : "none";
+let showFilter=(key==="groupByAuthor" && !filter);
+filterbox.style.display=showFilter ? "" : "none";
+collapseBox.style.display=showFilter ? "" : "none";
 try{
   output.append(queries[key](filter));
-  if(filterbox.style.display!=="none")applyfilter();
+  if(showFilter) {
+    applyfilter();
+    applyCollapse();
+  }
 }catch(e){
   output.textContent="Error: "+e.message;
 }
 }
 
-//function applyfilter(){
-//let q=filterbox.value.toLowerCase();
-//output.querySelectorAll("div").forEach(block=>{
-//  block.style.display=block.textContent.toLowerCase().includes(q)?"":"none";
-//});
-//}
-
-
-
-
-
-
 function applyfilter(){
   let q=filterbox.value.toLowerCase();
-  let count=0;
   output.querySelectorAll("div").forEach(block=>{
     let visible = block.textContent.toLowerCase().includes(q);
     block.style.display = visible ? "" : "none";
-    if(visible) count++;
   });
-//  authorCountLabel.textContent = count + " author" + (count !== 1 ? "s" : "");
 }
 
-
-
+function applyCollapse(){
+  let collapsed = collapseBox.checked;
+  output.querySelectorAll(".gameList").forEach(g=>{
+    g.style.display = collapsed ? "none" : "";
+  });
+}
 
 let output=el("div");
 let filterbox=el("input",{type:"text",placeholder:"Filter",style:{display:"none"},on:{input:applyfilter}});
+let collapseBox=el("input",{type:"checkbox",style:{display:"none",marginLeft:"1em"},on:{change:applyCollapse}});
+
 let authorCountLabel=el("div",{style:{fontWeight:"bold",margin:"0.5em 0"}});
 let query=el("select",{on:{change:()=>run()}},[
   el("option",{value:"groupByAuthor"},["Group by author"]),
   el("option",{value:"groupByYear"},["Group by year"]),
-//  el("option",{value:"countByAuthor"},["Count by author"]),
   el("option",{value:"countByYear"},["Count by year"]),
 ]);
 let topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
@@ -277,15 +233,9 @@ on:{click:()=>{
 });
 const stats=el("div");
 
-
-
-
-
-
 document.body.append(
   stats,
-  query,
-  filterbox,
+  el("div",{style:{display:"flex",alignItems:"center",gap:"1em"}},[query, filterbox, collapseBox]),
   authorCountLabel,
   backbtn,
   output,
@@ -295,54 +245,35 @@ document.body.append(
 
 
 
-
 fetch("games.json")
 .then(res=>res.json())
 .then(json=>{
   data.push(...json);
   run();
-
   let authors=new Set(),years=new Set();
   let total=0;
   data.forEach(game=>{
     let m=minimum(game);if(!m)return;
     total++;
-//    authors.add(extractauthor(game));
     authors.add(game.author);
     years.add(m.year);
   });
   stats.innerHTML="";
-
-
-
-
-
-
-
-
-
-let viewLabels = [];
-[...query.options].forEach(opt=>{
-  viewLabels.push(el("b", {}, [opt.textContent]));
-  viewLabels.push(document.createTextNode(", "));
-});
-viewLabels.pop(); // remove last comma
-
-stats.append(
-  document.createTextNode("Views: "),
-  ...viewLabels,
-  el("span", {}, [" - "]),
-  el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank" }, ["README"]),
-  el("br"),
-  el("span", {}, ["Years: " + years.size]), document.createTextNode(" "),
-//  el("span", {}, ["Authors: " + authors.size]), document.createTextNode(" "),
-  el("span", {}, ["Games: " + total])
-);
-
-
-
-
-
+  let viewLabels=[];
+  [...query.options].forEach(opt=>{
+    viewLabels.push(el("b",{},[opt.textContent]));
+    viewLabels.push(document.createTextNode(", "));
+  });
+  viewLabels.pop();
+  stats.append(
+    document.createTextNode("Views: "),
+    ...viewLabels,
+    el("span",{},[" - "]),
+    el("a",{href:"https://github.com/bacionejs/stuff",target:"_blank"},["README"]),
+    el("br"),
+    el("span",{},["Years: "+years.size]),document.createTextNode(" "),
+    el("span",{},["Games: "+total])
+  );
 });
 };
 </script>
