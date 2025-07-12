@@ -41,9 +41,8 @@ groupByAuthor(filter){
   let frag=document.createDocumentFragment();
   Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
     games.sort((a,b)=>b.year-a.year);
-    let displayName = author.startsWith("@") ? author.slice(1) : author;
     let div=el("div",{},[]);
-    let header=el("b",{},[displayName+" ("+games.length+" games)"]);
+    let header=el("b",{},[author+" ("+games.length+" games)"]);
     div.append(header, el("br"));
     let container=el("div",{className:"gameList"});
     games.forEach(g=>{
