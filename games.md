@@ -11,7 +11,7 @@ Play: `homepage`
 Source: `html_url`
 
 Author: 
-- words after last occurrence of *by* in the `description`
+- @names after last occurrence of *by* in the `description`
 - or repo `parent`
 - otherwise first `contributor`.
 
