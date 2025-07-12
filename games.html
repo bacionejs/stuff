@@ -21,10 +21,22 @@ groupByAuthor(filter){
     let desc=game.description||"";
     let matches=desc.match(/@[A-Za-z0-9_-]+/g);
 
+
+
+
+
+
+
+
+
+
+
     if(!matches || matches.length === 0){
       if(game.author) matches = [game.author];
       else matches = ["unknown"];
     }
+
+matches = matches.map(a => a.replace(/^@/, ""));
 
     matches.forEach(author=>{
       if(filter){
