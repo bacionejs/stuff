@@ -14,32 +14,53 @@ let previousQuery=null;
 let queries={
 
 groupByAuthor(filter){
-let groups={};
-data.forEach(game=>{
-  let m=minimum(game);if(!m)return;
-  let {year,play,github,title}=m;
-//  let author=extractauthor(game);
-  let author=game.author;
-  if(filter){
-    if(filter.match(/^\d{4}$/)) {
-      if(year !== filter) return;
-    } else {
-      if(author !== filter) return;
+  let groups={};
+  data.forEach(game=>{
+    let m=minimum(game);if(!m)return;
+    let {year,play,github,title}=m;
+    let desc=game.description||"";
+    let matches=desc.match(/@[A-Za-z0-9_-]+/g);
+
+    if(!matches || matches.length === 0){
+      if(game.author) matches = [game.author];
+      else matches = ["unknown"];
     }
-  }
-  if(!groups[author]) groups[author]=[];
-  groups[author].push({year,play,github,title});
-});
-let frag=document.createDocumentFragment();
-Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
-  games.sort((a,b)=>b.year-a.year);
-  let div=el("div",{},[el("b",{},[author+" ("+games.length+" games)"]),el("br")]);
-  games.forEach(g=>{
-    div.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));
+
+    matches.forEach(author=>{
+      if(filter){
+        if(filter.match(/^\d{4}$/)) {
+          if(year !== filter) return;
+        } else {
+          if(author !== filter) return;
+        }
+      }
+      if(!groups[author]) groups[author]=[];
+      groups[author].push({year,play,github,title});
+    });
   });
-  frag.append(div);
-});
-return frag;
+
+  let frag=document.createDocumentFragment();
+  Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
+    games.sort((a,b)=>b.year-a.year);
+//    let div=el("div",{},[el("b",{},[author+" ("+games.length+" games)"]),el("br")]);
+
+
+
+
+
+let displayName = author.startsWith("@") ? author.slice(1) : author;
+let div=el("div",{},[el("b",{},[displayName+" ("+games.length+" games)"]),el("br")]);
+
+
+
+
+    games.forEach(g=>{
+      div.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));
+    });
+    frag.append(div);
+  });
+
+  return frag;
 },
 
 groupByYear(yearFilter){
@@ -198,15 +219,35 @@ try{
 }
 }
 
+//function applyfilter(){
+//let q=filterbox.value.toLowerCase();
+//output.querySelectorAll("div").forEach(block=>{
+//  block.style.display=block.textContent.toLowerCase().includes(q)?"":"none";
+//});
+//}
+
+
+
+
+
+
 function applyfilter(){
-let q=filterbox.value.toLowerCase();
-output.querySelectorAll("div").forEach(block=>{
-  block.style.display=block.textContent.toLowerCase().includes(q)?"":"none";
-});
+  let q=filterbox.value.toLowerCase();
+  let count=0;
+  output.querySelectorAll("div").forEach(block=>{
+    let visible = block.textContent.toLowerCase().includes(q);
+    block.style.display = visible ? "" : "none";
+    if(visible) count++;
+  });
+//  authorCountLabel.textContent = count + " author" + (count !== 1 ? "s" : "");
 }
+
+
+
 
 let output=el("div");
 let filterbox=el("input",{type:"text",placeholder:"Filter",style:{display:"none"},on:{input:applyfilter}});
+let authorCountLabel=el("div",{style:{fontWeight:"bold",margin:"0.5em 0"}});
 let query=el("select",{on:{change:()=>run()}},[
   el("option",{value:"groupByAuthor"},["Group by author"]),
   el("option",{value:"groupByYear"},["Group by year"]),
@@ -224,14 +265,24 @@ on:{click:()=>{
 });
 const stats=el("div");
 
+
+
+
+
+
 document.body.append(
   stats,
   query,
   filterbox,
+  authorCountLabel,
   backbtn,
   output,
   topbtn
 );
+
+
+
+
 
 fetch("games.json")
 .then(res=>res.json())
