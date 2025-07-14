@@ -1,276 +1,192 @@
 <script>
-onload=()=>{
-document.title="Games Explorer";
+onload = () => {
+document.title = "Games Explorer";
+injectStyle();
+createUI();
+fetch("games.json").then(res => res.json()).then(loadData);
+};
 
-document.head.appendChild(document.createElement("style")).textContent=`
-  body{padding:1em;line-height:1.4;font-size:10px;}
-  button,div,select{margin:1em;}
-  a{text-decoration:none;color:blue;}
+function injectStyle() {
+document.head.appendChild(document.createElement("style")).textContent = `
+body{padding:1em;line-height:1.4;font-size:10px;}
+button,div,select,input{margin:0.5em;}
+a{text-decoration:none;color:blue;}
 `;
+}
 
-let data=[];
-let previousQuery=null;
+let data = [];
+let query, output, topbtn, filterbox, collapseBox, stats;
 
-let queries={
-
-groupByAuthor(filter){
-  let groups={};
-  data.forEach(game=>{
-    let m=minimum(game);if(!m)return;
-    let {year,play,github,title}=m;
-    let desc=game.description||"";
-    let matches=desc.match(/@[A-Za-z0-9_-]+/g);
-    if(!matches || matches.length === 0){
-      if(game.author) matches = [game.author];
-      else matches = ["unknown"];
-    }
-    matches = matches.map(a => a.replace(/^@/, ""));
-    matches.forEach(author=>{
-      if(filter){
-        if(filter.match(/^\d{4}$/)) {
-          if(year !== filter) return;
-        } else {
-          if(author !== filter) return;
-        }
-      }
-      if(!groups[author]) groups[author]=[];
-      groups[author].push({year,play,github,title});
-    });
-  });
-
-  let frag=document.createDocumentFragment();
-  Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
-    games.sort((a,b)=>b.year-a.year);
-    let div=el("div",{},[]);
-    let header=el("b",{},[author+" ("+games.length+" games)"]);
-    div.append(header, el("br"));
-    let container=el("div",{className:"gameList"});
-    games.forEach(g=>{
-      container.append(el("span",{},[...links(g)," "+g.year+" "+g.title]),el("br"));
-    });
-    div.append(container);
-    frag.append(div);
-  });
-
-  return frag;
-},
-
-groupByYear(yearFilter){
-let groups={};
-data.forEach(game=>{
-  let m=minimum(game);if(!m)return;
-  let {year,play,github,title}=m;
-  if(yearFilter && year !== yearFilter) return;
-  if(!groups[year]) groups[year]=[];
-  groups[year].push({play,github,full:title+" - "+game.description});
+function createUI() {
+output = el("div");
+collapseBox = el("input", {
+type: "checkbox",
+on: { change: applyCollapse }
 });
-let frag=document.createDocumentFragment();
-Object.entries(groups).sort((a,b)=>b[0]-a[0]).forEach(([year,games])=>{
-  let div=el("div",{},[el("b",{},[year+" ("+games.length+" games)"]),el("br")]);
-  games.forEach(g=>{
-    div.append(el("span",{},[...links(g)," "+g.full]),el("br"));
-  });
-  frag.append(div);
+filterbox = el("input", {
+type: "text",
+placeholder: "Filter",
+on: { input: applyfilter }
 });
-return frag;
-},
-
-countByYear(){
-let counts={};
-data.forEach(game=>{
-  let m=minimum(game);if(!m)return;
-  let {year}=m;
-  counts[year]=(counts[year]||0)+1;
-});
-let frag=el("div");
-Object.entries(counts).sort((a,b)=>b[0]-a[0]).forEach(([y,c])=>{
-  frag.append(
-    el("span",{},[
-      el("a",{href:"#",on:{click:e=>{
-        e.preventDefault();
-        previousQuery="countByYear";
-        query.value="groupByYear";
-        run(y);
-      }}},["year"]),
-      " ",
-      el("a",{href:"#",on:{click:e=>{
-        e.preventDefault();
-        previousQuery="countByYear";
-        query.value="groupByAuthor";
-        run(y);
-      }}},["author"]),
-      " "+y+": "+c
-    ]),
-    el("br")
-  );
-});
-return frag;
-},
-
-countByAuthor(){
-let counts={};
-data.forEach(game=>{
-  let m=minimum(game);if(!m)return;
-  let author=game.author;
-  counts[author]=(counts[author]||0)+1;
-});
-let summaryCounts={};
-Object.values(counts).forEach(count=>{
-  summaryCounts[count]=(summaryCounts[count]||0)+1;
-});
-let frag=el("div");
-frag.append(el("b",{},["Summary repos:devs"]),el("br"));
-Object.entries(summaryCounts).sort((a,b)=>b[0]-a[0]).forEach(([repos,devs])=>{
-  frag.append(el("span",{},[repos+": "+devs]),el("br"));
-});
-frag.append(el("br"));
-Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([author,count])=>{
-  frag.append(
-    el("span",{},[
-      count+": ",
-      el("a",{href:"#",on:{click:e=>{
-        e.preventDefault();
-        previousQuery="countByAuthor";
-        query.value="groupByAuthor";
-        run(author);
-      }}},[author])
-    ]),
-    el("br")
-  );
-});
-return frag;
-}
-
-};
-
-function links(g){return [el("a",{href:g.play},["play"])," ",el("a",{href:g.github},["source"])]}
-
-function minimum(game){
-let play=game.homepage;
-let github=game.html_url;
-if(!play)return null;
-return{
-year:extractyear(game),
-play,
-github,
-title:game.name
-};
-}
-
-function extractyear(game){
-let matches=[...game.description.matchAll(/\b(20\d{2})\b/g)];
-for(let m of matches)if(!game.name.includes(m[1]))return m[1];
-if(matches.length)return matches[0][1];
-return game.created_at.slice(0,4);
-}
-
-function el(tag,props={},children=[]){
-let e=document.createElement(tag);
-if(tag==="a"&&!("target" in props))e.target="_blank";
-for(let [k,v] of Object.entries(props)){
-  if(k==="on")for(let [ev,fn] of Object.entries(v))e.addEventListener(ev,fn);
-  else if(k==="style")Object.assign(e.style,v);
-  else e[k]=v;
-}
-children.forEach(c=>e.append(typeof c==="string"?document.createTextNode(c):c));
-return e;
-}
-
-function run(filter){
-let key=query.value;
-output.innerHTML="";
-let isDetail=(key!=="countByYear" && key!=="countByAuthor" && filter);
-backbtn.style.display=isDetail ? "" : "none";
-query.style.display=isDetail ? "none" : "";
-let showFilter=(key==="groupByAuthor" && !filter);
-filterbox.style.display=showFilter ? "" : "none";
-collapseBox.style.display=showFilter ? "" : "none";
-try{
-  output.append(queries[key](filter));
-  if(showFilter) {
-    applyCollapse();
-    applyfilter();
-  }
-}catch(e){
-  output.textContent="Error: "+e.message;
-}
-}
-
-function applyfilter(){
-  let q = filterbox.value.toLowerCase();
-  output.querySelectorAll("div > b").forEach(header => {
-    let block = header.parentElement;
-    let visible = block.textContent.toLowerCase().includes(q);
-    block.style.display = visible ? "" : "none";
-  });
-}
-
-function applyCollapse(){
-  let collapsed = collapseBox.checked;
-  output.querySelectorAll(".gameList").forEach(g=>{
-    g.style.display = collapsed ? "none" : "";
-  });
-}
-
-let output=el("div");
-let filterbox=el("input",{type:"text",placeholder:"Filter",style:{display:"none"},on:{input:applyfilter}});
-let collapseBox=el("input",{type:"checkbox",style:{display:"none",marginLeft:"1em"},on:{change:applyCollapse}});
-
-let authorCountLabel=el("div",{style:{fontWeight:"bold",margin:"0.5em 0"}});
-let query=el("select",{on:{change:()=>run()}},[
-  el("option",{value:"groupByAuthor"},["Group by author"]),
-  el("option",{value:"groupByYear"},["Group by year"]),
-  el("option",{value:"countByYear"},["Count by year"]),
+query = el("select", { on: { change: run } }, [
+el("option", { value: "groupByAuthor" }, ["Group by author"]),
+el("option", { value: "groupByYear" }, ["Group by year"])
 ]);
-let topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
-let backbtn=el("button",{
-textContent:"Back",
-style:{display:"none"},
-on:{click:()=>{
-  query.value = previousQuery || "countByYear";
-  run();
-}}
+topbtn = el("button", {
+textContent: "Top",
+on: { click: () => scrollTo({ top: 0, behavior: "smooth" }) },
+style: { position: "fixed", bottom: "0", right: "0" }
 });
-const stats=el("div");
+stats = el("div");
 
 document.body.append(
-  stats,
-  el("div",{style:{display:"flex",alignItems:"center",gap:"1em"}},[query, filterbox, collapseBox]),
-  authorCountLabel,
-  backbtn,
-  output,
-  topbtn
+stats,
+el("div", { style: { display: "flex", alignItems: "center" } }, [
+query, collapseBox, filterbox
+]),
+output,
+topbtn
 );
+}
 
-fetch("games.json")
-.then(res=>res.json())
-.then(json=>{
-  data.push(...json);
-  run();
-  let authors=new Set(),years=new Set();
-  let total=0;
-  data.forEach(game=>{
-    let m=minimum(game);if(!m)return;
-    total++;
-    authors.add(game.author);
-    years.add(m.year);
-  });
-  stats.innerHTML="";
-  let viewLabels=[];
-  [...query.options].forEach(opt=>{
-    viewLabels.push(el("b",{},[opt.textContent]));
-    viewLabels.push(document.createTextNode(", "));
-  });
-  viewLabels.pop();
-  stats.append(
-    document.createTextNode("Views: "),
-    ...viewLabels,
-    el("span",{},[" - "]),
-    el("a",{href:"https://github.com/bacionejs/stuff",target:"_blank"},["README"]),
-    el("br"),
-    el("span",{},["Years: "+years.size]),document.createTextNode(" "),
-    el("span",{},["Games: "+total])
-  );
+function loadData(json) {
+data.push(...json);
+run();
+let authors = new Set(), years = new Set(), total = 0;
+data.forEach(game => {
+if (!minimum(game)) return;
+total++;
+game.authors?.forEach(a => authors.add(a));
+years.add(game.year);
 });
+updateStatsDisplay(years.size, total);
+}
+
+function updateStatsDisplay(years, total) {
+stats.innerHTML = "";
+let viewLabels = [];
+[...query.options].forEach(opt => {
+viewLabels.push(el("b", {}, [opt.textContent]));
+viewLabels.push(document.createTextNode(", "));
+});
+viewLabels.pop();
+stats.append(
+document.createTextNode(document.title),
+el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank" }, [" README"]),
+el("br"),
+el("span", {}, ["Years: " + years]), document.createTextNode(" "),
+el("span", {}, ["Games: " + total])
+);
+}
+
+function run() {
+let key = query.value;
+output.innerHTML = "";
+try {
+output.append(queries[key]());
+applyCollapse();
+applyfilter();
+} catch (e) {
+output.textContent = "Error: " + e.message;
+}
+}
+
+function applyfilter() {
+let q = filterbox.value.toLowerCase();
+output.querySelectorAll("div > b").forEach(header => {
+let block = header.parentElement;
+let visible = block.textContent.toLowerCase().includes(q);
+block.style.display = visible ? "" : "none";
+});
+}
+
+function applyCollapse() {
+let collapsed = collapseBox.checked;
+output.querySelectorAll(".gameList").forEach(g => {
+g.style.display = collapsed ? "none" : "";
+});
+}
+
+const queries = {
+
+groupByAuthor() {
+let groups = {};
+data.forEach(game => {
+let m = minimum(game); if (!m) return;
+let { year, play, source, title } = m;
+let authors = game.authors ?? ["unknown"];
+authors.forEach(author => {
+(groups[author] ??= []).push({ year, play, source, title });
+});
+});
+let frag = document.createDocumentFragment();
+Object.entries(groups).sort((a, b) => b[1].length - a[1].length).forEach(([author, games]) => {
+games.sort((a, b) => b.year - a.year);
+let div = el("div", {}, []);
+let header = el("b", {}, [author + " (" + games.length + " games)"]);
+let container = el("div", { className: "gameList" });
+games.forEach(g => {
+container.append(el("span", {}, [...links(g), " " + g.year + " " + g.title]), el("br"));
+});
+div.append(header, el("br"), container);
+frag.append(div);
+});
+return frag;
+},
+
+groupByYear() {
+let groups = {};
+data.forEach(game => {
+let m = minimum(game); if (!m) return;
+let { year, play, source, title } = m;
+(groups[year] ??= []).push({ play, source, title });
+});
+let frag = document.createDocumentFragment();
+Object.entries(groups).sort((a, b) => b[0] - a[0]).forEach(([year, games]) => {
+games.sort((a, b) => a.title.localeCompare(b.title));
+let div = el("div", {}, [el("b", {}, [year + " (" + games.length + " games)"]), el("br")]);
+let container = el("div", { className: "gameList" });
+games.forEach(g => {
+container.append(el("span", {}, [...links(g), " " + g.title]), el("br"));
+});
+div.append(container);
+frag.append(div);
+});
+return frag;
+}
+
 };
+
+function links(g) {
+return [
+el("a", { href: g.play }, ["play"]),
+" ",
+el("a", { href: g.source }, ["source"])
+];
+}
+
+function minimum(game) {
+let play = game.play;
+let source = game.source;
+let year = game.year;
+if (!play || !year) return null;
+return {
+year,
+play,
+source,
+title: game.name
+};
+}
+
+function el(tag, props = {}, children = []) {
+let e = document.createElement(tag);
+if (tag === "a" && !("target" in props)) e.target = "_blank";
+for (let [k, v] of Object.entries(props)) {
+if (k === "on") for (let [ev, fn] of Object.entries(v)) e.addEventListener(ev, fn);
+else if (k === "style") Object.assign(e.style, v);
+else e[k] = v;
+}
+children.forEach(c => e.append(typeof c === "string" ? document.createTextNode(c) : c));
+return e;
+}
 </script>
