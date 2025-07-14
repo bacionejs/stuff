@@ -115,7 +115,8 @@ data.forEach(game => {
 let m = minimum(game); if (!m) return;
 let { year, play, source, title } = m;
 let authors = game.authors ?? ["unknown"];
-authors.forEach(author => {
+//authors.forEach(author => {
+authors.filter(a => a !== "unknown").forEach(author => {
 (groups[author] ??= []).push({ year, play, source, title });
 });
 });
