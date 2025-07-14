@@ -28,6 +28,16 @@ The `parent` field is unreliable because participants might delete their reposit
 
 The `created_at` field is unreliable because some games got forked in the year of the cat.
 
+
+
+
+
+> In the context of js13kGames, if a competitor deletes their GitHub account after submitting, their username may become available for someone else to claim, which can cause old game links to point to unrelated or misleading content. Furthermore, GitHub @mentions are not a reliable long-term reference, since users may delete their accounts, making the mention unresolvable in the future.
+
+
+
+
+
 ```js
 import { Octokit } from "@octokit/rest";
 import fs from "fs";
