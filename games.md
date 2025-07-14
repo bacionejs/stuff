@@ -1,39 +1,44 @@
+
 > ⚠️ **Warning:** These are dev notes, not usage instructions.
 
 A script generates a JSON snapshot, periodically, enabling a dynamic interface without relying on a live backend.
 
 ### Extracts:
 
-Game: `name` (same as `html_url` slug)
+Name: `name` (same as `html_url` slug)
 
 Play: `homepage`
 
 Source: `html_url`
 
-Author: 
-- @names after last occurrence of *by* in the `description`
-- or repo `parent`
-- otherwise first `contributor`.
+authors: an array of 1 to n authors
+→ Check `description` field
+  - If exactly 1 word boundary "by" (e.g. "by @foo" or "by JohnDoe"):
+    - Get string after "by" up to end of string ($) or period (.)
+    - If it contains @mentions → allow many authors (strip @)
+    - Else if it's exactly 1 word → use it
+→ Else check `parent` field
+→ Else use `contributor` field
 
-Year:
-- first year in the `description` not found in the name, unless there are no other
-- otherwise `created_at`
+year:
+  → If "a js13kGames" in `description`, get the number immediately after
+  → Else, use first 4 digits of `created_at`
 
 The `parent` field is unreliable because participants might delete their repositories.
 
 The `created_at` field is unreliable because some games got forked in the year of the cat.
 
 ```js
-import { Octokit } from "@octokit/rest"
-import fs from "fs"
-import pLimit from "p-limit"
+import { Octokit } from "@octokit/rest";
+import fs from "fs";
+import pLimit from "p-limit";
 
-const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
-const OUTPUT_FILE = "games.json"
-const LIMIT = 0
-const MAX_PARALLEL = 10
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+const OUTPUT_FILE = "games.json";
+const LIMIT = 0;
+const MAX_PARALLEL = 10;
 
-const EXCLUDED_NAMES = new Set([
+const EXCLUDED = new Set([
   "js13kgames.com",
   "js13kgames.com-legacy",
   "js13kserver",
@@ -46,24 +51,36 @@ const EXCLUDED_NAMES = new Set([
   "community",
   "blog",
   "js13kBreakouts",
-  "Chain-Reaction"
-])
+  "Chain-Reaction",
+  "vote",
+  "kilo",
+  "kilo-test",
+  "events",
+  "glitchd"
+]);
 
-let repoData = []
+let repoData = [];
+let shuttingDown = false;
+
+process.on("SIGINT", () => {
+  if (!shuttingDown) {
+    shuttingDown = true;
+    console.log("\n🛑 CTRL-C detected. Writing partial output to", OUTPUT_FILE);
+    writeLog();
+    process.exit();
+  }
+});
 
 function writeLog() {
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(repoData, null, 2), "utf8")
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(repoData, null, 2), "utf8");
 }
 
 function selectRepoFields(repo) {
   return {
     name: repo.name,
-    description: repo.description,
-    homepage: repo.homepage,
-    created_at: repo.created_at,
-    html_url: repo.html_url,
-    parent: repo.parent?.full_name
-  }
+    play: repo.homepage,
+    source: repo.html_url
+  };
 }
 
 async function getRepos() {
@@ -71,11 +88,38 @@ async function getRepos() {
     org: "js13kGames",
     type: "public",
     per_page: LIMIT > 0 ? LIMIT : 100
-  }
+  };
   const allRepos = LIMIT > 0
     ? (await octokit.repos.listForOrg(options)).data.slice(0, LIMIT)
-    : await octokit.paginate(octokit.repos.listForOrg, options)
-  return allRepos.filter(repo => !EXCLUDED_NAMES.has(repo.name))
+    : await octokit.paginate(octokit.repos.listForOrg, options);
+  return allRepos.filter(repo => !EXCLUDED.has(repo.name));
+}
+
+function extractAuthors(description) {
+  if (!description) return null;
+  const match = description.match(/\bby\b/i);
+  if (!match) return null;
+
+  // Take the part after "by" up to the period or end
+  const afterBy = description.split(/\bby\b/i)[1].split(".")[0].trim();
+
+  // Grab all GitHub @mentions in the form @user or [@user](...)
+  const mentions = [...afterBy.matchAll(/@([a-z0-9_-]+)/gi)].map(m => m[1]);
+
+  // Fallback: try to extract a single author name (non-@) if no mentions
+  if (mentions.length === 0) {
+    const fallback = afterBy.split(/[,&]/)[0].trim().split(/\s+/);
+    if (fallback.length === 1 && fallback[0]) return [fallback[0]];
+    return null;
+  }
+
+  return mentions;
+}
+
+function extractYear(description, created_at) {
+  const match = description?.match(/a js13kGames\s+(\d{4})/i);
+  if (match) return parseInt(match[1]);
+  return parseInt(created_at.slice(0, 4));
 }
 
 async function processRepo(i, repo) {
@@ -86,56 +130,53 @@ async function processRepo(i, repo) {
     });
 
     const entry = selectRepoFields(full);
+    let authors = ["unknown"];
 
-    let author = "unknown";
-
-    // Try to extract author from parent
-    if (entry.parent && entry.parent.includes("/")) {
-      author = entry.parent.split("/")[0];
-    } else if (entry.description) {
-      // Try to extract from description
-      let parts = entry.description.split(/\bby\b/i);
-      if (parts.length > 1) {
-        let match = parts[parts.length - 1].match(/@?([^\s.,!?]+)/);
-        if (match) {
-          author = match[1];
-        }
-      }
+    if (full.description) {
+      const descAuthors = extractAuthors(full.description);
+      if (descAuthors) authors = descAuthors;
     }
 
-    // Fallback: fetch contributors ONLY if still unknown
-    if (author === "unknown") {
+    if (authors[0] === "unknown" && full.parent?.full_name?.includes("/")) {
+      authors = [full.parent.full_name.split("/")[0]];
+    }
+
+    if (authors[0] === "unknown") {
       const { data: contributors } = await octokit.repos.listContributors({
         owner: repo.owner.login,
         repo: repo.name,
         per_page: 1
       });
       if (contributors.length > 0) {
-        author = contributors[0].login;
+        authors = [contributors[0].login];
       }
     }
 
-    entry.author = author;
+    entry.authors = authors;
+    entry.year = extractYear(full.description, full.created_at);
     repoData.push(entry);
 
-    console.log(`✅ ${i + 1}: ${repo.name} by ${entry.author}`);
+    console.log(`✅ ${i + 1}: ${repo.name} by ${authors.join(", ")}`);
   } catch (err) {
     console.warn(`⚠️ Error on ${repo.name}: ${err.message}`);
   }
 }
 
 async function buildLog() {
-  const rate = await octokit.rateLimit.get()
-  console.log("⏱️ GitHub Rate Limit:", rate.data.rate)
-  console.log("⏳ Resets at:", new Date(rate.data.rate.reset * 1000).toLocaleString())
-  const repos = await getRepos()
-  console.log("📦 Total repos fetched (after exclusions):", repos.length)
-  const limit = pLimit(MAX_PARALLEL)
-  const tasks = repos.map((repo, i) => limit(() => processRepo(i, repo)))
-  await Promise.all(tasks)
-  writeLog()
-  console.log("✅ Done. Output saved to", OUTPUT_FILE)
+  const rate = await octokit.rateLimit.get();
+  console.log("⏱️ GitHub Rate Limit:", rate.data.rate);
+  console.log("⏳ Resets at:", new Date(rate.data.rate.reset * 1000).toLocaleString());
+  const repos = await getRepos();
+  console.log("📦 Total repos fetched (after exclusions):", repos.length);
+  const limit = pLimit(MAX_PARALLEL);
+  const tasks = repos.map((repo, i) => limit(() => processRepo(i, repo)));
+  await Promise.all(tasks);
+  writeLog();
+  console.log("✅ Done. Output saved to", OUTPUT_FILE);
 }
 
-buildLog()
+buildLog().catch(err => {
+  console.error("🔥 Unhandled error:", err);
+  writeLog();
+});
 ```
