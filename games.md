@@ -5,11 +5,7 @@ A script generates a JSON snapshot, periodically, enabling a dynamic interface w
 
 ### Extracts:
 
-Name: `name` (same as `html_url` slug)
-
-Play: `homepage`
-
-Source: `html_url`
+Name: `name`
 
 authors: an array of 1 to n authors
 → Check `description` field
