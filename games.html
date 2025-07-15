@@ -112,13 +112,8 @@ const queries = {
 groupByAuthor() {
 let groups = {};
 data.forEach(game => {
-let m = minimum(game); if (!m) return;
-let { year, play, source, title } = m;
-let authors = game.authors ?? ["unknown"];
-//authors.forEach(author => {
-authors.filter(a => a !== "unknown").forEach(author => {
-(groups[author] ??= []).push({ year, play, source, title });
-});
+  let m = minimum(game); if (!m) return;
+  m.authors.forEach(author => { (groups[author] ??= []).push(m); });
 });
 let frag = document.createDocumentFragment();
 Object.entries(groups).sort((a, b) => b[1].length - a[1].length).forEach(([author, games]) => {
@@ -138,9 +133,8 @@ return frag;
 groupByYear() {
 let groups = {};
 data.forEach(game => {
-let m = minimum(game); if (!m) return;
-let { year, play, source, title } = m;
-(groups[year] ??= []).push({ play, source, title });
+  let m = minimum(game); if (!m) return;
+  (groups[m.year] ??= []).push(m);
 });
 let frag = document.createDocumentFragment();
 Object.entries(groups).sort((a, b) => b[0] - a[0]).forEach(([year, games]) => {
@@ -158,15 +152,25 @@ return frag;
 
 };
 
+
+
+
+
+
+
 function links(g) {
+const play = `https://js13kgames.com/entries/${g.title}`;
+const source = `https://github.com/js13kgames/${g.title}`;
 return [
-el("a", { href: g.play }, ["play"]),
-" ",
-el("a", { href: g.source }, ["source"])
+  el("a", { href: play}, ["Play"]),
+  " ",
+  el("a", { href: source}, ["Source"])
 ];
 }
 
-function minimum(game) {
+
+
+function minimum2(game) {
 let play = game.play;
 let source = game.source;
 let year = game.year;
@@ -176,6 +180,19 @@ year,
 play,
 source,
 title: game.name
+};
+}
+
+
+function minimum(game) {
+let title = game.name;
+let authors = game.authors;
+let year = game.year;
+if (!title || !authors || !year) return null;
+return {
+title,
+authors,
+year,
 };
 }
 
