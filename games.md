@@ -66,7 +66,14 @@ const EXCLUDED = new Set([
   "kilo",
   "kilo-test",
   "events",
-  "glitchd"
+  "glitchd",
+  "Triska",
+  "The-Maze",
+  "Anti_Virus",
+  "__OFF_THE_LINE__",
+  "Out_Of_Memory",
+  "snakee",
+  "A.W.E.S.O.M.E",
 ]);
 
 let repoData = [];
@@ -88,8 +95,8 @@ function writeLog() {
 function selectRepoFields(repo) {
   return {
     name: repo.name,
-    play: repo.homepage,
-    source: repo.html_url
+//    play: repo.homepage,
+//    source: repo.html_url
   };
 }
 
