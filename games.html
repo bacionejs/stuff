@@ -8,7 +8,17 @@ fetch("games.json").then(res=>res.json()).then(loadData);
 
 function injectStyle(){
 document.head.appendChild(document.createElement("style")).textContent=`
-body{padding:1em;line-height:1.4;font-size:10px;}
+
+
+
+
+
+body{padding:1em;line-height:1.2;font-size:10px;}
+div > div{margin:0;line-height:1.2;}
+
+
+
+
 button,div,select,input{margin:0.5em;}
 a{text-decoration:none;color:blue;}
 `;
@@ -126,15 +136,17 @@ sortByStars(){
     a.name.localeCompare(b.name)
   ));
   let frag = document.createDocumentFragment();
-  let div = el("div",{},[el("b",{},["Stars ("+list.length+" games)"]),el("br")]);
-  let container = el("div",{className:"gameList"});
+  let div = el("div", {}, [el("b", {}, ["Stars (" + list.length + " games)"]), el("br")]);
+
   list.forEach(g => {
-    container.append(el("span",{},[
+    const line = el("div", {}, [
+      el("b", {style: {display: "none"}}, [g.authors?.join(", ") || "unknown"]),
       ...links(g), " ",
       `${g.stars} \u2B50 ${g.year} ${g.authors?.[0] || "unknown"} ${g.name}`
-    ]), el("br"));
+    ]);
+    div.append(line);
   });
-  div.append(container);
+
   frag.append(div);
   return frag;
 }
