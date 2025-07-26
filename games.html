@@ -9,7 +9,7 @@ fetch("games.json").then(res=>res.json()).then(loadData);
 function injectStyle(){
 document.head.appendChild(document.createElement("style")).textContent=`
 body{padding:1em;font:0.6rem monospace;}
-button,select,input{margin:0.5em;}
+button,select,input{margin:0.5rem;font-size:1rem}
 a{text-decoration:none;}
 `;
 }
