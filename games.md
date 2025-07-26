@@ -156,6 +156,7 @@ try{
   })).data;
 
   const entry={name:full.name};
+  entry.stars=full.stargazers_count;
   let authors=["unknown"];
   const descAuthors=extractAuthors(full.description);
   if(descAuthors){
