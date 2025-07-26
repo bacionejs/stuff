@@ -1,165 +1,248 @@
 <script>
-onload=()=>{
-document.title="Games Explorer";
-injectStyle();
-createUI();
-fetch("games.json").then(res=>res.json()).then(loadData);
+onload = () => {
+  document.title = "Games Explorer";
+  injectStyle();
+  createUI();
+  Promise.all([
+    fetch("games.json").then(r => r.json()),
+    fetch("thinky.json").then(r => r.json())
+  ]).then(([gamesJson, thinkyJson]) => {
+    loadThinky(thinkyJson);
+    loadData(gamesJson);
+  });
 };
 
-function injectStyle(){
-document.head.appendChild(document.createElement("style")).textContent=`
+function injectStyle() {
+  document.head.appendChild(document.createElement("style")).textContent = `
 body{padding:1em;font:0.6em monospace;}
 button,select,input{margin:0.5em;}
 a{text-decoration:none;}
 `;
 }
 
-let data=[];
-let query,output,topbtn,filterbox,collapseBox;
+let data = [];
+let query, output, topbtn, filterbox, tokenbox, collapseBox;
+let thinkyTokens = {}, thinkyRepos = [];
 
-function createUI(){
-output=el("div");
-collapseBox=el("input",{type:"checkbox",on:{change:applyCollapse}});
-filterbox=el("input",{type:"text",placeholder:"Filter",on:{input:applyfilter}});
-query=el("select",{on:{change:run}},[
-  el("option",{value:"groupByAuthor"},["Group by author"]),
-  el("option",{value:"groupByYear"},["Group by year"]),
-  el("option",{value:"sortByStars"},["Stars"])
-]);
-topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
 
-document.body.append(
-el("h1", {}, [ el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank", }, [document.title]) ]),
-el("div",{style:{display:"flex",alignItems:"center"}},[query,collapseBox,filterbox]),
-output,
-topbtn
-);
-}
 
-function loadData(json){
-data.push(...json);
-run();
-let authors=new Set(),years=new Set();
-data.forEach(game=>{
-  game.authors?.forEach(a=>authors.add(a));
-  years.add(game.year);
+
+
+
+
+
+
+
+function createUI() {
+  output = el("div");
+  collapseBox = el("input", { type: "checkbox", on: { change: applyCollapse } });
+  filterbox = el("input", { type: "text", placeholder: "General Filter", on: { input: applyfilter } });
+//  tokenbox = el("input", { type: "text", placeholder: "Token", on: { input: applyfilter } });
+tokenbox = el("input", {
+  type: "text",
+  placeholder: "Loading tokens...",
+  disabled: true,
+  on: { input: applyfilter }
 });
-}
-
-function run(){
-let key=query.value;
-output.innerHTML="";
-try{
-  output.append(queries[key]());
-  applyCollapse();
-  applyfilter();
-}catch(e){
-  output.textContent="Error: "+e.message;
-}
-}
-
-function applyfilter(){
-let q=filterbox.value.toLowerCase();
-output.querySelectorAll("div > b").forEach(header=>{
-  let block=header.parentElement;
-  let visible=block.textContent.toLowerCase().includes(q);
-  block.style.display=visible?"":"none";
-});
-}
-
-function applyCollapse(){
-let collapsed=collapseBox.checked;
-output.querySelectorAll(".gameList").forEach(g=>{g.style.display=collapsed?"none":"";});
-}
-
-const queries={
-
-groupByAuthor(){
-let groups={};
-data.forEach(game=>{
-  if(!game.name||!game.authors||!game.year)return;
-  game.authors.forEach(author=>{
-    (groups[author]??=[]).push(game);
-  });
-});
-let frag=document.createDocumentFragment();
-Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).forEach(([author,games])=>{
-  games.sort((a,b)=>b.year-a.year);
-  let div=el("div",{},[]);
-  let header=el("b",{},[author+" ("+games.length+" games)"]);
-  let container=el("div",{className:"gameList"});
-  games.forEach(g=>{
-    container.append(el("span",{},[...links(g)," "+g.year+" "+g.name]),el("br"));
-  });
-  div.append(header,el("br"),container);
-  frag.append(div);
-});
-return frag;
-},
-
-groupByYear(){
-let groups={};
-data.forEach(game=>{
-  if(!game.name||!game.authors||!game.year)return;
-  (groups[game.year]??=[]).push(game);
-});
-let frag=document.createDocumentFragment();
-Object.entries(groups).sort((a,b)=>b[0]-a[0]).forEach(([year,games])=>{
-  games.sort((a,b)=>a.name.localeCompare(b.name));
-  let div=el("div",{},[el("b",{},[year+" ("+games.length+" games)"]),el("br")]);
-  let container=el("div",{className:"gameList"});
-  games.forEach(g=>{
-    container.append(el("span",{},[...links(g)," "+g.name]),el("br"));
-  });
-  div.append(container);
-  frag.append(div);
-});
-return frag;
-},
-
-sortByStars(){
-  let list = data.filter(g => g.name && g.authors && g.year && g.stars != null);
-  list.sort((a, b) => (
-    b.stars - a.stars ||
-    b.year - a.year ||
-    (a.authors[0] || "").localeCompare(b.authors[0] || "") ||
-    a.name.localeCompare(b.name)
-  ));
-  let frag = document.createDocumentFragment();
-  let div = el("div", {}, [el("b", {}, ["Stars (" + list.length + " games)"]), el("br")]);
-
-  list.forEach(g => {
-    const line = el("div", {}, [
-      el("b", {style: {display: "none"}}, [g.authors?.join(", ") || "unknown"]),
-      ...links(g), " ",
-      `${String(g.stars).padStart(4, "\u00A0")} \u2B50 ${g.year} ${g.authors?.[0] || "unknown"} ${g.name}`
-    ]);
-    div.append(line);
+  query = el("select", { on: { change: run } }, [
+    el("option", { value: "groupByAuthor" }, ["Group by author"]),
+    el("option", { value: "groupByYear" }, ["Group by year"]),
+    el("option", { value: "sortByStars" }, ["Stars"])
+  ]);
+  topbtn = el("button", {
+    textContent: "Top",
+    on: { click: () => scrollTo({ top: 0, behavior: "smooth" }) },
+    style: { position: "fixed", bottom: "0", right: "0" }
   });
 
-  frag.append(div);
-  return frag;
+  document.body.append(
+    el("h1", {}, [el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank" }, [document.title])]),
+    el("div", { style: { display: "flex", alignItems: "center", gap: "0.5em" } }, [query, collapseBox, filterbox, tokenbox]),
+    output,
+    topbtn
+  );
 }
 
+function loadThinky2(json) {
+  thinkyRepos = json.repos;
+  for (const [token, arr] of json.tokens) {
+    thinkyTokens[token] = new Set(arr.map(i => thinkyRepos[i]));
+  }
+}
+
+
+
+
+
+
+function loadThinky(json) {
+  thinkyRepos = json.repos;
+  for (const [token, arr] of json.tokens) {
+    thinkyTokens[token] = new Set(arr.map(i => thinkyRepos[i]));
+  }
+  tokenbox.placeholder = "Token filter: ie sonant, zzfx, etc.";
+  tokenbox.disabled = false;
+}
+
+
+
+
+function loadData(json) {
+  data.push(...json);
+  run();
+}
+
+function run() {
+  let key = query.value;
+  output.innerHTML = "";
+  try {
+    output.append(queries[key]());
+    applyCollapse();
+    applyfilter();
+  } catch (e) {
+    output.textContent = "Error: " + e.message;
+  }
+}
+
+function applyfilter() {
+  let q = filterbox.value.toLowerCase();
+  let t = tokenbox?.value.toLowerCase();
+  let tokenSet = new Set();
+
+  if (t) {
+    for (const key in thinkyTokens) {
+      if (key.toLowerCase().startsWith(t)) {
+        for (const name of thinkyTokens[key]) tokenSet.add(name);
+      }
+    }
+  }
+
+  output.querySelectorAll("div > b").forEach(header => {
+    let block = header.parentElement;
+    let container = block.querySelector(".gameList");
+    let spans = container?.querySelectorAll("span");
+
+    let visibleGames = 0;
+
+    if (spans) {
+      spans.forEach(span => {
+        let br = span.nextSibling;
+        if (br?.nodeName !== "BR") br = null;
+        let name = span.querySelector("a[href^='https://js13kgames.com/entries/']")?.getAttribute("href").split("/").pop();
+        let text = span.textContent.toLowerCase();
+        let textMatch = text.includes(q);
+        let tokenMatch = !t || tokenSet.has(name);
+        let show = textMatch && tokenMatch;
+        span.style.display = show ? "" : "none";
+        if (br) br.style.display = show ? "" : "none";
+        if (show) visibleGames++;
+      });
+
+      block.style.display = visibleGames > 0 ? "" : "none";
+    } else {
+      // stars view
+      let visible = block.textContent.toLowerCase().includes(q);
+      if (t && tokenSet.size) {
+        let gameNames = [...block.querySelectorAll("a[href^='https://js13kgames.com/entries/']")]
+          .map(a => a.getAttribute("href").split("/").pop());
+        visible = gameNames.some(name => tokenSet.has(name)) && visible;
+      }
+      block.style.display = visible ? "" : "none";
+    }
+  });
+}
+
+function applyCollapse() {
+  let collapsed = collapseBox.checked;
+  output.querySelectorAll(".gameList").forEach(g => { g.style.display = collapsed ? "none" : ""; });
+}
+
+const queries = {
+  groupByAuthor() {
+    let groups = {};
+    data.forEach(game => {
+      if (!game.name || !game.authors || !game.year) return;
+      game.authors.forEach(author => {
+        (groups[author] ??= []).push(game);
+      });
+    });
+    let frag = document.createDocumentFragment();
+    Object.entries(groups).sort((a, b) => b[1].length - a[1].length).forEach(([author, games]) => {
+      games.sort((a, b) => b.year - a.year);
+      let div = el("div", {}, []);
+      let header = el("b", {}, [author + " (" + games.length + " games)"]);
+      let container = el("div", { className: "gameList" });
+      games.forEach(g => {
+        container.append(el("span", {}, [...links(g), " " + g.year + " " + g.name]), el("br"));
+      });
+      div.append(header, el("br"), container);
+      frag.append(div);
+    });
+    return frag;
+  },
+
+  groupByYear() {
+    let groups = {};
+    data.forEach(game => {
+      if (!game.name || !game.authors || !game.year) return;
+      (groups[game.year] ??= []).push(game);
+    });
+    let frag = document.createDocumentFragment();
+    Object.entries(groups).sort((a, b) => b[0] - a[0]).forEach(([year, games]) => {
+      games.sort((a, b) => a.name.localeCompare(b.name));
+      let div = el("div", {}, [el("b", {}, [year + " (" + games.length + " games)"]), el("br")]);
+      let container = el("div", { className: "gameList" });
+      games.forEach(g => {
+        container.append(el("span", {}, [...links(g), " " + g.name]), el("br"));
+      });
+      div.append(container);
+      frag.append(div);
+    });
+    return frag;
+  },
+
+  sortByStars() {
+    let list = data.filter(g => g.name && g.authors && g.year && g.stars != null);
+    list.sort((a, b) =>
+      b.stars - a.stars ||
+      b.year - a.year ||
+      (a.authors[0] || "").localeCompare(b.authors[0] || "") ||
+      a.name.localeCompare(b.name)
+    );
+    let frag = document.createDocumentFragment();
+    let div = el("div", {}, [el("b", {}, ["Stars (" + list.length + " games)"]), el("br")]);
+
+    list.forEach(g => {
+      const line = el("div", {}, [
+        el("b", { style: { display: "none" } }, [g.authors?.join(", ") || "unknown"]),
+        ...links(g), " ",
+        `${String(g.stars).padStart(4, "\u00A0")} \u2B50 ${g.year} ${g.authors?.[0] || "unknown"} ${g.name}`
+      ]);
+      div.append(line);
+    });
+
+    frag.append(div);
+    return frag;
+  }
 };
 
-function links(g){
-return [
-  el("a",{href:"https://js13kgames.com/entries/"+g.name},["Play"]),
-  " ",
-  el("a",{href:"https://github.com/js13kgames/"+g.name},["Source"])
-];
+function links(g) {
+  return [
+    el("a", { href: "https://js13kgames.com/entries/" + g.name }, ["Play"]),
+    " ",
+    el("a", { href: "https://github.com/js13kgames/" + g.name }, ["Source"])
+  ];
 }
 
-function el(tag,props={},children=[]){
-let e=document.createElement(tag);
-if(tag==="a"&&!("target" in props))e.target="_blank";
-for(let [k,v] of Object.entries(props)){
-  if(k==="on")for(let [ev,fn] of Object.entries(v))e.addEventListener(ev,fn);
-  else if(k==="style")Object.assign(e.style,v);
-  else e[k]=v;
-}
-children.forEach(c=>e.append(typeof c==="string"?document.createTextNode(c):c));
-return e;
+function el(tag, props = {}, children = []) {
+  let e = document.createElement(tag);
+  if (tag === "a" && !("target" in props)) e.target = "_blank";
+  for (let [k, v] of Object.entries(props)) {
+    if (k === "on") for (let [ev, fn] of Object.entries(v)) e.addEventListener(ev, fn);
+    else if (k === "style") Object.assign(e.style, v);
+    else e[k] = v;
+  }
+  children.forEach(c => e.append(typeof c === "string" ? document.createTextNode(c) : c));
+  return e;
 }
 </script>
