@@ -8,8 +8,8 @@ fetch("games.json").then(res=>res.json()).then(loadData);
 
 function injectStyle(){
 document.head.appendChild(document.createElement("style")).textContent=`
-body{padding:1em;font:0.6rem monospace;}
-button,select,input{margin:0.5rem;font-size:1rem}
+body{padding:1em;font:0.6em monospace;}
+button,select,input{margin:0.5em;}
 a{text-decoration:none;}
 `;
 }
@@ -29,7 +29,7 @@ query=el("select",{on:{change:run}},[
 topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
 
 document.body.append(
-el("a",{href:"https://github.com/bacionejs/stuff",target:"_blank"},[document.title]),
+el("h1", {}, [ el("a", { href: "https://github.com/bacionejs/stuff", target: "_blank", }, [document.title]) ]),
 el("div",{style:{display:"flex",alignItems:"center"}},[query,collapseBox,filterbox]),
 output,
 topbtn
