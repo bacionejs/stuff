@@ -8,19 +8,9 @@ fetch("games.json").then(res=>res.json()).then(loadData);
 
 function injectStyle(){
 document.head.appendChild(document.createElement("style")).textContent=`
-
-
-
-
-
-body{padding:1em;line-height:1.2;font-size:10px;}
-div > div{margin:0;line-height:1.2;}
-
-
-
-
-button,div,select,input{margin:0.5em;}
-a{text-decoration:none;color:blue;}
+body{padding:1em;font:0.6rem monospace;}
+button,select,input{margin:0.5em;}
+a{text-decoration:none;}
 `;
 }
 
@@ -142,7 +132,7 @@ sortByStars(){
     const line = el("div", {}, [
       el("b", {style: {display: "none"}}, [g.authors?.join(", ") || "unknown"]),
       ...links(g), " ",
-      `${g.stars} \u2B50 ${g.year} ${g.authors?.[0] || "unknown"} ${g.name}`
+      `${String(g.stars).padStart(4, "\u00A0")} \u2B50 ${g.year} ${g.authors?.[0] || "unknown"} ${g.name}`
     ]);
     div.append(line);
   });
