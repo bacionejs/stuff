@@ -23,7 +23,8 @@ collapseBox=el("input",{type:"checkbox",on:{change:applyCollapse}});
 filterbox=el("input",{type:"text",placeholder:"Filter",on:{input:applyfilter}});
 query=el("select",{on:{change:run}},[
   el("option",{value:"groupByAuthor"},["Group by author"]),
-  el("option",{value:"groupByYear"},["Group by year"])
+  el("option",{value:"groupByYear"},["Group by year"]),
+  el("option",{value:"sortByStars"},["Stars"])
 ]);
 topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
 
@@ -114,6 +115,28 @@ Object.entries(groups).sort((a,b)=>b[0]-a[0]).forEach(([year,games])=>{
   frag.append(div);
 });
 return frag;
+},
+
+sortByStars(){
+  let list = data.filter(g => g.name && g.authors && g.year && g.stars != null);
+  list.sort((a, b) => (
+    b.stars - a.stars ||
+    b.year - a.year ||
+    (a.authors[0] || "").localeCompare(b.authors[0] || "") ||
+    a.name.localeCompare(b.name)
+  ));
+  let frag = document.createDocumentFragment();
+  let div = el("div",{},[el("b",{},["Stars ("+list.length+" games)"]),el("br")]);
+  let container = el("div",{className:"gameList"});
+  list.forEach(g => {
+    container.append(el("span",{},[
+      ...links(g), " ",
+      `${g.stars} \u2B50 ${g.year} ${g.authors?.[0] || "unknown"} ${g.name}`
+    ]), el("br"));
+  });
+  div.append(container);
+  frag.append(div);
+  return frag;
 }
 
 };
