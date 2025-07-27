@@ -53,7 +53,7 @@ function loadThinky(json) {
   for (const [token, arr] of json.tokens) {
     thinkyTokens[token] = new Set(arr.map(i => thinkyRepos[i]));
   }
-  tokenbox.placeholder = "Token filter: ie sonant, webgl, etc.";
+  tokenbox.placeholder = "Token filter: sonant, webgl, etc.";
   tokenbox.disabled = false;
 }
 
