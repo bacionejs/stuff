@@ -1,5 +1,15 @@
 <script>
-onload=()=>{document.title="Games Explorer";injectStyle();createUI();Promise.all([fetch("games.json").then(r=>r.json()),fetch("thinky.json").then(r=>r.json())]).then(([gamesJson,thinkyJson])=>{loadThinky(thinkyJson);loadData(gamesJson);});};
+onload=()=>{
+  document.title="Games Explorer";
+  injectStyle();
+  createUI();
+
+  // Fetch and display games immediately
+  fetch("games.json").then(r=>r.json()).then(loadData);
+
+  // Fetch tokens independently, update token input when ready
+  fetch("thinky.json").then(r=>r.json()).then(loadThinky);
+};
 
 function injectStyle(){document.head.appendChild(document.createElement("style")).textContent=`body{padding:1em;font:0.6em monospace;}button,select,input{margin:0.5em;}a{text-decoration:none;}`;}
 
