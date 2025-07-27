@@ -1,5 +1,7 @@
 ### Games Explorer
 
+Explore js13k games
+
 Sorted by Stars
 
 Filters
