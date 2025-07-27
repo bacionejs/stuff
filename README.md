@@ -1,6 +1,6 @@
 ### Games Explorer
 
-Explore js13k games
+Explore js13kgames github repos
 
 Sorted by Stars
 
