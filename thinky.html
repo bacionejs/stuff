@@ -1,56 +1,10 @@
-<script>
-const e = (t, p) => {const x = document.createElement(t); if (p) for (const [k, v] of Object.entries(p)) x[k] = v; return x};
-const style = () => {
-  const s = e('style');
-  s.textContent = `
-body{font-size:10px;padding:1em}
-ul{list-style:none;padding:0;}
-li{padding:0.2em 0}
-span.repo{color:#669;cursor:pointer}
-#tokens{margin:1em 0 1em 0;color:#555;font-size:5px;height:100px; overflow:auto; resize:none;}
-#filter{}
-#counts{color:green;font-size:0.9em;margin:1em 0 1em 1em}`;
-  document.head.appendChild(s)
-};
-const main = () => {
-document.title = 'Thinky'; style();
-const desc = e('div');
-desc.innerHTML = `Find <b>who</b> uses <b>what</b>, i.e. repos using sonant, zzfx, aframe, audiocontext, etc.  
-<a href="https://github.com/bacionejs/stuff" target="_blank">README</a><br><br>`;
-const filter = e('input', {
-  placeholder: 'Loading data...',
-  disabled: true
-}, {id: 'filter'});
-const counts = e('span', {id: 'counts'});
-const tlist = e('div', {id: 'tokens'}), ul = e('ul');
-document.body.append(desc, filter, counts, tlist, ul);
-let tokens = {}, repos = [];
-fetch("thinky.json").then(r => r.json()).then(data => {
-  repos = data.repos;
-  for (const [t, arr] of data.tokens) tokens[t] = arr;
-  ul.onclick = e => {
-    const s = e.target;
-    if (s.className === 'repo') window.open('https://github.com/js13kgames/' + s.textContent, '_blank');
-  };
-  filter.disabled = false;
-  filter.placeholder = 'FILTER';
-  filter.oninput = () => {
-    const f = filter.value; if (!f) {tlist.textContent = ''; ul.textContent = ''; counts.textContent = ''; return;}
-    const sensitive = /[A-Z]/.test(f);
-    const matchedTokens = [], matchedRepos = new Set();
-    for (const t in tokens) {
-      const match = sensitive ? t.startsWith(f) : t.toLowerCase().startsWith(f.toLowerCase());
-      if (match) {matchedTokens.push(t); for (const n of tokens[t]) matchedRepos.add(n)}
-    }
-    counts.textContent = matchedTokens.length + " tokens, " + matchedRepos.size + " repos";
-    tlist.textContent = matchedTokens.join(' ');
-    ul.textContent = '';
-    [...matchedRepos].sort((a, b) => a - b).forEach(n => {
-      const name = repos[n] || `[${n}]`, li = e('li'), span = e('span', {textContent: name, className: 'repo'});
-      li.appendChild(span); ul.appendChild(li);
-    });
-  };
-});
-};
-onload = main;
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="refresh" content="0; url=games.html">
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>If you are not redirected, <a href="games.html">click here</a>.</p>
+</body>
+</html>
