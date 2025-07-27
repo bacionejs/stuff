@@ -1,5 +1,7 @@
 ### Games Explorer
 
+Sorted by Stars
+
 Filters
 - year, user, repo
 - sonant, webgl, etc.
