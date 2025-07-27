@@ -24,26 +24,11 @@ let data = [];
 let query, output, topbtn, filterbox, tokenbox, collapseBox;
 let thinkyTokens = {}, thinkyRepos = [];
 
-
-
-
-
-
-
-
-
-
 function createUI() {
   output = el("div");
   collapseBox = el("input", { type: "checkbox", on: { change: applyCollapse } });
   filterbox = el("input", { type: "text", placeholder: "General Filter", on: { input: applyfilter } });
-//  tokenbox = el("input", { type: "text", placeholder: "Token", on: { input: applyfilter } });
-tokenbox = el("input", {
-  type: "text",
-  placeholder: "Loading tokens...",
-  disabled: true,
-  on: { input: applyfilter }
-});
+  tokenbox = el("input", { type: "text", placeholder: "Loading tokens...", disabled: true, on: { input: applyfilter } });
   query = el("select", { on: { change: run } }, [
     el("option", { value: "groupByAuthor" }, ["Group by author"]),
     el("option", { value: "groupByYear" }, ["Group by year"]),
@@ -63,24 +48,12 @@ tokenbox = el("input", {
   );
 }
 
-function loadThinky2(json) {
-  thinkyRepos = json.repos;
-  for (const [token, arr] of json.tokens) {
-    thinkyTokens[token] = new Set(arr.map(i => thinkyRepos[i]));
-  }
-}
-
-
-
-
-
-
 function loadThinky(json) {
   thinkyRepos = json.repos;
   for (const [token, arr] of json.tokens) {
     thinkyTokens[token] = new Set(arr.map(i => thinkyRepos[i]));
   }
-  tokenbox.placeholder = "Token filter: ie sonant, zzfx, etc.";
+  tokenbox.placeholder = "Token filter: ie sonant, webgl, etc.";
   tokenbox.disabled = false;
 }
 
