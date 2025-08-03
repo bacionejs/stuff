@@ -52,9 +52,7 @@ if (!isMainThread) {
       ];
 
       for (const pattern of patterns) {
-        text = text.replace(pattern, () => {
-          return " ";
-        });
+        text = text.replace(pattern, " ");
       }
 
       const tokens = text.match(/\b[a-zA-Z0-9_]+\b/g);
@@ -101,6 +99,14 @@ function saveCachedTimestamp(timestamp) {
   try {
     writeFileSync(LAST_UPDATED_FILE, timestamp);
   } catch {}
+}
+
+function readCachedTimestamp() {
+  try {
+    return readFileSync(LAST_UPDATED_FILE, "utf8");
+  } catch {
+    return null;
+  }
 }
 
 async function getLatestUpdateTimestamp() {
@@ -205,26 +211,6 @@ async function generateGamesJson(repos) {
   console.log("Saved " + GAMES_FILE);
 }
 
-async function main() {
-  console.log("Downloading takes several minutes and several GBs...");
-  mkdirSync(ZIP_DIR, { recursive: true });
-  mkdirSync(UNZIP_DIR, { recursive: true });
-
-  let repos = await getRepos();
-//  repos = repos.slice(0, 10); // Limit to first 10 games for testing
-
-  const latest = await getLatestUpdateTimestamp();
-  saveCachedTimestamp(latest);
-  console.log("Repositories: " + repos.length);
-
-  const limiter = pLimit(MAX_PARALLEL);
-  await Promise.all(repos.map(r => limiter(() => downloadZip(r.name))));
-  await Promise.all(repos.map(r => limiter(() => unzipRepo(r.name))));
-
-  await extractTokens();
-  await generateGamesJson(repos);
-}
-
 async function downloadZip(repoName) {
   const out = `${ZIP_DIR}/${repoName}.zip`;
   if (existsSync(out)) return;
@@ -253,7 +239,34 @@ async function unzipRepo(repoName) {
   }
 }
 
-process.on("SIGINT", async () => {
+async function main() {
+  console.log("Checking for updates...");
+  mkdirSync(ZIP_DIR, { recursive: true });
+  mkdirSync(UNZIP_DIR, { recursive: true });
+
+  const previous = readCachedTimestamp();
+  const latest = await getLatestUpdateTimestamp();
+
+  if (previous && latest && previous === latest) {
+    console.log("No repository updates since last run.");
+    return;
+  }
+
+  console.log("Changes detected. Proceeding...");
+  saveCachedTimestamp(latest);
+
+  let repos = await getRepos();
+//  repos = repos.slice(0, 10); // Uncomment to limit for testing
+
+  const limiter = pLimit(MAX_PARALLEL);
+  await Promise.all(repos.map(r => limiter(() => downloadZip(r.name))));
+  await Promise.all(repos.map(r => limiter(() => unzipRepo(r.name))));
+
+  await extractTokens();
+  await generateGamesJson(repos);
+}
+
+process.on("SIGINT", () => {
   console.log("\nInterrupted");
   process.exit(130);
 });
