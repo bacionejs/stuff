@@ -8,12 +8,12 @@ onload=()=>{
   fetch("games.json").then(r=>r.json()).then(loadData);
 
   // Fetch tokens independently, update token input when ready
-  fetch("thinky.json").then(r=>r.json()).then(loadThinky);
+  fetch("tokens.json").then(r=>r.json()).then(loadTokens);
 };
 
 function injectStyle(){document.head.appendChild(document.createElement("style")).textContent=`body{padding:1em;font:0.6em monospace;}button,select,input{margin:0.5em;}a{text-decoration:none;}`;}
 
-let data=[];let output,topbtn,filterbox,tokenbox;let thinkyTokens={},thinkyRepos=[];
+let data=[];let output,topbtn,filterbox,tokenbox;let tokens={},repos=[];
 
 function createUI(){
   output=el("div");
@@ -28,9 +28,9 @@ function createUI(){
   );
 }
 
-function loadThinky(json){
-  thinkyRepos=json.repos;
-  for(const [token,arr]of json.tokens)thinkyTokens[token]=new Set(arr.map(i=>thinkyRepos[i]));
+function loadTokens(json){
+  repos=json.repos;
+  for(const [token,arr]of json.tokens)tokens[token]=new Set(arr.map(i=>repos[i]));
   tokenbox.placeholder="sonant, webgl, etc.";
   tokenbox.disabled=false;
 }
@@ -52,9 +52,9 @@ function applyfilter(){
   let t=tokenbox.value.toLowerCase();
   let tokenSet=new Set();
   if(t){
-    for(const key in thinkyTokens){
+    for(const key in tokens){
       if(key.toLowerCase().startsWith(t)){
-        for(const name of thinkyTokens[key])tokenSet.add(name);
+        for(const name of tokens[key])tokenSet.add(name);
       }
     }
   }
