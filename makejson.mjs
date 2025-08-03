@@ -1,4 +1,4 @@
-import fs, { mkdirSync, existsSync, rmSync, readdirSync, readFileSync, writeFileSync, statSync } from "fs";
+import { mkdirSync, existsSync, rmSync, readdirSync, readFileSync, writeFileSync, statSync } from "fs";
 import path from "path";
 import { exec } from "child_process";
 import { promisify } from "util";
@@ -14,7 +14,6 @@ const GAMES_FILE = "games.json";
 const LAST_UPDATED_FILE = ".repo-last-updated.txt";
 const MAX_PARALLEL = 10;
 const THREADS = 8;
-const SKIP_FETCH = 0;
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN || undefined });
 const run = promisify(exec);
@@ -26,8 +25,6 @@ const EXCLUDED = new Set([
   "snakee", "A.W.E.S.O.M.E"
 ]);
 
-//────────────────────────────────────────────────────────────
-// Worker thread for token extraction
 if (!isMainThread) {
   function getRepoName(filePath) {
     const parts = filePath.split(path.sep);
@@ -37,7 +34,6 @@ if (!isMainThread) {
 
   const tokenToRepos = new Map();
   const repoSet = new Set();
-  let removedBase64Blobs = 0;
 
   for (const file of workerData.files) {
     try {
@@ -57,7 +53,6 @@ if (!isMainThread) {
 
       for (const pattern of patterns) {
         text = text.replace(pattern, () => {
-          removedBase64Blobs++;
           return " ";
         });
       }
@@ -78,13 +73,11 @@ if (!isMainThread) {
   }
 
   parentPort.postMessage({
-    removedBase64Blobs,
     repos: [...repoSet],
     tokens: [...tokenToRepos.entries()].map(([token, set]) => [token, [...set]])
   });
   process.exit(0);
 }
-//────────────────────────────────────────────────────────────
 
 function walk(dir) {
   let files = [];
@@ -104,17 +97,9 @@ function splitArray(arr, parts) {
   return Array.from({ length: parts }, (_, i) => arr.slice(i * size, (i + 1) * size));
 }
 
-function loadCachedTimestamp() {
-  try {
-    return fs.readFileSync(LAST_UPDATED_FILE, "utf8").trim();
-  } catch {
-    return null;
-  }
-}
-
 function saveCachedTimestamp(timestamp) {
   try {
-    fs.writeFileSync(LAST_UPDATED_FILE, timestamp);
+    writeFileSync(LAST_UPDATED_FILE, timestamp);
   } catch {}
 }
 
@@ -128,7 +113,7 @@ async function getLatestUpdateTimestamp() {
     });
     return res.data[0]?.updated_at || null;
   } catch (e) {
-    console.error("❌ Failed to fetch latest update timestamp:", e);
+    console.error("Failed to fetch latest update timestamp:", e);
     return null;
   }
 }
@@ -139,8 +124,6 @@ async function getRepos() {
   return all.filter(repo => !EXCLUDED.has(repo.name));
 }
 
-//────────────────────────────────────────────────────────────
-// Thinky: Token Analysis
 async function runWorker(files) {
   return new Promise((resolve, reject) => {
     const worker = new Worker(new URL(import.meta.url), { workerData: { files } });
@@ -159,10 +142,8 @@ async function extractTokens() {
 
   const tokenToRepos = new Map();
   const repoSet = new Set();
-  let removedBase64Blobs = 0;
 
   for (const r of results) {
-    removedBase64Blobs += r.removedBase64Blobs;
     for (const repo of r.repos) repoSet.add(repo);
     for (const [token, repos] of r.tokens) {
       if (!tokenToRepos.has(token)) tokenToRepos.set(token, new Set());
@@ -182,12 +163,10 @@ async function extractTokens() {
     ])
   };
 
-  fs.writeFileSync(TOKENS_FILE, JSON.stringify(output));
-  console.log("💾 Saved " + TOKENS_FILE);
+  writeFileSync(TOKENS_FILE, JSON.stringify(output));
+  console.log("Saved " + TOKENS_FILE);
 }
 
-//────────────────────────────────────────────────────────────
-// Games: Metadata (Stars, Author, Year)
 function extractYear(description, created_at) {
   const match = description && description.match(/a js13kGames\s+(\d{4})/i);
   return match ? parseInt(match[1]) : parseInt(created_at.slice(0, 4));
@@ -204,7 +183,7 @@ async function generateGamesJson(repos) {
           const full = (await octokit.repos.get({ owner: repo.owner.login, repo: repo.name })).data;
           const parent = full.parent?.owner?.login;
           if (!parent) {
-            console.warn("⚠️ Skipping " + repo.name + ": no parent.");
+            console.warn("Skipping " + repo.name + ": no parent.");
             return;
           }
 
@@ -214,44 +193,38 @@ async function generateGamesJson(repos) {
             author: parent,
             year: extractYear(full.description, full.created_at)
           });
-          console.log("✅ " + (i + 1) + ": " + full.name);
+          console.log((i + 1) + ": " + full.name);
         } catch (e) {
-          console.warn("⚠️ Error " + repo.name + ": " + e.message);
+          console.warn("Error " + repo.name + ": " + e.message);
         }
       })
     )
   );
 
-  fs.writeFileSync(GAMES_FILE, JSON.stringify(repoData, null, 2));
-  console.log("💾 Saved " + GAMES_FILE);
+  writeFileSync(GAMES_FILE, JSON.stringify(repoData, null, 2));
+  console.log("Saved " + GAMES_FILE);
 }
 
-//────────────────────────────────────────────────────────────
-// Entry point
 async function main() {
+  console.log("Downloading takes several minutes and several GBs...");
+  mkdirSync(ZIP_DIR, { recursive: true });
+  mkdirSync(UNZIP_DIR, { recursive: true });
+
+  let repos = await getRepos();
+//  repos = repos.slice(0, 10); // Limit to first 10 games for testing
+
   const latest = await getLatestUpdateTimestamp();
-  const cached = loadCachedTimestamp();
+  saveCachedTimestamp(latest);
+  console.log("Repositories: " + repos.length);
 
-  if (latest && latest === cached && SKIP_FETCH) {
-    console.log("✅ Repo list up-to-date. Skipping fetch.");
-  } else {
-    console.log("📡 Fetching repo list...");
-    mkdirSync(ZIP_DIR, { recursive: true });
-    mkdirSync(UNZIP_DIR, { recursive: true });
-    const repos = await getRepos();
-    saveCachedTimestamp(latest);
-    console.log("📦 Repositories: " + repos.length);
+  const limiter = pLimit(MAX_PARALLEL);
+  await Promise.all(repos.map(r => limiter(() => downloadZip(r.name))));
+  await Promise.all(repos.map(r => limiter(() => unzipRepo(r.name))));
 
-    const limiter = pLimit(MAX_PARALLEL);
-    await Promise.all(repos.map(r => limiter(() => downloadZip(r.name))));
-    await Promise.all(repos.map(r => limiter(() => unzipRepo(r.name))));
-
-    await extractTokens();
-    await generateGamesJson(repos);
-  }
+  await extractTokens();
+  await generateGamesJson(repos);
 }
 
-// Helper functions for download/unzip
 async function downloadZip(repoName) {
   const out = `${ZIP_DIR}/${repoName}.zip`;
   if (existsSync(out)) return;
@@ -261,6 +234,7 @@ async function downloadZip(repoName) {
   ];
   try {
     await run(`curl -sfL "${urls[0]}" -o "${out}" || curl -sfL "${urls[1]}" -o "${out}"`);
+    console.log("Downloaded: " + repoName);
   } catch {
     rmSync(out, { force: true });
   }
@@ -279,14 +253,12 @@ async function unzipRepo(repoName) {
   }
 }
 
-//────────────────────────────────────────────────────────────
-
 process.on("SIGINT", async () => {
-  console.log("\n🛑 Interrupted");
+  console.log("\nInterrupted");
   process.exit(130);
 });
 
 main().catch(err => {
-  console.error("🔥 Fatal:", err);
+  console.error("Fatal:", err);
   process.exit(1);
 });
