@@ -34,8 +34,7 @@ data
   .forEach(g=>{
     let line=el("div",{className:"line"},[ `${String(g.stars).padStart(4,"\u00A0")}\u2B50 ${g.year} ${g.author} `, el("a",{href:home+g.name},[g.name]) ]);
     line.name=g.name;
-    lines.push(line);
-    output.append(line);
+    lines.push(output.appendChild(line));
   });
 }
 
