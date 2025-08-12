@@ -1,118 +1,80 @@
 <script>
 onload=()=>{
   document.title="Games Explorer";
-  injectStyle();
+  document.head.appendChild(document.createElement("style")).textContent=`
+    body{font:0.6em monospace;}
+    button,input{margin:0.5em;}
+    a{text-decoration:none;}
+    button{position:fixed;inset:auto 0 0 auto;}
+  `;
   createUI();
-
-  // Fetch and display games immediately
   fetch("games.json").then(r=>r.json()).then(loadData);
-
-  // Fetch tokens independently, update token input when ready
   fetch("tokens.json").then(r=>r.json()).then(loadTokens);
 };
 
-function injectStyle(){document.head.appendChild(document.createElement("style")).textContent=`body{padding:1em;font:0.6em monospace;}button,select,input{margin:0.5em;}a{text-decoration:none;}`;}
-
-let data=[];let output,topbtn,filterbox,tokenbox;let tokens={},repos=[];
+let output,filterbox,tokenbox;
+let tokens={},repos=[],lines=[];
+let home="https://github.com/js13kgames/";
 
 function createUI(){
-  output=el("div");
-  filterbox=el("input",{type:"text",placeholder:"year, user, repo",on:{input:applyfilter}});
-  tokenbox=el("input",{type:"text",placeholder:"Loading tokens...",disabled:true,on:{input:applyfilter}});
-  topbtn=el("button",{textContent:"Top",on:{click:()=>scrollTo({top:0,behavior:"smooth"})},style:{position:"fixed",bottom:"0",right:"0"}});
-  document.body.append(
-    el("h1",{},[el("a",{href:"https://github.com/bacionejs/stuff",target:"_blank"},[document.title])]),
-    el("div",{style:{display:"flex",alignItems:"center",gap:"0.5em"}},[filterbox,tokenbox]),
-    output,
-    topbtn
-  );
+filterbox=el("input",{type:"text",placeholder:"year, user, repo",on:{input:applyfilter}});
+tokenbox=el("input",{type:"text",placeholder:"Loading tokens...",disabled:true,on:{input:applyfilter}});
+output=el("div");
+document.body.append(
+  el("h1",{},[el("a",{href:"https://github.com/bacionejs/stuff",target:"_blank"},[document.title])]),
+  el("div",{style:{display:"flex",alignItems:"center",gap:"0.5em"}},[filterbox,tokenbox]),
+  output,
+  el("button",{textContent:"Top",on:{click:()=>scroll(0,0)}})
+);
 }
 
-function loadTokens(json){
-  repos=json.repos;
-  for(const [token,arr]of json.tokens)tokens[token]=new Set(arr.map(i=>repos[i]));
-  tokenbox.placeholder="sonant, webgl, etc.";
-  tokenbox.disabled=false;
+function loadData(data){
+data
+  .sort((a,b)=> b.stars-a.stars|| b.year-a.year|| (a.author>b.author)-(a.author<b.author)|| (a.name>b.name)-(a.name<b.name))
+  .forEach(g=>{
+    let line=el("div",{className:"line"},[ `${String(g.stars).padStart(4,"\u00A0")}\u2B50 ${g.year} ${g.author} `, el("a",{href:home+g.name},[g.name]) ]);
+    line.name=g.name;
+    lines.push(line);
+    output.append(line);
+  });
 }
 
-function loadData(json){data.push(...json);run();}
-
-function run(){
-  output.innerHTML="";
-  try{
-    output.append(sortByStars());
-    applyfilter();
-  }catch(e){
-    output.textContent="Error: "+e.message;
-  }
+function loadTokens(data){
+repos=data.repos;
+for(const [token,arr] of data.tokens){ tokens[token]=new Set(arr.map(i=>repos[i]));}
+tokenbox.placeholder="sonant, webgl, etc.";
+tokenbox.disabled=false;
 }
 
 function applyfilter(){
-  let q=filterbox.value.toLowerCase();
-  let t=tokenbox.value.toLowerCase();
-  let tokenSet=new Set();
-  if(t){
-    for(const key in tokens){
-      if(key.toLowerCase().startsWith(t)){
-        for(const name of tokens[key])tokenSet.add(name);
-      }
+let q=filterbox.value.toLowerCase();
+let t=tokenbox.value.toLowerCase();
+let names=new Set();
+if(t){
+  for(const key in tokens){
+    if(key.toLowerCase().startsWith(t)){
+      for(const name of tokens[key]) names.add(name);
     }
   }
-
-  let block=output.firstElementChild;
-  if(!block)return;
-  let lines=block.querySelectorAll(".gameLine");
-  let visible=0;
-  lines.forEach(line=>{
-    let text=line.textContent.toLowerCase();
-    let name = text.split(" ").pop().toLowerCase();
-    let textMatch=text.includes(q);
-    let tokenMatch=!t||tokenSet.has(name);
-    let show=textMatch&&tokenMatch;
-    line.style.display=show?"":"none";
-    if(show)visible++;
-  });
-  block.style.display=visible>0?"":"none";
 }
-
-function sortByStars(){
-  let list=data.filter(g=>g.name&&g.author&&g.year&&g.stars!=null);
-  list.sort((a,b)=>
-    b.stars-a.stars||
-    b.year-a.year||
-    (a.author||"").localeCompare(b.author||"")||
-    a.name.localeCompare(b.name)
-  );
-  let frag=document.createDocumentFragment();
-  let div=el("div");
-  list.forEach(g=>{
-    const line=el("div",{className:"gameLine"},[
-      el("b",{style:{display:"none"}},[g.author||"unknown"]),
-      ...links(g)," ",
-      `${String(g.stars).padStart(4,"\u00A0")} \u2B50 ${g.year} ${g.author||"unknown"} ${g.name}`
-    ]);
-    div.append(line);
-  });
-  frag.append(div);
-  return frag;
-}
-
-function links(g){
-  return [
-    el("a",{href:"https://js13kgames.com/entries/"+g.name},["Play"])," ",
-    el("a",{href:"https://github.com/js13kgames/"+g.name},["Source"])
-  ];
+lines.forEach(line=>{
+  let text=line.textContent.toLowerCase();
+  let textMatch=!q || text.includes(q);
+  let tokenMatch=!t || names.has(line.name);
+  line.style.display=textMatch && tokenMatch ? "" : "none";
+});
 }
 
 function el(tag,props={},children=[]){
-  let e=document.createElement(tag);
-  if(tag==="a"&&!props.target)e.target="_blank";
-  for(let[k,v]of Object.entries(props)){
-    if(k==="on")for(let[ev,fn]of Object.entries(v))e.addEventListener(ev,fn);
-    else if(k==="style")Object.assign(e.style,v);
-    else e[k]=v;
-  }
-  children.forEach(c=>e.append(typeof c==="string"?document.createTextNode(c):c));
-  return e;
+let e=document.createElement(tag);
+if(tag==="a"&&!props.target)e.target="_blank";
+for(let[k,v] of Object.entries(props)){
+  if(k==="on") for(let[ev,fn] of Object.entries(v)) e.addEventListener(ev,fn);
+  else if(k==="style") Object.assign(e.style,v);
+  else e[k]=v;
 }
+children.forEach(c=>e.append(typeof c==="string"?document.createTextNode(c):c));
+return e;
+}
+
 </script>
