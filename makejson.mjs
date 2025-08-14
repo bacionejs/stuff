@@ -109,11 +109,59 @@ function saveCachedTimestamps(timestamps) {
   } catch {}
 }
 
-async function getRepos() {
+async function getRepos2() {
   const options = { org: GITHUB_ORG, type: "public", per_page: 100 };
   const all = await octokit.paginate(octokit.repos.listForOrg, options);
   return all.filter(repo => !EXCLUDED.has(repo.name));
 }
+
+
+
+
+
+
+async function getRepos() {
+  const utf8 = new TextDecoder();
+  const slugify = s => s
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/[æ]/g, 'ae')
+    .replace(/[\s:]/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  const slugs = [];
+
+  for (let edition = 0; edition <= 13; edition++) {
+    const res = await fetch('https://api.js13kgames.com/g:' + edition);
+    const buf = await res.arrayBuffer();
+    const src = new Uint8Array(buf);
+    let j = 0;
+
+    while (j < src.length) {
+      const c = src[j]; j++;
+      if (c === 0) continue; // skip soft-deleted entries
+
+      // Title
+      const nTitle = src[j]; j++;
+      const title = utf8.decode(new Uint8Array(buf, j, nTitle)); j += nTitle;
+
+      // Author (skip, we don’t need it)
+      const nAuthor = src[j]; j++;
+      j += nAuthor;
+
+      slugs.push(slugify(title));
+    }
+  }
+
+  return slugs;
+}
+
+
+
+
 
 async function runWorker(files) {
   return new Promise((resolve, reject) => {
