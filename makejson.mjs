@@ -11,7 +11,7 @@ const ZIP_DIR = "zips";
 const UNZIP_DIR = "unzipped";
 const TOKENS_FILE = "tokens.json";
 const GAMES_FILE = "games.json";
-const LAST_UPDATED_FILE = ".repo-last-updated.txt";
+const LAST_UPDATED_FILE = ".repo-last-updated.json";
 const MAX_PARALLEL = 10;
 const THREADS = 8;
 
@@ -95,33 +95,18 @@ function splitArray(arr, parts) {
   return Array.from({ length: parts }, (_, i) => arr.slice(i * size, (i + 1) * size));
 }
 
-function saveCachedTimestamp(timestamp) {
+function readCachedTimestamps() {
   try {
-    writeFileSync(LAST_UPDATED_FILE, timestamp);
-  } catch {}
-}
-
-function readCachedTimestamp() {
-  try {
-    return readFileSync(LAST_UPDATED_FILE, "utf8");
+    return JSON.parse(readFileSync(LAST_UPDATED_FILE, "utf8"));
   } catch {
-    return null;
+    return {};
   }
 }
 
-async function getLatestUpdateTimestamp() {
+function saveCachedTimestamps(timestamps) {
   try {
-    const res = await octokit.repos.listForOrg({
-      org: GITHUB_ORG,
-      per_page: 1,
-      sort: "updated",
-      direction: "desc"
-    });
-    return res.data[0]?.updated_at || null;
-  } catch (e) {
-    console.error("Failed to fetch latest update timestamp:", e);
-    return null;
-  }
+    writeFileSync(LAST_UPDATED_FILE, JSON.stringify(timestamps, null, 2));
+  } catch {}
 }
 
 async function getRepos() {
@@ -211,59 +196,73 @@ async function generateGamesJson(repos) {
   console.log("Saved " + GAMES_FILE);
 }
 
-async function downloadZip(repoName) {
-  const out = `${ZIP_DIR}/${repoName}.zip`;
-  if (existsSync(out)) return;
+async function downloadZipIfUpdated(repo) {
+  const out = `${ZIP_DIR}/${repo.name}.zip`;
+  const lastTimestamps = readCachedTimestamps();
+  const lastUpdated = lastTimestamps[repo.name];
+  if (lastUpdated && lastUpdated === repo.updated_at && existsSync(out)) return false;
+
   const urls = [
-    `https://github.com/${GITHUB_ORG}/${repoName}/archive/refs/heads/main.zip`,
-    `https://github.com/${GITHUB_ORG}/${repoName}/archive/refs/heads/master.zip`
+    `https://github.com/${GITHUB_ORG}/${repo.name}/archive/refs/heads/main.zip`,
+    `https://github.com/${GITHUB_ORG}/${repo.name}/archive/refs/heads/master.zip`
   ];
   try {
     await run(`curl -sfL "${urls[0]}" -o "${out}" || curl -sfL "${urls[1]}" -o "${out}"`);
-    console.log("Downloaded: " + repoName);
+    console.log("Downloaded: " + repo.name);
+    lastTimestamps[repo.name] = repo.updated_at;
+    saveCachedTimestamps(lastTimestamps);
+    return true;
   } catch {
     rmSync(out, { force: true });
+    return false;
   }
 }
 
-async function unzipRepo(repoName) {
-  const zip = `${ZIP_DIR}/${repoName}.zip`;
-  const out = `${UNZIP_DIR}/${repoName}`;
-  if (!existsSync(zip) || existsSync(out)) return;
+async function unzipRepoIfUpdated(repo) {
+  const zip = `${ZIP_DIR}/${repo.name}.zip`;
+  const out = `${UNZIP_DIR}/${repo.name}`;
+  if (!existsSync(zip)) return false;
+  if (existsSync(out)) rmSync(out, { recursive: true, force: true });
+
   mkdirSync(out, { recursive: true });
   try {
     await run(`unzip -q "${zip}" -d "${out}"`);
     await run(`find "${out}" -type f ! -iname '*.js' ! -iname '*.ts' ! -iname '*.html' ! -iname '*.htm' -delete`);
+    return true;
   } catch {
     rmSync(out, { recursive: true, force: true });
+    return false;
   }
 }
 
+async function logRateLimit(label) {
+  const { data } = await octokit.rateLimit.get();
+  console.log(`${label} GitHub API remaining: ${data.rate.remaining}/${data.rate.limit}`);
+}
+
 async function main() {
-  console.log("Checking for updates...");
+  await logRateLimit("Start");
+  console.log("Checking for repo updates...");
   mkdirSync(ZIP_DIR, { recursive: true });
   mkdirSync(UNZIP_DIR, { recursive: true });
 
-  const previous = readCachedTimestamp();
-  const latest = await getLatestUpdateTimestamp();
+  const repos = await getRepos();
+  const limiter = pLimit(MAX_PARALLEL);
 
-  if (previous && latest && previous === latest) {
+  const downloadResults = await Promise.all(repos.map(r => limiter(() => downloadZipIfUpdated(r))));
+  const updatedRepos = repos.filter((_, i) => downloadResults[i]);
+
+  if (updatedRepos.length === 0) {
     console.log("No repository updates since last run.");
     return;
   }
 
-  console.log("Changes detected. Proceeding...");
-  saveCachedTimestamp(latest);
-
-  let repos = await getRepos();
-//  repos = repos.slice(0, 10); // Uncomment to limit for testing
-
-  const limiter = pLimit(MAX_PARALLEL);
-  await Promise.all(repos.map(r => limiter(() => downloadZip(r.name))));
-  await Promise.all(repos.map(r => limiter(() => unzipRepo(r.name))));
-
+  await Promise.all(updatedRepos.map(r => limiter(() => unzipRepoIfUpdated(r))));
   await extractTokens();
   await generateGamesJson(repos);
+
+  console.log("Update complete.");
+  await logRateLimit("End");
 }
 
 process.on("SIGINT", () => {
