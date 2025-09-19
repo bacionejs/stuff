@@ -17,13 +17,6 @@ const THREADS = 8;
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN || undefined });
 const run = promisify(exec);
 
-const EXCLUDED = new Set([
-  "js13kgames.com", "js13kgames.com-legacy", "js13kserver", "js-game-server", "games", "resources", "entry",
-  "bot", "web", "community", "blog", "js13kBreakouts", "Chain-Reaction", "vote", "kilo", "kilo-test",
-  "events", "glitchd", "Triska", "The-Maze", "Anti_Virus", "__OFF_THE_LINE__", "Out_Of_Memory",
-  "snakee", "A.W.E.S.O.M.E"
-]);
-
 if (!isMainThread) {
   function getRepoName(filePath) {
     const parts = filePath.split(path.sep);
@@ -88,12 +81,6 @@ const size = Math.ceil(arr.length / parts);
 return Array.from({ length: parts }, (_, i) => arr.slice(i * size, (i + 1) * size));
 }
 
-async function getRepos() {
-const options = { org: GITHUB_ORG, type: "public", per_page: 100 };
-const all = await octokit.paginate(octokit.repos.listForOrg, options);
-return all.filter(repo => !EXCLUDED.has(repo.name));
-}
-
 async function runWorker(files) {
 return new Promise((resolve, reject) => {
   const worker = new Worker(new URL(import.meta.url), { workerData: { files } });
@@ -101,6 +88,20 @@ return new Promise((resolve, reject) => {
   worker.on("error", reject);
   worker.on("exit", code => { if (code !== 0) reject(new Error("Worker exited with code " + code)); });
 });
+}
+
+async function getRepos() {
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+if (!GITHUB_TOKEN) throw new Error("Set GITHUB_TOKEN in environment");
+const url = "https://api.github.com/repos/js13kGames/games/git/trees/main?recursive=1";
+const res = await fetch(url, { headers: { Authorization: `token ${GITHUB_TOKEN}` } });
+if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+const data = await res.json();
+// filter top-level directories under "games"
+const dirs = data.tree
+  .filter(entry => entry.type === "tree" && /^games\/[^/]+$/.test(entry.path))
+  .map(entry => entry.path.replace(/^games\//, ""));
+return dirs;
 }
 
 async function generateTokens() {
@@ -144,9 +145,7 @@ await Promise.all(
       try {
         const full = (await octokit.repos.get({ owner: repo.owner.login, repo: repo.name })).data;
         const parent = full.parent?.owner?.login;
-        if (!parent) {
-          return;
-        }
+        if (!parent) { return; }//skip orphans
         repoData.push({
           name: full.name,
           stars: full.parent?.stargazers_count || full.stargazers_count,
@@ -211,9 +210,9 @@ mkdirSync(UNZIP_DIR, { recursive: true });
 const limiter = pLimit(MAX_PARALLEL);
 console.log("Getting list"); const repos = await getRepos(); 
 console.log("Getting metadata"); await generateGames(repos);
-const good = JSON.parse(readFileSync(GAMES_FILE, "utf8")).map(r => r.name);
-console.log("Downloading"); await Promise.all( good.map(name => limiter(() => download({ name }))));
-console.log("Unzipping"); await Promise.all( good.map(name => limiter(() => unzip({ name }))));
+const games = JSON.parse(readFileSync(GAMES_FILE, "utf8")).map(r => r.name);
+console.log("Downloading source"); await Promise.all( games.map(name => limiter(() => download({ name }))));
+console.log("Unzipping"); await Promise.all( games.map(name => limiter(() => unzip({ name }))));
 console.log("Generating search tokens"); await generateTokens();
 console.log("Done");
 await rate(); 
@@ -230,7 +229,7 @@ main().catch(err => { console.error("Fatal:", err); process.exit(1); });
 
 
 /*
- * Parent
+ * Parent (forks without parent are skipped)
  * - exists: if the owner deleted, then it probable wasn't great anyway
  * - stars: sort field, ensures best are at top
  * - owner: repo owner
