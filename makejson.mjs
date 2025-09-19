@@ -98,10 +98,39 @@ const res = await fetch(url, { headers: { Authorization: `token ${GITHUB_TOKEN}`
 if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
 const data = await res.json();
 // filter top-level directories under "games"
-const dirs = data.tree
+let dirs = data.tree
   .filter(entry => entry.type === "tree" && /^games\/[^/]+$/.test(entry.path))
   .map(entry => entry.path.replace(/^games\//, ""));
 return dirs;
+}
+
+async function generateGames(dirs) {
+const p = pLimit(MAX_PARALLEL);
+const repoData = [];
+await Promise.all(
+  dirs.map(dir =>
+    p(async () => {
+      try {
+        const full = (
+          await octokit.repos.get({ owner: "js13kGames", repo: dir })
+        ).data;
+        const parent = full.parent?.owner?.login;
+        if (!parent) {return;} // skip orphans
+        repoData.push({
+          name: full.name,
+          stars: full.parent?.stargazers_count || full.stargazers_count,
+          author: parent,
+          year: extractYear(full.description, full.created_at),
+        });
+      } catch (e) {
+        console.warn("Error " + dir + ": " + e.message);
+      }
+    })
+  )
+);
+writeFileSync(GAMES_FILE, JSON.stringify(repoData, null, 2));
+console.log("Saved " + GAMES_FILE);
+return repoData.map(r => r.name);
 }
 
 async function generateTokens() {
@@ -136,32 +165,7 @@ const match = description && description.match(/a js13kGames\s+(\d{4})/i);
 return match ? parseInt(match[1]) : parseInt(created_at.slice(0, 4));
 }
 
-async function generateGames(repos) {
-const p = pLimit(MAX_PARALLEL);
-const repoData = [];
-await Promise.all(
-  repos.map((repo, _) =>
-    p(async () => {
-      try {
-        const full = (await octokit.repos.get({ owner: repo.owner.login, repo: repo.name })).data;
-        const parent = full.parent?.owner?.login;
-        if (!parent) { return; }//skip orphans
-        repoData.push({
-          name: full.name,
-          stars: full.parent?.stargazers_count || full.stargazers_count,
-          author: parent,
-          year: extractYear(full.description, full.created_at)
-        });
-      } catch (e) {
-        console.warn("Error " + repo.name + ": " + e.message);
-      }
-    })
-  )
-);
-writeFileSync(GAMES_FILE, JSON.stringify(repoData, null, 2));
-console.log("Saved " + GAMES_FILE);
-return repoData.map(r => r.name);
-}
+
 
 async function download(repo) {
 const out = `${ZIP_DIR}/${repo.name}.zip`;
