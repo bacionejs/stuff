@@ -2,13 +2,10 @@
 
 👉 **[Open](https://bacionejs.github.io/stuff/games.html)**
 
-Explore js13kgames github repos
+Description: Explore js13kgames github repos  
 
-Sorted by Stars
+Purpose: help people find tech (webgl, sonant, etc) used by high-rated repos  
 
-Filters
-- year, user, repo
-- sonant, webgl, etc.
 
 
 
