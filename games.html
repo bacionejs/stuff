@@ -1,6 +1,6 @@
 <script>
 onload=()=>{
-  document.title="Games Explorer";
+  document.title="JS13kGames Explorer";
   document.head.appendChild(document.createElement("style")).textContent=`
     body{font:0.6em monospace;}
     button,input{margin:0.5em;}
@@ -17,12 +17,13 @@ let tokens={},repos=[],lines=[];
 let home="https://github.com/js13kgames/";
 
 function createUI(){
-filterbox=el("input",{type:"text",placeholder:"year, user, repo",on:{input:applyfilter}});
-tokenbox=el("input",{type:"text",placeholder:"Loading tokens...",disabled:true,on:{input:applyfilter}});
+// filterbox=el("input",{type:"text",placeholder:"year, user, repo",on:{input:applyfilter}});
+tokenbox=el("input",{style:{width:"100vw"},type:"text",placeholder:"Loading tokens...",disabled:true,on:{input:applyfilter}});
 output=el("div");
 document.body.append(
   el("h1",{},[el("a",{href:"https://github.com/bacionejs/stuff",target:"_blank"},[document.title])]),
-  el("div",{style:{display:"flex",alignItems:"center",gap:"0.5em"}},[filterbox,tokenbox]),
+//   el("div",{style:{display:"flex",alignItems:"center",gap:"0.5em"}},[filterbox,tokenbox]),
+  el("div",{style:{display:"flex",alignItems:"center",gap:"0.5em"}},[tokenbox]),
   output,
   el("button",{textContent:"Top",on:{click:()=>scroll(0,0)}})
 );
@@ -32,7 +33,8 @@ function loadData(data){
 data
   .sort((a,b)=> b.stars-a.stars|| b.year-a.year|| (a.author>b.author)-(a.author<b.author)|| (a.name>b.name)-(a.name<b.name))
   .forEach(g=>{
-    let line=el("div",{className:"line"},[ `${String(g.stars).padStart(4,"\u00A0")}\u2B50 ${g.year} ${g.author} `, el("a",{href:home+g.name},[g.name]) ]);
+//     let line=el("div",{className:"line"},[ `${String(g.stars).padStart(4,"\u00A0")}\u2B50 ${g.year} ${g.author} `, el("a",{href:home+g.name},[g.name]) ]);
+    let line=el("div",{className:"line"},[  el("a",{href:home+g.name},[g.name]) ]);
     line.name=g.name;
     lines.push(output.appendChild(line));
   });
@@ -41,12 +43,12 @@ data
 function loadTokens(data){
 repos=data.repos;
 for(const [token,arr] of data.tokens){ tokens[token]=new Set(arr.map(i=>repos[i]));}
-tokenbox.placeholder="sonant, webgl, etc.";
+tokenbox.placeholder="type to find tech (webgl, sonant, etc)";
 tokenbox.disabled=false;
 }
 
 function applyfilter(){
-let q=filterbox.value.toLowerCase();
+// let q=filterbox.value.toLowerCase();
 let t=tokenbox.value.toLowerCase();
 let names=new Set();
 if(t){
@@ -57,10 +59,11 @@ if(t){
   }
 }
 lines.forEach(line=>{
-  let text=line.textContent.toLowerCase();
-  let textMatch=!q || text.includes(q);
+//   let text=line.textContent.toLowerCase();
+//   let textMatch=!q || text.includes(q);
   let tokenMatch=!t || names.has(line.name);
-  line.style.display=textMatch && tokenMatch ? "" : "none";
+//   line.style.display=textMatch && tokenMatch ? "" : "none";
+  line.style.display=tokenMatch ? "" : "none";
 });
 }
 
