@@ -118,9 +118,10 @@ await Promise.all(
         if (!parent) {return;} // skip orphans
         repoData.push({
           name: full.name,
-          stars: full.parent?.stargazers_count || full.stargazers_count,
-          author: parent,
-          year: extractYear(full.description, full.created_at),
+          stars: full.parent.stargazers_count,
+//           stars: full.parent?.stargazers_count || full.stargazers_count,
+//           author: parent,
+//           year: extractYear(full.description, full.created_at),
         });
       } catch (e) {
         console.warn("Error " + dir + ": " + e.message);
@@ -160,10 +161,10 @@ writeFileSync(TOKENS_FILE, JSON.stringify(output));
 console.log("Saved " + TOKENS_FILE);
 }
 
-function extractYear(description, created_at) {
-const match = description && description.match(/a js13kGames\s+(\d{4})/i);
-return match ? parseInt(match[1]) : parseInt(created_at.slice(0, 4));
-}
+// function extractYear(description, created_at) {
+// const match = description && description.match(/a js13kGames\s+(\d{4})/i);
+// return match ? parseInt(match[1]) : parseInt(created_at.slice(0, 4));
+// }
 
 
 
@@ -212,31 +213,75 @@ const { data } = await octokit.rateLimit.get();
 console.log(`Github api calls remaining: ${data.rate.remaining}/${data.rate.limit}`);
 }
 
-async function main() {
-await rate(); 
-console.log("Warning: consumes 1 github api call per repo");
-console.log("Warning: as of 2025, download was 2.4G");
-console.log("Each step takes several minutes");
-mkdirSync(ZIP_DIR, { recursive: true });
-mkdirSync(UNZIP_DIR, { recursive: true });
-const limiter = pLimit(MAX_PARALLEL);
-console.log("Getting list"); const repos = await getRepos(); 
-console.log("Getting metadata"); await generateGames(repos);
-const games = JSON.parse(readFileSync(GAMES_FILE, "utf8")).map(r => r.name);
-console.log("Downloading source"); await Promise.all( games.map(name => limiter(() => download({ name }))));
-console.log("Unzipping"); await Promise.all( games.map(name => limiter(() => unzip({ name }))));
-console.log("Generating search tokens"); await generateTokens();
-console.log("Done");
-await rate(); 
+async function main(command) {
+  const validCommands = ['games', 'download', 'unzip', 'tokens'];
+  if (!command || !validCommands.includes(command)) {
+    console.error(`Usage: node ${path.basename(process.argv[1])} <command>`);
+    console.error(`Available commands: ${validCommands.join(', ')}`);
+    console.error("\nNote: Each step depends on the previous one and should be run in order.");
+    if (command) {
+      console.error(`\nError: Unknown command "${command}"`);
+    }
+    process.exit(1);
+  }
+
+  const limiter = pLimit(MAX_PARALLEL);
+
+  switch (command) {
+    case 'games':
+      console.log("Warning: This step consumes one GitHub API call per repository.");
+      await rate();
+      console.log("Getting repository list from GitHub...");
+      const repos = await getRepos();
+      console.log(`Found ${repos.length} repos. Fetching metadata to create ${GAMES_FILE}...`);
+      await generateGames(repos);
+      console.log(`${GAMES_FILE} created successfully.`);
+      await rate();
+      break;
+
+    case 'download':
+      if (!existsSync(GAMES_FILE)) {
+        console.error(`Error: ${GAMES_FILE} not found. Please run the 'games' command first.`);
+        process.exit(1);
+      }
+      console.log("Warning: This will download a large amount of data (e.g., >2.4GB).");
+      mkdirSync(ZIP_DIR, { recursive: true });
+      const gamesToDownload = JSON.parse(readFileSync(GAMES_FILE, "utf8")).map(r => r.name);
+      console.log(`Downloading ${gamesToDownload.length} game sources to ${ZIP_DIR}/...`);
+      await Promise.all(gamesToDownload.map(name => limiter(() => download({ name }))));
+      console.log("Download complete.");
+      break;
+
+    case 'unzip':
+      if (!existsSync(GAMES_FILE)) {
+        console.error(`Error: ${GAMES_FILE} not found. Please run the 'games' command first.`);
+        process.exit(1);
+      }
+      if (!existsSync(ZIP_DIR) || readdirSync(ZIP_DIR).length === 0) {
+        console.error(`Error: ${ZIP_DIR}/ is empty or not found. Please run the 'download' command first.`);
+        process.exit(1);
+      }
+      mkdirSync(UNZIP_DIR, { recursive: true });
+      const gamesToUnzip = JSON.parse(readFileSync(GAMES_FILE, "utf8")).map(r => r.name);
+      console.log(`Unzipping ${gamesToUnzip.length} games to ${UNZIP_DIR}/...`);
+      await Promise.all(gamesToUnzip.map(name => limiter(() => unzip({ name }))));
+      console.log("Unzip complete.");
+      break;
+
+    case 'tokens':
+      if (!existsSync(UNZIP_DIR) || readdirSync(UNZIP_DIR).length === 0) {
+        console.error(`Error: ${UNZIP_DIR}/ is empty or not found. Please run the 'unzip' command first.`);
+        process.exit(1);
+      }
+      console.log(`Generating search tokens from ${UNZIP_DIR}/ to create ${TOKENS_FILE}...`);
+      await generateTokens();
+      console.log("Token generation complete.");
+      break;
+  }
 }
 
-
-
-
-
-
 process.on("SIGINT", () => { console.log("\nInterrupted"); process.exit(130); });
-main().catch(err => { console.error("Fatal:", err); process.exit(1); });
+main(process.argv[2]).catch(err => { console.error("Fatal:", err); process.exit(1); });
 
 
 
@@ -249,8 +294,3 @@ main().catch(err => { console.error("Fatal:", err); process.exit(1); });
  * Use case: help people find tech (webgl, sonant, etc) examples used by high-rated repos
  *
  * */
-
-
-
-
-
