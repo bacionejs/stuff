@@ -167,20 +167,28 @@ return match ? parseInt(match[1]) : parseInt(created_at.slice(0, 4));
 
 
 
-async function download(repo) {
-const out = `${ZIP_DIR}/${repo.name}.zip`;
-if (existsSync(out)) return false;
-const urls = [
-  `https://github.com/${GITHUB_ORG}/${repo.name}/archive/refs/heads/main.zip`,
-  `https://github.com/${GITHUB_ORG}/${repo.name}/archive/refs/heads/master.zip`
-];
-try {
-  await run(`curl -sfL "${urls[0]}" -o "${out}" || curl -sfL "${urls[1]}" -o "${out}"`);
-  return true;
-} catch {
-  rmSync(out, { force: true });
-  return false;
+async function defBranch(name){
+  let r=await fetch(`https://api.github.com/repos/${GITHUB_ORG}/${name}`,{
+    headers:{'User-Agent':'x'}
+  });
+  if(!r.ok)throw 1;
+  let j=await r.json();
+  return j.default_branch;
 }
+
+async function download(repo){
+  const out=`${ZIP_DIR}/${repo.name}.zip`;
+  if(existsSync(out))return false;
+  let branch;
+  try{branch=await defBranch(repo.name);}catch{return false;}
+  const url=`https://github.com/${GITHUB_ORG}/${repo.name}/archive/refs/heads/${branch}.zip`;
+  try{
+    await run(`curl -sfL "${url}" -o "${out}"`);
+    return true;
+  }catch{
+    rmSync(out,{force:true});
+    return false;
+  }
 }
 
 async function unzip(repo) {
