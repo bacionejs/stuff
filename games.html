@@ -44,7 +44,7 @@ data
 function loadTokens(data){
 repos=data.repos;
 for(const [token,arr] of data.tokens){ tokens[token]=new Set(arr.map(i=>repos[i]));}
-tokenbox.placeholder="type to find tech (webgl, sonant, etc)";
+tokenbox.placeholder="type to find tech (webgl, webrtc, zzfx, sonant, etc)";
 tokenbox.disabled=false;
 }
 
