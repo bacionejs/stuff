@@ -97,6 +97,7 @@ const url = "https://api.github.com/repos/js13kGames/games/git/trees/main?recurs
 const res = await fetch(url, { headers: { Authorization: `token ${GITHUB_TOKEN}` } });
 if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
 const data = await res.json();
+// writeFileSync("tree.json", JSON.stringify(data, null, 2)); // <--- dump before return
 // filter top-level directories under "games"
 let dirs = data.tree
   .filter(entry => entry.type === "tree" && /^games\/[^/]+$/.test(entry.path))
