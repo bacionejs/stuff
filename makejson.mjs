@@ -34,6 +34,7 @@ if (!isMainThread) {
       const repo = getRepoName(file);
       if (!repo) continue;
       repoSet.add(repo);
+      //filter
       const patterns = [
         /base64,[A-Za-z0-9+/=]+/g,
         /["'`][A-Za-z0-9+/=]{40,}["'`]/g,
@@ -46,7 +47,9 @@ if (!isMainThread) {
       if (tokens) {
         const used = new Set();
         for (const token of tokens) {
-          if (token === token.toUpperCase() && token.length > 2) continue;
+          if (token.length > 50 || token.length < 3) continue;
+          if (/^[0-9_]/i.test(token)) continue;
+          if (token === token.toUpperCase()) continue;
           used.add(token);
         }
         for (const token of used) {
@@ -120,9 +123,6 @@ await Promise.all(
         repoData.push({
           name: full.name,
           stars: full.parent.stargazers_count,
-//           stars: full.parent?.stargazers_count || full.stargazers_count,
-//           author: parent,
-//           year: extractYear(full.description, full.created_at),
         });
       } catch (e) {
         console.warn("Error " + dir + ": " + e.message);
@@ -151,23 +151,18 @@ for (const r of results) {
 const sortedRepos = [...repoSet].sort();
 const repoIndexMap = new Map();
 sortedRepos.forEach((repo, i) => repoIndexMap.set(repo, i));
-const output = {
-  repos: sortedRepos,
-  tokens: [...tokenToRepos.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([token, repos]) => [
-    token,
-    [...repos].map(r => repoIndexMap.get(r)).sort((a, b) => a - b)
-  ])
-};
+ const output = {
+   repos: sortedRepos,
+   tokens: [...tokenToRepos.entries()]
+     .filter(([, repos]) => repos.size >= 2)
+     .sort(([a], [b]) => a.localeCompare(b)).map(([token, repos]) => [
+     token,
+     [...repos].map(r => repoIndexMap.get(r)).sort((a, b) => a - b)
+   ])
+ };
 writeFileSync(TOKENS_FILE, JSON.stringify(output));
 console.log("Saved " + TOKENS_FILE);
 }
-
-// function extractYear(description, created_at) {
-// const match = description && description.match(/a js13kGames\s+(\d{4})/i);
-// return match ? parseInt(match[1]) : parseInt(created_at.slice(0, 4));
-// }
-
-
 
 async function defBranch(name){
   let r=await fetch(`https://api.github.com/repos/${GITHUB_ORG}/${name}`,{
@@ -194,19 +189,22 @@ async function download(repo){
 }
 
 async function unzip(repo) {
-const zip = `${ZIP_DIR}/${repo.name}.zip`;
-const out = `${UNZIP_DIR}/${repo.name}`;
-if (!existsSync(zip)) return false;
-if (existsSync(out)) rmSync(out, { recursive: true, force: true });
-mkdirSync(out, { recursive: true });
-try {
-  await run(`unzip -q "${zip}" -d "${out}"`);
-  await run(`find "${out}" -type f ! -iname '*.js' ! -iname '*.ts' ! -iname '*.html' ! -iname '*.htm' -delete`);
-  return true;
-} catch {
-  rmSync(out, { recursive: true, force: true });
-  return false;
-}
+  const zip = `${ZIP_DIR}/${repo.name}.zip`;
+  const out = `${UNZIP_DIR}/${repo.name}`;
+  if (!existsSync(zip)) return false;
+  if (existsSync(out)) rmSync(out, { recursive: true, force: true });
+  mkdirSync(out, { recursive: true });
+  try {
+    await run(`unzip -q "${zip}" -d "${out}"`);
+    // Delete all node_modules folders
+    await run(`find "${out}" -type d -name "node_modules" -exec rm -rf {} +`);
+    // Delete files that are not .js, .ts, .html, .htm
+    await run(`find "${out}" -type f ! -iname '*.js' ! -iname '*.ts' ! -iname '*.html' ! -iname '*.htm' -delete`);
+    return true;
+  } catch {
+    rmSync(out, { recursive: true, force: true });
+    return false;
+  }
 }
 
 async function rate() {
