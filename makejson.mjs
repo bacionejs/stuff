@@ -238,7 +238,8 @@ async function generateGamesFile(repoNames, limiter) {
         gamesData.push({
           name: repoDetails.name,
           stars: repoDetails.parent.stargazers_count,
-          default_branch: repoDetails.default_branch,
+          parent_full_name: repoDetails.parent.full_name,
+          parent_default_branch: repoDetails.parent.default_branch,
         });
       } catch (error) {
         console.warn(`Error fetching metadata for '${repoName}': ${error.message}`);
@@ -305,27 +306,27 @@ async function generateTokensFile() {
   console.log(`Saved token index to ${TOKENS_FILE}`);
 }
 
-/**
- * Downloads a repository's source code as a zip file.
- * @param {object} game - A game object with `name` and `default_branch` properties.
+ /**
+ * Downloads the parent repository's source code as a zip file, saving it under the fork's name.
+ * @param {object} game - A game object with `name`, `parent_full_name`, and `parent_default_branch`.
  * @returns {Promise<boolean>} True if download was successful or already exists.
  */
-async function downloadRepo({ name, default_branch }) {
-  const zipPath = path.join(ZIP_DIR, `${name}.zip`);
-  if (existsSync(zipPath)) {
-    return true; // Already downloaded
-  }
-
-  const url = `https://github.com/${GITHUB_ORG}/${name}/archive/refs/heads/${default_branch}.zip`;
-  console.log(`Downloading: ${name}`);
+async function downloadRepo({ name, parent_full_name, parent_default_branch }) {
+   const zipPath = path.join(ZIP_DIR, `${name}.zip`);
+   if (existsSync(zipPath)) {
+     return true; // Already downloaded
+   }
+ 
+  const url = `https://github.com/${parent_full_name}/archive/refs/heads/${parent_default_branch}.zip`;
+  console.log(`Downloading: ${parent_full_name} (as ${name})`);
   try {
     await run(`curl -sfL "${url}" -o "${zipPath}"`);
     return true;
   } catch (error) {
-    console.error(`Failed to download ${name}:`, error.message);
-    rmSync(zipPath, { force: true }); // Clean up failed download
-    return false;
-  }
+    console.error(`Failed to download ${parent_full_name}:`, error.message);
+     rmSync(zipPath, { force: true }); // Clean up failed download
+     return false;
+   }
 }
 
 /**
