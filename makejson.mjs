@@ -1,4 +1,38 @@
 #!/usr/bin/env node
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * JS13kGames Explorer JSON Generator
+ *
+ * REQUIREMENTS:
+ *   - GitHub personal access token set as environment variable: GITHUB_TOKEN
+ *
+ * INSTALL DEPENDENCIES:
+ *   npm install @octokit/rest
+ *
+ * OUTPUT:
+ *   - The only required output is tokens.json, which is used by games.html
+ */
+
+
+
+
+
+
+
+
+
+
+
 import {Octokit} from"@octokit/rest";
 import fs from"fs";
 import path from"path";
